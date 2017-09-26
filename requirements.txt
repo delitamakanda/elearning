@@ -1,0 +1,8 @@
+certifi==2017.7.27.1
+chardet==3.0.4
+Django==1.11.5
+idna==2.6
+pytz==2017.2
+requests==2.18.4
+stripe==1.65.1
+urllib3==1.22
