@@ -3,9 +3,11 @@ chardet==3.0.4
 Django==1.11.5
 django-braces==1.8.1
 django-embed-video==1.0.0
+django-memcache-status==1.1
 idna==2.6
 olefile==0.44
 Pillow==4.2.1
+python3-memcached==1.51
 pytz==2017.2
 requests==2.18.4
 six==1.11.0
