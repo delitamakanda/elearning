@@ -2,12 +2,27 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.base import TemplateResponseMixin, View
 from django.forms.models import modelform_factory
 from django.apps import apps
-from braces.views import LoginRequiredMixin, PermissionRequiredMixin
+from braces.views import LoginRequiredMixin, PermissionRequiredMixin, CsrfExemptMixin, JsonRequestResponseMixin
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic.list import ListView
 from .models import Course, Module, Content
 from .forms import ModuleFormSet
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
+class ModuleOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+
+    def post(self, request):
+        for id, order in self.request_json.items():
+            Module.objects.filter(id=id, course__owner=request.user).update(order=order)
+        return self.render_json_response({'saved': 'OK'})
+
+
+class ContentOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+
+    def post(self, request):
+        for id, order in self.request_json.items():
+            Content.objects.filter(id=id, module__course__owner=request.user).update(order=order)
+        return self.render_json_response({'saved': 'OK'})
 
 class ContentCreateUpdateView(TemplateResponseMixin, View):
     module = None
