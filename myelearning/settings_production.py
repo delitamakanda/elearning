@@ -1,6 +1,6 @@
 from .settings import *
 
-DEBUG = config('DEBUG')
+DEBUG = False
 
 ADMINS = (
   ('Delita Makanda', 'delita.makanda@gmail.com'),
