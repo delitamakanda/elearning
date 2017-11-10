@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'courses.middleware.SubdomainCourseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'students.middleware.SessionTimeoutMiddleware',
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
@@ -157,3 +158,6 @@ DEFAULT_FROM_EMAIL = ''
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# Session
+SESSION_EXPIRE_SECONDS = 3600  # 1 hour
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
