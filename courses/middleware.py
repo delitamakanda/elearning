@@ -2,8 +2,12 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
 from .models import Course
 from django.http import HttpResponse
+try:
+    from django.utils.deprecation import MiddlewareMixin
+except ImportError:
+    MiddlewareMixin = object
 
-class SubdomainCourseMiddleware(object):
+class SubdomainCourseMiddleware(MiddlewareMixin):
     """
     Provides subdomains for courses
     """

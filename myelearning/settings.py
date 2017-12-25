@@ -47,7 +47,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'courses.middleware.SubdomainCourseMiddleware',
+    #'courses.middleware.SubdomainCourseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'students.middleware.SessionTimeoutMiddleware',
     'django.middleware.cache.UpdateCacheMiddleware',
