@@ -47,7 +47,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    #'courses.middleware.SubdomainCourseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'students.middleware.SessionTimeoutMiddleware',
     'django.middleware.cache.UpdateCacheMiddleware',
@@ -58,6 +57,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if DEBUG == False:
+    MIDDLEWARE += ('courses.middleware.SubdomainCourseMiddleware')
+
 
 ROOT_URLCONF = 'myelearning.urls'
 
