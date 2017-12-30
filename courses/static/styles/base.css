@@ -1,0 +1,5 @@
+* {box-sizing: border-box;}
+body { font-size: 16px; color: #444; font-family: 'Source Sans Pro', sans-serif; }
+.a-center { text-align: center; }
+.a-left { text-align: left; }
+.a-right { text-align: right; }

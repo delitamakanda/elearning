@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^course/', include('courses.urls')),
     url(r'^students/', include('students.urls')),
     url(r'^api/', include('courses.api.urls', namespace='api')),
+    url(r'^', include('courses.landing.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

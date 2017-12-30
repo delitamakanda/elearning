@@ -33,6 +33,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'courses',
+    'django.contrib.sites',
+    'django.contrib.flatpages',
     #'memcache_status',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -56,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 ]
 
 if DEBUG == False:
@@ -82,6 +85,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myelearning.wsgi.application'
 
+SITE_ID = 1
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
