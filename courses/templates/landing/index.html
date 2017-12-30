@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+Index
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <div class="hero-title a-center">{% trans "Learn from the best" %}</div>
+        <div class="hero-subtitle a-center">{% trans "Easily learn and teach professional skills with superb tutorials" %}</div>
+        <a href="{% url 'student_registration' %}" class="a-center btn btn-secondary">{% trans "Sign up for free" %}</a>
+    </div>
+</section>
+<section class="search">
+    <div class="container">
+        <div class="column-50"></div>
+        <div class="column-50">
+            <h3>{% trans "Explore" %} <span class="">{% trans "Videos" %}</span></h3>
+            <p>{% trans 'Access hundreds of peer-reviewed, "snack-sized" video podcasts to help you with your revision. You can learn on the go or in the comfort of your home!' %}</p>
+        </div>
+        <div>
+            <form action="" method="POST">
+                <input type="search" placeholder="{% trans "Search for a new topic now..." %}" />
+            </form>
+            {% trans "or" %}
+            <a href="{% url 'course_list' %}" class="btn btn-primary">{% trans "Browse Categories" %}</a>
+        </div>
+    </div>
+</section>
+<section class="students">
+    <div class="container">
+    </div>
+</section>
+<section class="teachers">
+    <div class="container">
+    </div>
+</section>
+ {% endblock %}
