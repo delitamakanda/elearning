@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Log In{% endblock %}
 {% block content %}
+<div class="container">
 <h1>Log-in</h1>
 <div class="module">
     {% if form.errors %}
@@ -13,8 +14,9 @@
             {{ form.as_p }}
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ next }}" />
-            <p><input type="submit" value="Log-in"></p>
+            <p><input type="submit" class="btn btn-primary" value="Log-in"></p>
         </form>
     </div>
+</div>
 </div>
 {% endblock %}
