@@ -11,17 +11,18 @@
 <body>
     <div id="header">
         <div class="container">
-            <a href="{% url 'index' %}" class="logo">My e-larning</a>
             <ul class="menu">
-                <li><a href="{% url 'course_list' %}">Learn</a></li>
+                <li class="menu-item"><a href="{% url 'index' %}" class="logo">My e-larning</a></li>
+                <li class="menu-item"><a href="{% url 'course_list' %}">Learn</a></li>
                 {% if request.user.is_authenticated %}
-                <li><a href="{% url 'student_course_list' %}">Dashboard</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
+                <li class="menu-item"><a href="{% url 'student_course_list' %}">Dashboard</a></li>
+                <li class="menu-item"><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'student_registration' %}">Sign up</a></li>
+                <li class="menu-item sign-up fl-right"><a href="{% url 'login' %}">Login</a></li>
+                <li class="menu-item log-in fl-right"><a href="{% url 'student_registration' %}">Sign up</a></li>
                 {% endif %}
             </ul>
+            <div class="clearfix"></div>
         </div>
     </div>
     <div id="content">
@@ -31,12 +32,12 @@
     <footer id="footer" class="a-center">
         <div class="container">
             {% get_flatpages as flatpages %}
-            <ul>
-                <li>
+            <ul class="menu-secondary">
+                <li class="menu-item-secondary">
                     <a href="{% url 'index' %}" class="logo">My e-larning</a>
                 </li>
                 {% for page in flatpages %}
-                    <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+                    <li class="menu-item-secondary"><a href="{{ page.url }}">{{ page.title }}</a></li>
                 {% endfor %}
             </ul>
             <hr class="divider" />
