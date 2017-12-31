@@ -3,6 +3,7 @@
        {{ object.title }}
    {% endblock %}
    {% block content %}
+   <div class="container">
        {% with subject=course.subject %}
            <h1>
                {{ object.title }}
@@ -10,7 +11,7 @@
            <div class="module">
                <h2>Overview</h2>
                <p>
-                   <a href="{% url 'course_list_subject' subject.slug %}">{{ subject.title }}</a>.
+                   <a href="{% url 'course_list_subject' subject.slug %}" class="link">{{ subject.title }}</a>.
                    {{ course.modules.count }} modules. Instructor: {{ course.owner.get_full_name }}
                </p>
                {{ object.overview|linebreaks }}
@@ -19,13 +20,14 @@
                    <form action="{% url 'student_enroll_course' %}" method="post">
                        {{ enroll_form }}
                        {% csrf_token %}
-                       <input type="submit" class="button" value="Enroll now">
+                       <input type="submit" class="btn btn-secondary" value="Enroll now">
                    </form>
                {% else %}
-                   <a href="{% url 'student_registration' %}" class="button">
+                   <a href="{% url 'student_registration' %}" class="btn btn-secondary">
                        Register to enroll
                    </a>
                {% endif %}
            </div>
        {% endwith %}
+   </div>
    {% endblock %}

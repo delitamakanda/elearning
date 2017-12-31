@@ -18,6 +18,7 @@ p { color: #999; }
 .menu-item.sign-up a:hover, .menu-item.log-in a:hover, .menu-item .logo:hover, .menu-item-secondary .logo:hover { text-decoration: none; }
 .menu-item.log-in { background-color: #fff; color: #4595e5; border-top: 1px solid #4595e5; border-right: 1px solid #4595e5; border-bottom: 1px solid #4595e5; border-top-right-radius: 5px; border-bottom-right-radius: 5px; }
 .menu-item.sign-up, .menu-item.log-in { padding: 5px 20px; }
+.menu-item.dash-board { margin-left: 20px; }
 .logo { font-family: 'Comfortaa', cursive; font-size: 1.6em; margin-right: 30px; }
 .fl-left { float: left; }
 .fl-right { float: right; }
@@ -43,16 +44,22 @@ p { color: #999; }
 .explore .description { margin: 2% 30% 0 0; }
 .item-search { display: inline-block; }
 .form-search { position: relative; }
-.form-search input[type="search"] { -webkit-appearance: none; appearance: none; border: 1px solid #e5e5e5; border-radius: 5px; padding: 10px 18px; display: inline-block; font-size: 1.1em; width: 300px; padding-left: 25px; }
+.form-search input[type="search"] { display: inline-block; font-size: 1.1em; width: 300px; padding-left: 25px; }
 input:focus { outline: 0 none; }
 input[type="search"]::-webkit-input-placeholder{ color: #d5d5d5; }
 input[type="search"]:-moz-placeholder { color: #d5d5d5; }
 .mlr { margin-left: 10px; margin-right: 10px; }
+.signup-form input, .login-form input, .form-search input[type="search"] { -webkit-appearance: none; appearance: none; border: 1px solid #e5e5e5; border-radius: 5px; padding: 10px 18px; }
+.signup-form label, .login-form label { display: block; margin-bottom: 12px; }
+.signup-form, .login-form, .signup-form p +  p, .login-form p +  p { margin-top: 20px; }
+.signup-form ul { list-style-type: none;}
+.link { color: #4595e5; text-decoration: none; }
+.link:active, .link:hover { text-decoration: underline; }
 
 @media screen and (max-width: 639px) {
     .container { width: 90%; }
     .logo { margin-right: 0; }
-    .menu-item, .menu-item-secondary:first-child, .column-50, .item-search, .form-search input[type="search"], .btn { display: block; width: 100%; }
+    .menu-item, .menu-item-secondary:first-child, .column-50, .item-search, .form-search input[type="search"], .btn, .signup-form input, .login-form input { display: block; width: 100%; }
     .mlr { margin: 10px 0; }
     .menu-item:first-child, .menu-item-secondary:first-child, .explore h2, .explore .description, .menu-item:not(:first-child) { text-align: center; }
     .explore .description { margin: 5% 0; }

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
    {% block title %}
        Sign up
    {% endblock %}
@@ -6,12 +7,15 @@
    <div class="container">
        <h1>Sign up </h1>
        <div class="module">
-           <p>Enter your details to create an account:</p>
-           <form action="" method="post">
-               {{ form.as_p }}
-               {% csrf_token %}
-               <p><input type="submit" class="btn btn-primary" value="Create my account"></p>
-           </form>
+           <p>{% trans "Enter your details to create an account:" %}</p>
+           <p>{% trans "Already an account ?" %} <a href="{% url 'login' %}" class="link">Log in</a>.</p>
+           <div class="signup-form">
+               <form action="" method="post">
+                   {{ form.as_p }}
+                   {% csrf_token %}
+                   <p><input type="submit" class="btn btn-primary" value="Create my account"></p>
+               </form>
+           </div>
        </div>
    </div>
    {% endblock %}

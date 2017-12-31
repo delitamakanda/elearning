@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}My courses{% endblock %}
 {% block content %}
+<div class="container">
      <h1>My courses</h1>
      <div class="module">
        {% for course in object_list %}
@@ -19,7 +20,8 @@
          <p>You haven't created any courses yet.</p>
        {% endfor %}
        <p>
-         <a href="{% url "course_create" %}" class="button">Create new
+         <a href="{% url "course_create" %}" class="btn btn-primary">Create new
    course</a>
 </p> </div>
+</div>
    {% endblock %}

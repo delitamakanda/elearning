@@ -20,11 +20,11 @@
        <h3>Subjects</h3>
        <ul id="modules">
            <li {% if not subject %}class="selected"{% endif %}>
-               <a href="{% url 'course_list' %}">All</a>
+               <a href="{% url 'course_list' %}" class="link">All</a>
            </li>
            {% for s in subjects %}
                <li {% if subject == s %}class="selected"{% endif %}>
-                   <a href="{% url 'course_list_subject' s.slug %}">
+                   <a href="{% url 'course_list_subject' s.slug %}" class="link">
 {{ s.title }}
                        <br><span>{{ s.total_courses }} courses</span>
                    </a>
@@ -34,9 +34,9 @@
    <div class="module">
        {% for course in courses %}
            {% with subject=course.subject %}
-               <h3><a href="{% url 'course_detail' course.slug %}">{{ course.title }}</a></h3>
+               <h3><a href="{% url 'course_detail' course.slug %}" class="link">{{ course.title }}</a></h3>
                <p>
-                   <a href="{% url 'course_list_subject' subject.slug %}">{{ subject }} </a>.
+                   <a href="{% url 'course_list_subject' subject.slug %}" class="link">{{ subject }} </a>.
                    {{ course.total_modules }} modules.
                    Instructor: {{ course.owner.get_full_name }}
                </p>
