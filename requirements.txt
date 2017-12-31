@@ -19,3 +19,4 @@ waitress
 dj-database-url
 hellowebapp-deploy
 psycopg2
+python-decouple==3.1
