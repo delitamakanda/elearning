@@ -1,4 +1,7 @@
-from django.shortcuts import render
+from django.conf import settings
+import stripe
+stripe.api_key = settings.STRIPE_SECRET
+from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic.edit import CreateView, FormView
 from django.views.generic.list import ListView
@@ -8,6 +11,8 @@ from braces.views import LoginRequiredMixin
 from django.contrib.auth import authenticate, login
 from .forms import CourseEnrollForm
 from courses.models import Course
+from django.contrib.auth.decorators import login_required
+from django.core.mail import mail_admins
 
 class StudentCourseListView(LoginRequiredMixin, ListView):
     model = Course
@@ -62,3 +67,36 @@ class StudentEnrollCourseView(FormView):
 
     def get_success_url(self):
         return reverse_lazy('student_course_detail', args=[self.course.id])
+
+
+@login_required
+def charge(request):
+    user = request.user
+
+    try:
+        customer = stripe.Customer.create(
+            email=request.POST['stripeEmail'],
+            source=request.POST['stripeToken'],
+            plan='doesnotexist',
+        )
+    except stripe.StripeError as e:
+        msg = "Stripe payment error: %s" % e
+        messages.error(request, msg)
+        mail_admins("Error on myelearning app", msg)
+        return redirect('student_course_list')
+
+    if request.method != "POST":
+        return redirect('student_course_list')
+
+    if not 'stripeToken' in request.POST:
+        messages.error(request, 'Something went wrong !')
+        return redirect('student_course_list')
+
+    customer = stripe.Customer.create(
+        email=request.POST['stripeEmail'],
+        source=request.POST['stripeToken'],
+        plan='monthly',
+    )
+
+    messages.success(request, 'Upgraded your account. Thanks a lot!')
+    return redirect('student_course_list')

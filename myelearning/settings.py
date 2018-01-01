@@ -169,3 +169,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Session
 SESSION_EXPIRE_SECONDS = 3600  # 1 hour
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+
+# Stripe Payments
+STRIPE_SECRET = Config('STRIPE_SECRET')
+STRIPE_PUBLISHABLE = Config('STRIPE_PUBLISHABLE')
