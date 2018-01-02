@@ -13,6 +13,9 @@ from .forms import CourseEnrollForm
 from courses.models import Course
 from django.contrib.auth.decorators import login_required
 from django.core.mail import mail_admins
+from django.core import management
+
+management.call_command('enroll_reminder', days=20)
 
 class StudentCourseListView(LoginRequiredMixin, ListView):
     model = Course
