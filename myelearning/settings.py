@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'students',
     'embed_video',
     'rest_framework',
+    'markdownx',
 ]
 
 MIDDLEWARE = [
@@ -129,7 +130,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -173,3 +174,5 @@ SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 # Stripe Payments
 STRIPE_SECRET = Config('STRIPE_SECRET')
 STRIPE_PUBLISHABLE = Config('STRIPE_PUBLISHABLE')
+
+# Django Markdownx
