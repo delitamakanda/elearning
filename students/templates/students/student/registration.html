@@ -14,19 +14,7 @@
                    {{ form.as_p }}
                    {% csrf_token %}
 
-                   <div id="change-card" class="clearfix"{% if not form.last_4_digits.value %} style="display: none;"{% endif %}>
-                       Card
-                        <div class="input">
-                          Using card ending with {{ form.last_4_digits.value }}
-                          (<a href="#">change</a>)
-                        </div>
-                    </div>
-
-                    <br />
-
-                    {% include "students/payments/cardform.html" %}
-
-                    <!--<p><input type="submit" class="btn btn-primary" value="Create an account"></p>-->
+                    <p><input type="submit" class="btn btn-primary" value="Create an account"></p>
                </form>
            </div>
        </div>

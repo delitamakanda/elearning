@@ -101,3 +101,4 @@ ENV/
 .mypy_cache/
 db.sqlite3
 sketch/
+media/

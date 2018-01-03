@@ -10,17 +10,13 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.forms import UserCreationForm
 from braces.views import LoginRequiredMixin
 from django.contrib.auth import authenticate, login
-from .forms import CourseEnrollForm, CardForm
-from courses.models import Course, User
-# from django.contrib.auth.decorators import login_required
+from .forms import CourseEnrollForm
+from courses.models import Course
 from django.core.mail import mail_admins
 from django.core import management
 
 management.call_command('enroll_reminder', days=20)
 
-def soon():
-    soon = datetime.date.today() + datetime.timedelta(days=30)
-    return { 'month': soon.month, 'year': soon.year }
 
 class StudentCourseListView(LoginRequiredMixin, ListView):
     model = Course
@@ -56,32 +52,9 @@ class StudentRegistrationView(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('student_course_list')
 
-    def get_context_data(self, **kwargs):
-        context = super(StudentRegistrationView, self).get_context_data(**kwargs)
-        #context['form'] = form
-        context['months'] = range(1, 12)
-        context['years'] = range(2011, 2036)
-        #context['user'] = user
-        context['soon'] = soon()
-        context['publishable'] = settings.STRIPE_PUBLISHABLE
-        return context
-
     def form_valid(self, form):
         result = super(StudentRegistrationView, self).form_valid(form)
         cd = form.cleaned_data
-        customer = stripe.Customer.create(
-            email=form.cleaned_data['email'],
-            description=form.cleaned_data['name'],
-            card=form.cleaned_data['stripe_token'],
-            plan="monthly",
-        )
-
-        user = User(
-            name=form.cleaned_data['name'],
-            email=form.cleaned_data['email'],
-            last_4_digits=form.cleaned_data['last_4_digits'],
-            stripe_id=customer.id,
-        )
         user = authenticate(username=cd['username'], password=cd['password1'])
         login(self.request, user)
         return result
