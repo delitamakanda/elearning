@@ -1,0 +1,38 @@
+<input type="hidden" name="last_4_digits" id="last_4_digits" value="{{ form.last_4_digits.value }}">
+<input type="hidden" name="stripe_token" id="stripe_token" value="{{ form.stripe_token.value }}">
+<noscript>
+    <p>This form requires Javascript to use.</p>
+</noscript>
+
+<div id="credit-card"{% if form.last_4_digits.value %} style="display: none"{% endif %}>
+    <div id="credit-card-errors" style="display:none">
+        <div class="alert-message block-message error" id="stripe-error-message"></div>
+    </div>
+
+    <p>
+        <label for="credit_card_number">Credit card number</label>
+        <input id="credit_card_number" type="text">
+    </p>
+
+    <p>
+        <label for="cvv">Security code (CVC)</label>
+        <input id="cvv" type="text">
+    </p>
+    <p>
+        <label for="expiry_date">Expiration date</label>
+        <select id="expiry_month">
+            {% for month in months %}
+            <option value="{{ month }}"{% if soon.month == month %} selected{% endif %}>{{ month }}</option>
+            {% endfor %}
+        </select>
+        <select id="expiry_year">
+            {% for year in years %}
+            <option value="{{ year }}"{% if soon.year == year %} selected{% endif %}>{{ year }}</option>
+            {% endfor %}
+        </select>
+    </p>
+    <br/>
+</div>
+<div class="actions">
+    <input class="btn btn-primary" id="user_submit" name="commit" type="submit" value="Create an account">
+</div>

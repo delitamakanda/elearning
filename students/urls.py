@@ -8,5 +8,5 @@ urlpatterns = [
     url(r'^courses/$', views.StudentCourseListView.as_view(), name='student_course_list'),
     url(r'^course/(?P<pk>\d+)/$', cache_page(60*15)(views.StudentCourseDetailView.as_view()), name='student_course_detail'),
     url(r'^course/(?P<pk>\d+)/(?P<module_id>\d+)/$', cache_page(60*15)(views.StudentCourseDetailView.as_view()), name='student_course_detail_module'),
-    url(r'^charge/$', views.charge, name='charge'),
+    # url(r'^charge/$', views.charge, name='charge'),
 ]

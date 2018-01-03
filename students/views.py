@@ -1,5 +1,6 @@
 from django.conf import settings
 import stripe
+import datetime
 stripe.api_key = settings.STRIPE_SECRET
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse_lazy
@@ -9,13 +10,17 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.forms import UserCreationForm
 from braces.views import LoginRequiredMixin
 from django.contrib.auth import authenticate, login
-from .forms import CourseEnrollForm
-from courses.models import Course
-from django.contrib.auth.decorators import login_required
+from .forms import CourseEnrollForm, CardForm
+from courses.models import Course, User
+# from django.contrib.auth.decorators import login_required
 from django.core.mail import mail_admins
 from django.core import management
 
 management.call_command('enroll_reminder', days=20)
+
+def soon():
+    soon = datetime.date.today() + datetime.timedelta(days=30)
+    return { 'month': soon.month, 'year': soon.year }
 
 class StudentCourseListView(LoginRequiredMixin, ListView):
     model = Course
@@ -51,9 +56,32 @@ class StudentRegistrationView(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('student_course_list')
 
+    def get_context_data(self, **kwargs):
+        context = super(StudentRegistrationView, self).get_context_data(**kwargs)
+        #context['form'] = form
+        context['months'] = range(1, 12)
+        context['years'] = range(2011, 2036)
+        #context['user'] = user
+        context['soon'] = soon()
+        context['publishable'] = settings.STRIPE_PUBLISHABLE
+        return context
+
     def form_valid(self, form):
         result = super(StudentRegistrationView, self).form_valid(form)
         cd = form.cleaned_data
+        customer = stripe.Customer.create(
+            email=form.cleaned_data['email'],
+            description=form.cleaned_data['name'],
+            card=form.cleaned_data['stripe_token'],
+            plan="monthly",
+        )
+
+        user = User(
+            name=form.cleaned_data['name'],
+            email=form.cleaned_data['email'],
+            last_4_digits=form.cleaned_data['last_4_digits'],
+            stripe_id=customer.id,
+        )
         user = authenticate(username=cd['username'], password=cd['password1'])
         login(self.request, user)
         return result
@@ -72,34 +100,34 @@ class StudentEnrollCourseView(FormView):
         return reverse_lazy('student_course_detail', args=[self.course.id])
 
 
-@login_required
-def charge(request):
-    user = request.user
+# @login_required
+#def charge(request):
+    #user = request.user
 
-    try:
-        customer = stripe.Customer.create(
-            email=request.POST['stripeEmail'],
-            source=request.POST['stripeToken'],
-            plan='doesnotexist',
-        )
-    except stripe.StripeError as e:
-        msg = "Stripe payment error: %s" % e
-        messages.error(request, msg)
-        mail_admins("Error on myelearning app", msg)
-        return redirect('student_course_list')
+    #try:
+        #customer = stripe.Customer.create(
+            #email=request.POST['stripeEmail'],
+            #source=request.POST['stripeToken'],
+            #plan='doesnotexist',
+        #)
+#    except stripe.StripeError as e:
+        #msg = "Stripe payment error: %s" % e
+        #messages.error(request, msg)
+        #mail_admins("Error on myelearning app", msg)
+        #return redirect('student_course_list')
 
-    if request.method != "POST":
-        return redirect('student_course_list')
+    #if request.method != "POST":
+        #return redirect('student_course_list')
 
-    if not 'stripeToken' in request.POST:
-        messages.error(request, 'Something went wrong !')
-        return redirect('student_course_list')
+    #if not 'stripeToken' in request.POST:
+        #messages.error(request, 'Something went wrong !')
+        #return redirect('student_course_list')
 
-    customer = stripe.Customer.create(
-        email=request.POST['stripeEmail'],
-        source=request.POST['stripeToken'],
-        plan='monthly',
-    )
+    #customer = stripe.Customer.create(
+        #email=request.POST['stripeEmail'],
+        #source=request.POST['stripeToken'],
+        #plan='monthly',
+    #)
 
-    messages.success(request, 'Upgraded your account. Thanks a lot!')
-    return redirect('student_course_list')
+    #messages.success(request, 'Upgraded your account. Thanks a lot!')
+    #return redirect('student_course_list')

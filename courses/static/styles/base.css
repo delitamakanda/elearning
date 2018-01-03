@@ -1,6 +1,6 @@
 * {box-sizing: border-box; margin: 0; padding: 0; }
 body { font-size: 16px; color: #444; font-family: 'Source Sans Pro', sans-serif; background-color: #e5e5e5; }
-p { color: #999; }
+p, label { color: #999; }
 .a-center { text-align: center; }
 .a-left { text-align: left; }
 .a-right { text-align: right; }
