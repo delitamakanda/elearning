@@ -12,7 +12,6 @@ python3-memcached==1.51
 pytz==2017.2
 requests==2.18.4
 six==1.11.0
-stripe==1.65.1
 urllib3==1.22
 whitenoise==3.3.1
 waitress
@@ -21,3 +20,4 @@ hellowebapp-deploy
 psycopg2
 python-decouple==3.1
 django-markdownx==2.0.21
+stripe-1.77.0

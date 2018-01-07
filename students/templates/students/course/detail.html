@@ -32,5 +32,18 @@
                {% endwith %}
            {% endfor %}
        </div>
+       <h2>Upgrade to a premium subcription ?</h2>
+       <form action="{% url 'charge' %}" method="post">
+           {% csrf_token %}
+           <script src="https://checkout.stripe.com/checkout.js"
+               class="stripe-button"
+               data-key="{{ key }}"
+               data-name="my e-learning"
+               data-description="Premium subcription (1.99€/month)"
+               data-amount="0199"
+               data-allow-remember-me="false"
+               data-label="Upgrade to premium">
+           </script>
+       </form>
    </div>
    {% endblock %}
