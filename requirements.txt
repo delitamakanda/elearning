@@ -20,4 +20,4 @@ hellowebapp-deploy
 psycopg2
 python-decouple==3.1
 django-markdownx==2.0.21
-stripe-1.77.0
+stripe==1.77.0

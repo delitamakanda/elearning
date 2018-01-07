@@ -32,6 +32,7 @@
                {% endwith %}
            {% endfor %}
        </div>
+       {% if not course.upgraded %}
        <h2>Upgrade to a premium subcription ?</h2>
        <form action="{% url 'charge' %}" method="post">
            {% csrf_token %}
@@ -45,5 +46,8 @@
                data-label="Upgrade to premium">
            </script>
        </form>
+       {% else %}
+            <p>Content upgraded.</p>
+       {% endif %}
    </div>
    {% endblock %}
