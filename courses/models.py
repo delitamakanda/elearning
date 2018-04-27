@@ -83,3 +83,7 @@ class Content(models.Model):
 
     class Meta:
         ordering = ['order']
+        
+        
+class Quiz(models.Model):
+    pass
