@@ -1,14 +1,21 @@
 from django.contrib import admin
-from .models import Subject, Course, Module
-from django.contrib.flatpages.admin import FlatPageAdmin
-from django.contrib.flatpages.models import FlatPage
+from courses.models import Subject
+from courses.models import Course
+from courses.models import Module
+from students.models import Tag
 from django.utils.translation import gettext_lazy as _
-from markdownx.admin import MarkdownxModelAdmin
+
+
+class TagInline(admin.StackedInline):
+    model = Tag
+
 
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
     list_display = ['title', 'slug']
     prepopulated_fields = {'slug': ('title',)}
+    inlines = [TagInline]
+
 
 class ModuleInline(admin.StackedInline):
     model = Module
@@ -21,21 +28,3 @@ class CourseAdmin(admin.ModelAdmin):
     search_fields = ['title', 'overview']
     prepopulated_fields = {'slug': ('title',)}
     inlines = [ModuleInline]
-
-
-class FlatPageAdmin(FlatPageAdmin):
-    fieldsets = (
-        (None, {'fields': ('url', 'title', 'content', 'sites')}),
-        (_('Advanced options'), {
-            'classes': ('collapse', ),
-            'fields': (
-                'enable_comments',
-                'registration_required',
-                'template_name',
-            ),
-        }),
-    )
-
-# Re-register FlatPageAdmin
-admin.site.unregister(FlatPage)
-admin.site.register(FlatPage, FlatPageAdmin)
