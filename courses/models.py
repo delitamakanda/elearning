@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from .fields import OrderField
@@ -17,15 +17,13 @@ class Subject(models.Model):
         return self.title
 
 class Course(models.Model):
-    owner = models.ForeignKey(User, related_name='courses_created')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='courses_created')
     subject = models.ForeignKey(Subject, related_name='courses')
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
     overview = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
-    students = models.ManyToManyField(User, related_name='courses_joined', blank=True)
-    upgraded = models.BooleanField(default=False)
-    stripe_id = models.CharField(max_length=255, blank=True)
+    students = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='courses_joined', blank=True)
 
     class Meta:
         ordering = ('-created',)
@@ -47,7 +45,7 @@ class Module(models.Model):
 
 
 class ItemBase(models.Model):
-    owner = models.ForeignKey(User, related_name='%(class)s_related')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='%(class)s_related')
     title = models.CharField(max_length=250)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -83,7 +81,3 @@ class Content(models.Model):
 
     class Meta:
         ordering = ['order']
-        
-        
-# class Quiz(models.Model):
-    # pass
