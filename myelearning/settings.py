@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-from decouple import Config
+from decouple import config
 from django.core.urlresolvers import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -22,10 +22,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = Config('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'courses',
     'django.contrib.sites',
     'django.contrib.flatpages',
-    #'memcache_status',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,7 +45,6 @@ INSTALLED_APPS = [
     'students',
     'embed_video',
     'rest_framework',
-    'markdownx',
 ]
 
 MIDDLEWARE = [
@@ -141,7 +139,14 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+# Custom auth
+
+AUTH_USER_MODEL = 'students.User'
 LOGIN_REDIRECT_URL = reverse_lazy('student_course_list')
+LOGIN_URL = reverse_lazy('login')
+LOGOOUT_URL = reverse_lazy('logout')
+LOGOUT_REDIRECT_URL = reverse_lazy('student_course_list')
+
 
 # Cache
 CACHES = {
@@ -170,7 +175,3 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Session
 SESSION_EXPIRE_SECONDS = 3600  # 1 hour
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
-
-# Stripe Payments
-STRIPE_LIVE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLISHABLE')
-STRIPE_LIVE_SECRET_KEY = os.environ.get('STRIPE_SECRET')
