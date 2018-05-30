@@ -8,14 +8,10 @@ djangorestframework==3.7.0
 idna==2.6
 olefile==0.44
 Pillow==4.2.1
-python3-memcached==1.51
+python3-memcached
 pytz==2017.2
 requests==2.18.4
 six==1.11.0
 urllib3==1.22
 whitenoise==3.3.1
-waitress
-dj-database-url
-hellowebapp-deploy
-psycopg2
 python-decouple==3.1
