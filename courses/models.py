@@ -85,5 +85,5 @@ class Content(models.Model):
         ordering = ['order']
         
         
-class Quiz(models.Model):
-    pass
+# class Quiz(models.Model):
+    # pass
