@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from courses.models import Subject
-from courses.models import Quiz
+# from courses.models import Quiz
 
 
 # Create your models here.
