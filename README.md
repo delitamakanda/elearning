@@ -1,5 +1,5 @@
 # my-elearning
-e-learning django app with stripe payment (django, python)
+e-learning django app (django, python3)
 
 ## continious integration codeship
 
