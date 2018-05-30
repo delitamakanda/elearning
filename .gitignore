@@ -102,3 +102,4 @@ ENV/
 db.sqlite3
 sketch/
 media/
+.DS_Store
