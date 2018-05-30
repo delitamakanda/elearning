@@ -16,7 +16,7 @@
     <div id="header">
         <div class="container">
             <ul class="menu">
-                <li class="menu-item"><a href="{% url 'index' %}" class="logo"><span class="text-primary">My</span> e-larning</a></li>
+                <li class="menu-item"><a href="{% url 'classroom' %}" class="logo"><span class="text-primary">My</span> e-larning</a></li>
                 <li class="menu-item"><a href="{% url 'course_list' %}">Learn</a></li>
                 {% if request.user.is_authenticated %}
                 <li class="menu-item dash-board"><a href="{% url 'student_course_list' %}">Dashboard</a></li>
@@ -26,7 +26,7 @@
                 <li class="menu-item fl-right"><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
                 <li class="menu-item log-in fl-right"><a href="{% url 'login' %}">Login</a></li>
-                <li class="menu-item sign-up fl-right"><a href="{% url 'student_registration' %}">Sign up</a></li>
+                <li class="menu-item sign-up fl-right"><a href="{% url 'signup' %}">Sign up</a></li>
                 {% endif %}
             </ul>
             <div class="clearfix"></div>
@@ -50,7 +50,7 @@
             {% get_flatpages as flatpages %}
             <ul class="menu-secondary">
                 <li class="menu-item-secondary">
-                    <a href="{% url 'index' %}" class="logo"><span class="text-primary">My</span> e-larning</a>
+                    <a href="{% url 'classroom' %}" class="logo"><span class="text-primary">My</span> e-larning</a>
                 </li>
                 {% for page in flatpages %}
                     <li class="menu-item-secondary"><a href="{{ page.url }}">{{ page.title }}</a></li>

@@ -8,10 +8,10 @@
         <p>Your username and password didn't match. Please try again.</p>
         {% else %}
     <p>Please, use the following form to log-in:</p>
-    <p>Don't have an account ? <a href="{% url 'student_registration' %}" class="link">Sign up for free !</a></p>
     {% endif %}
     <div class="login-form">
-        <form action="{% url 'login' %}" method="post">
+        <form method="post">
+            <input type="hidden" name="next" value="{{ next }}">
             {{ form.as_p }}
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ next }}" />
