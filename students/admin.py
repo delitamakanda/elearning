@@ -13,8 +13,14 @@ class AnswerInline(admin.StackedInline):
 class QuestionAdmin(admin.ModelAdmin):
     inlines = [AnswerInline]
 
+
+class UserAdmin(admin.ModelAdmin):
+    model = User
+    list_display = ['username', 'first_name', 'last_name']
+    list_filter = ['is_teacher', 'is_student', 'is_staff']
+
 # Register your models here.
-admin.site.register(User)
+admin.site.register(User, UserAdmin)
 admin.site.register(Quiz)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Student)
