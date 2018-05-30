@@ -15,18 +15,21 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.conf import settings
+from django.views import generic
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from students.views import students, classroom, teachers
 
 urlpatterns = [
+    url(r'^$', generic.RedirectView.as_view(url='/course/', permanent=False)),
     url(r'^accounts/login/$', auth_views.login, name='login'),
     url(r'^accounts/logout/$', auth_views.logout, name='logout'),
+    url(r'^accounts/signup/$', classroom.SignupView.as_view(), name='signup'),
     url(r'^admin/', admin.site.urls),
     url(r'^course/', include('courses.urls')),
     url(r'^students/', include('students.urls')),
     url(r'^api/', include('courses.api.urls', namespace='api')),
-    url(r'^', include('courses.landing.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
