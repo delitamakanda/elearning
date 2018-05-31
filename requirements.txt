@@ -10,7 +10,6 @@ Pillow
 python3-memcached
 pytz
 requests
-urllib3
 whitenoise
 dj-database-url
 gunicorn
