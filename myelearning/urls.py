@@ -22,7 +22,7 @@ from django.contrib.auth import views as auth_views
 from students.views import students, classroom, teachers
 
 urlpatterns = [
-    url(r'^$', generic.RedirectView.as_view(url='/course/', permanent=False)),
+    url(r'^$', generic.RedirectView.as_view(url='/students/classroom/', permanent=False)),
     url(r'^accounts/login/$', auth_views.login, name='login'),
     url(r'^accounts/logout/$', auth_views.logout, name='logout'),
     url(r'^accounts/signup/$', classroom.SignupView.as_view(), name='signup'),
