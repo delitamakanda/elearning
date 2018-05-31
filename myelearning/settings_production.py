@@ -16,5 +16,5 @@ ALLOWED_HOSTS = ['.herokuapp.com']
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 # Configure for SSL
-# SECURE_SSL_REDIRECT = True
-# CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+CSRF_COOKIE_SECURE = True
