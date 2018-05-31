@@ -1,7 +1,6 @@
 certifi
 chardet
 Django>=1.8,<2.0
-django-braces
 django-embed-video
 djangorestframework
 idna
@@ -9,7 +8,6 @@ olefile
 Pillow
 python3-memcached
 pytz
-requests
 whitenoise
 dj-database-url
 gunicorn
