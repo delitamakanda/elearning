@@ -61,8 +61,8 @@ MIDDLEWARE = [
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 ]
 
-if DEBUG == False:
-    MIDDLEWARE += ('courses.middleware.SubdomainCourseMiddleware')
+# if DEBUG == False:
+    # MIDDLEWARE += ('courses.middleware.SubdomainCourseMiddleware')
 
 
 ROOT_URLCONF = 'myelearning.urls'
