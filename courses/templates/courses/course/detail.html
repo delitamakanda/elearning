@@ -12,7 +12,7 @@
                <h2>Overview</h2>
                <p>
                    <a href="{% url 'course_list_subject' subject.slug %}" class="link">{{ subject.title }}</a>.
-                   {{ course.modules.count }} modules. Instructor: {{ course.owner.get_full_name }}
+                   {{ course.modules.count }} modules. Instructor: {{ course.owner.username }}
                </p>
                {{ object.overview|linebreaks }}
 
