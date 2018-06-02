@@ -1,0 +1,32 @@
+{
+  "name": "my-elearning",
+  "version": "1.0.0",
+  "description": "a ealearning application in django",
+  "main": "frontend/gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:font": "gulp iconfont",
+    "build:scss": "gulp default"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/delitamakanda/my-elearning.git"
+  },
+  "keywords": [
+    "django",
+    "elearning"
+  ],
+  "author": "Délita Makanda",
+  "license": "ISC",
+  "devDependencies" : {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^4.0.1",
+    "gulp-iconfont": "^9.1.0",
+    "gulp-consolidate": "^0.2.0",
+    "lodash": "^4.17.10"
+  },
+  "bugs": {
+    "url": "https://github.com/delitamakanda/my-elearning/issues"
+  },
+  "homepage": "https://github.com/delitamakanda/my-elearning#readme"
+}

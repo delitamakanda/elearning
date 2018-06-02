@@ -1,0 +1,29 @@
+@charset "UTF-8";
+@font-face {
+    font-family: 'custom';
+    font-weight: normal;
+    font-style: normal;
+    src: url("../fonts/custom/custom.eot");
+    src: url("../fonts/custom/custom.woff2") format("woff2"), url("../fonts/custom/custom.woff") format("woff"), url("../fonts/custom/custom.ttf") format("truetype"), url("../fonts/custom/custom.eot?#iefix") format("embedded-opentype");
+}
+
+.icon[class^="icon-"],
+.icon[class*=" icon-"] {
+    display: inline-block;
+    font-family: 'custom';
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 1;
+    text-transform: none;
+}
+
+.icon-antenna:before {
+    content: "";
+}
+
+.icon-heart:before {
+    content: "";
+}
