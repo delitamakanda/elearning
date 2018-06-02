@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Count
+from django.contrib.auth.decorators import login_required
 from django.views.generic.base import TemplateResponseMixin, View
 from django.forms.models import modelform_factory
 from django.apps import apps
@@ -11,6 +12,8 @@ from .forms import ModuleFormSet
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from students.forms import CourseEnrollForm
+from django.utils.decorators import method_decorator
+from students.decorators import teacher_required
 #from django.core.cache import cache
 
 class CourseListView(TemplateResponseMixin, View):
@@ -170,16 +173,17 @@ class OwnerEditMixin(object):
 
 class OwnerCourseMixin(OwnerMixin, LoginRequiredMixin):
     model = Course
-    fields = ['subject', 'title', 'slug', 'overview',]
+    fields = ['subject', 'title', 'overview',]
     success_url = reverse_lazy('manage_course_list')
 
 
 class OwnerCourseEditMixin(OwnerCourseMixin, OwnerEditMixin):
-    fields = ['subject', 'title', 'slug', 'overview', ]
+    fields = ['subject', 'title', 'overview', ]
     success_url = reverse_lazy('manage_course_list')
     template_name = 'courses/manage/course/form.html'
 
 
+@method_decorator([login_required, teacher_required], name='dispatch')
 class ManageCourseListView(OwnerCourseMixin, ListView):
     model = Course
     template_name = 'courses/manage/course/list.html'
@@ -188,14 +192,20 @@ class ManageCourseListView(OwnerCourseMixin, ListView):
         qs = super(ManageCourseListView, self).get_queryset()
         return qs.filter(owner=self.request.user)
 
-class CourseCreateView(PermissionRequiredMixin, OwnerCourseEditMixin, CreateView):
+
+@method_decorator([login_required, teacher_required], name='dispatch')
+class CourseCreateView(OwnerCourseEditMixin, CreateView):
     permission_required = 'courses.add_course'
 
-class CourseUpdateView(PermissionRequiredMixin, OwnerCourseEditMixin, UpdateView):
+
+@method_decorator([login_required, teacher_required], name='dispatch')
+class CourseUpdateView(OwnerCourseEditMixin, UpdateView):
     template_name = 'courses/manage/course/form.html'
     permission_required = 'courses.change_course'
 
-class CourseDeleteView(PermissionRequiredMixin, OwnerCourseMixin, DeleteView):
+
+@method_decorator([login_required, teacher_required], name='dispatch')
+class CourseDeleteView(OwnerCourseMixin, DeleteView):
     template_name = 'courses/manage/course/delete.html'
     success_url = reverse_lazy('manage_course_list')
     permission_required = 'courses.delete_course'

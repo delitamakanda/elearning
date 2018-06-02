@@ -52,7 +52,6 @@ class StudentCourseDetailView(LoginRequiredMixin, DetailView):
         else:
             #get first module
             context['module'] = course.modules.all()[0]
-        context['key'] = settings.STRIPE_LIVE_PUBLIC_KEY
         return context
 
 

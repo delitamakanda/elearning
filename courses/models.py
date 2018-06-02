@@ -2,9 +2,10 @@ from django.db import models
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
-from .fields import OrderField
+from courses.fields import OrderField
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
+from django.utils.text import slugify
 
 class Subject(models.Model):
     title = models.CharField(max_length=200)
@@ -27,6 +28,12 @@ class Course(models.Model):
 
     class Meta:
         ordering = ('-created',)
+
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+            super(Course, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
