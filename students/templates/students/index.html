@@ -8,8 +8,9 @@ Index
 <section class="search a-center">
     <div class="container">
         <div class="item-search">
-            <form action="" method="POST" class="form-search">
-                <input type="search" autocomplete="off" placeholder="{% trans 'Search for a new topic now...' %}" />
+            <form id="searchform" action="{% url 'classroom' %}" method="get" accept-charset="utf-8" class="form-search">
+                <input type="search" autocomplete="off" name="q"  id="searchbox" placeholder="{% trans 'Search for a new topic now...' %}" />
+                <button class="btn btn-primary" type="submit">{% trans "Search" %}</button>
             </form>
         </div>
         <div class="item-search mlr">
@@ -17,6 +18,19 @@ Index
         </div>
         <div class="item-search">
             <a href="{% url 'course_list' %}" class="btn btn-primary">{% trans "Browse Categories" %}</a>
+        </div>
+        <div>
+
+            {% if found_results %}
+                <h3>{% trans 'Results for :' %} {{ query_string }}</h3>
+                
+                {% for result in found_results %}
+                    <div><a href="{% url 'course_detail' result.slug %}">{{ result.title }}</a></div>
+                    <div>{{ result.subject }}</div>
+                    <div>{{ result.owner }}</div>
+                    <div>{{ result.created }}</div>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 </section>
