@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.html import escape, mark_safe
-from courses.models import Subject
 
 
 class User(AbstractUser):
@@ -12,7 +11,6 @@ class User(AbstractUser):
 class Tag(models.Model):
     name = models.CharField(max_length=30)
     color = models.CharField(max_length=7, default='#007bff')
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='subject')
 
     def __str__(self):
         return self.name
@@ -22,6 +20,9 @@ class Tag(models.Model):
         color = escape(self.color)
         html = '<span class="badge badge-primary" style="background-color: %s">%s</span>' % (color, name)
         return mark_safe(html)
+
+    def save(self):
+        pass
 
 
 class Quiz(models.Model):

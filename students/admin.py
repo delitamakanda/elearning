@@ -6,6 +6,10 @@ from students.models import Answer
 from students.models import Student
 from students.models import TakenQuiz
 from students.models import StudentAnswer
+from students.models import Tag
+
+class TagAdmin(admin.ModelAdmin):
+    model = Tag
 
 class AnswerInline(admin.StackedInline):
     model = Answer
@@ -26,3 +30,4 @@ admin.site.register(Question, QuestionAdmin)
 admin.site.register(Student)
 admin.site.register(TakenQuiz)
 admin.site.register(StudentAnswer)
+admin.site.register(Tag, TagAdmin)
