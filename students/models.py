@@ -21,9 +21,6 @@ class Tag(models.Model):
         html = '<span class="badge badge-primary" style="background-color: %s">%s</span>' % (color, name)
         return mark_safe(html)
 
-    def save(self):
-        pass
-
 
 class Quiz(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='quizzes')
