@@ -12,3 +12,4 @@ e-learning django app (django, python3)
 * API
 * Celery worker
 * Reset Password
+* Search Form
