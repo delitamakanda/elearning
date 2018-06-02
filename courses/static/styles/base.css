@@ -49,9 +49,6 @@ input:focus { outline: 0 none; }
 input[type="search"]::-webkit-input-placeholder{ color: #d5d5d5; }
 input[type="search"]:-moz-placeholder { color: #d5d5d5; }
 .mlr { margin-left: 10px; margin-right: 10px; }
-.signup-form input, .login-form input, .form-search input[type="search"] { -webkit-appearance: none; appearance: none; border: 1px solid #e5e5e5; border-radius: 5px; padding: 10px 18px; }
-.signup-form label, .login-form label { display: block; margin-bottom: 12px; }
-.signup-form, .login-form, .signup-form p +  p, .login-form p +  p { margin-top: 20px; }
 .signup-form ul { list-style-type: none;}
 .link { color: #4595e5; text-decoration: none; }
 .link:active, .link:hover { text-decoration: underline; }
