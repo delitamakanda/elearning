@@ -2,17 +2,28 @@ import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db import transaction
+from django.db.models import Count
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic.edit import CreateView, FormView
+from django.utils.decorators import method_decorator
+from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.forms import UserCreationForm
 from braces.views import LoginRequiredMixin
 from django.contrib.auth import authenticate, login
 from students.forms import CourseEnrollForm
+from students.forms import StudentSignupForm
+from students.forms import StudentInterestsForm
+from students.forms import TakeQuizForm
 from courses.models import Course
+from students.models import Quiz
+from students.models import Student
+from students.models import TakenQuiz
+from students.models import User
 from django.core.mail import mail_admins
 from django.contrib import messages
+from students.decorators import student_required
 
 class StudentCourseListView(LoginRequiredMixin, ListView):
     model = Course
@@ -45,9 +56,14 @@ class StudentCourseDetailView(LoginRequiredMixin, DetailView):
 
 
 class StudentRegistrationView(CreateView):
+    model = User
     template_name = 'registration/signup_form.html'
-    form_class = UserCreationForm
+    form_class = StudentSignupForm
     success_url = reverse_lazy('student_course_list')
+
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'student'
+        return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
         result = super(StudentRegistrationView, self).form_valid(form)
