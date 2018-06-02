@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
    {% block title %}
-       Sign up
+       {% trans 'Sign up as' %} {{ user_type }}
    {% endblock %}
    {% block content %}
    <div class="container">
@@ -16,7 +16,7 @@
                     <p><input type="submit" class="btn btn-primary" value="Create an account"></p>
                </form>
            </div>
-            <p>{% trans "Already an account ?" %} <a href="{% url 'login' %}" class="link">Log in</a>.</p>
+            <p>{% trans "Already an account ?" %} <a href="{% url 'login' %}" class="link">{% trans 'Log in' %}</a>.</p>
        </div>
    </div>
    {% endblock %}

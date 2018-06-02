@@ -1,32 +1,35 @@
 {% load staticfiles %}
 {% load flatpages %}
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>My e-learning - {% block title %} {% endblock %}</title>
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
-    <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+    <title>{% trans 'myelearning' %} - {% block title %} {% endblock %}</title>
+    <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
+    <script defer src="//use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
     <link href="{% static 'styles/base.css' %}" rel="stylesheet">
 </head>
 <body>
     <div id="header">
         <div class="container">
             <ul class="menu">
-                <li class="menu-item"><a href="{% url 'classroom' %}" class="logo"><span class="text-primary">My</span> e-larning</a></li>
-                <li class="menu-item"><a href="{% url 'course_list' %}">Learn</a></li>
-                {% if request.user.is_authenticated %}
-                <li class="menu-item dash-board"><a href="{% url 'student_course_list' %}">Dashboard</a></li>
-                {% if request.user.is_staff %}
-                <li class="menu-item dash-board"><a href="{% url 'manage_course_list' %}">Manage courses</a></li>
+                <li class="menu-item"><a href="{% url 'classroom' %}" class="logo">{% trans 'myelearning' %}</a></li>
+                <li class="menu-item"><a href="{% url 'course_list' %}">{% trans 'Training' %}</a></li>
+                {% if user.is_authenticated and request.user.is_teacher or request.user.is_staff %}
+                    <li class="menu-item dash-board"><a href="{% url 'manage_course_list' %}">{% trans 'Manage courses' %}</a></li>
                 {% endif %}
-                <li class="menu-item fl-right"><a href="{% url 'logout' %}">Logout</a></li>
+                {% if user.is_authenticated and request.user.is_student or request.user.is_staff %}
+                    <li class="menu-item dash-board"><a href="{% url 'student_course_list' %}">{% trans 'Dashboard' %}</a></li>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    <li class="menu-item fl-right"><a href="{% url 'logout' %}">{% trans 'Logout' %}</a></li>
                 {% else %}
-                <li class="menu-item log-in fl-right"><a href="{% url 'login' %}">Login</a></li>
-                <li class="menu-item sign-up fl-right"><a href="{% url 'signup' %}">Sign up</a></li>
+                    <li class="menu-item log-in fl-right"><a href="{% url 'login' %}">{% trans 'Log in' %}</a></li>
+                    <li class="menu-item sign-up fl-right"><a href="{% url 'signup' %}">{% trans 'Sign up' %}</a></li>
                 {% endif %}
             </ul>
             <div class="clearfix"></div>
@@ -50,18 +53,18 @@
             {% get_flatpages as flatpages %}
             <ul class="menu-secondary">
                 <li class="menu-item-secondary">
-                    <a href="{% url 'classroom' %}" class="logo"><span class="text-primary">My</span> e-larning</a>
+                    <a href="{% url 'classroom' %}" class="logo">{% trans 'myelearning' %}</a>
                 </li>
                 {% for page in flatpages %}
                     <li class="menu-item-secondary"><a href="{{ page.url }}">{{ page.title }}</a></li>
                 {% endfor %}
             </ul>
             <hr class="divider" />
-            <small>Copyright (c) 2017 Copyright My e-learning All Rights Reserved.</small>
+            <small>{% trans 'Copyright (c) 2017 Copyright My e-learning All Rights Reserved.' %}</small>
         </div>
     </footer>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script>
     $(document).ready(function() {
         {% block domready %}

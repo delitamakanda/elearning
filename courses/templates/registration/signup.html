@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block title %}Sign up{% endblock %}
 {% block content %}
 <div class="container">
     <h1>Sign up for a free account</h1>
     <div class="module">
-        <a href="{% url 'student_registration' %}" class="btn btn-primary" role="button">I'm a student</a>
-        <a href="{% url 'teacher_registration' %}" class="btn btn-primary" role="button">I'm a teacher</a>
+        <a href="{% url 'student_registration' %}" class="btn btn-primary" role="button">{% trans 'I\'m a student' %}</a>
+        <a href="{% url 'teacher_registration' %}" class="btn btn-primary" role="button">{% trans 'I\'m a teacher' %}</a>
     </div>
 </div>
 {% endblock %}
