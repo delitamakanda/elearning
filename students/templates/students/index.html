@@ -6,7 +6,9 @@ Index
 
 {% block content %}
 <section class="search a-center">
+    <i class="icon icon-heart"></i>
     <div class="container">
+
         <div class="item-search">
             <form id="searchform" action="{% url 'classroom' %}" method="get" accept-charset="utf-8" class="form-search">
                 <input type="search" autocomplete="off" name="q"  id="searchbox" placeholder="{% trans 'Search for a new topic now...' %}" />
@@ -23,7 +25,7 @@ Index
 
             {% if found_results %}
                 <h3>{% trans 'Results for :' %} {{ query_string }}</h3>
-                
+
                 {% for result in found_results %}
                     <div><a href="{% url 'course_detail' result.slug %}">{{ result.title }}</a></div>
                     <div>{{ result.subject }}</div>
