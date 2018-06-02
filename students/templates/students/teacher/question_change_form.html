@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+{% trans 'Add question' %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="module">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'My quizzes' %}</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'teacher_update_quiz' quiz.pk %}">{{ quiz.name }}</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{ question.text }}</li>
+            </ol>
+        </nav>
+
+        <h2>{{ question.text }}</h2>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {{ formset.management_form }}
+            {{ form.as_p }}
+            <div class="{% if formset.errors %} danger{% endif %}">
+                <div>{% trans 'Answers' %}</div>
+                <div>{% trans 'Correct ?' %}</div>
+                <div>{% trans 'Delete ?' %}</div>
+                {% for error in formset.non_form_errors %}
+                    <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+                <div class="question">
+                    {% for form in formset %}
+                        <div>
+                            {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
+                            {{ form.text }}
+                            {% if form.instance.pk and form.text.value != form.instance.text %}
+                                <p><strong>{% trans 'Old answer:' %}</strong> {{ form.instance.text }}</p>
+                            {% endif %}
+                        </div>
+                        <div>{{ form.is_correct }}</div>
+                        <div>
+                            {% if form.instance.pk %}
+                                {{ form.DELETE }}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <p>{% trans 'Your question must have at least 2 answers and maximum 10 answers. Select at least one correct answer.' %}</p>
+            <button class="btn btn-primary" type="submit">{% trans 'Save' %}</button>
+            <a href="{% url 'teacher_update_quiz' quiz.pk %}" class="btn btn-secondary" role="button">{% trans 'Go back' %}</a>
+            <a href="{% url 'teacher_delete_question' quiz.pk question.pk %}" class="btn btn-delete" role="button">{% trans 'Delete' %}</a>
+        </form>
+    </div>
+</div>
+ {% endblock %}

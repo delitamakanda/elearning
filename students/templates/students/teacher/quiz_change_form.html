@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+{% trans 'Add question' %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="module">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'My quizzes' %}</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{ quiz.name }}</li>
+            </ol>
+        </nav>
+
+        <h2>
+            {{ quiz.name }}
+            <a href="{% url 'teacher_quiz_results' quiz.pk %}" class="btn btn-secondary">{% trans 'View results' %}</a>
+        </h2>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">{% trans 'Save' %}</button>
+            <a href="{% url 'teacher_quiz_change_list' %}" class="btn btn-secondary" role="button">{% trans 'Go back' %}</a>
+            <a href="{% url 'teacher_delete_quiz' quiz.pk %}" class="btn btn-secondary">{% trans 'Delete' %}</a>
+        </form>
+
+        <div>
+            <div>{% trans 'Questions' %}</div>
+            <div>{% trans 'Answers' %}</div>
+            <div>
+                {% for question in questions %}
+                    <div><a href="{% url 'teacher_change_question' quiz.pk question.pk %}" class="link">{{ question.text }}</a></div>
+                    <div>{{ question.answers_count }}</div>
+                {% empty %}
+                    <p>{% trans 'You haven\'t created any questions yet. Go ahead and' %} <a href="{% url 'teacher_add_question' quiz.pk %}"> {% trans 'add the first question' %}</a>.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div>
+            <a href="{% url 'teacher_add_question' quiz.pk %}" class="link" role="button">{% trans 'Add question' %}</a>
+        </div>
+    </div>
+</div>
+ {% endblock %}

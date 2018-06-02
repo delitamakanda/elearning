@@ -167,9 +167,10 @@ def take_quiz(request, pk):
                         messages.warning(request, 'Good luck for next time! Your score for this quiz %s was %s.' % (quiz.name, score))
                     else:
                         messages.success(request, 'Fantastic! You completed the quiz %s with success! Your scored %s points.' % (quiz.name, score))
-                    # return redirect('quiz_list') # TODO:
+                    return redirect('student_quiz_list')
     else:
-        form = TakeQuizForm(question=form)
+        form = TakeQuizForm(question=question)
+
     return render(request, 'students/student/take_quiz_form.html', {
         'quiz': quiz,
         'question': question,

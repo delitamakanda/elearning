@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+{% trans 'Confirm quiz delete ?' %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="module">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'My quizzes' %}</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'teacher_update_quiz' quiz.pk %}">{{ quiz.name }}</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{% trans 'Confirm quiz delete ?' %}</li>
+            </ol>
+        </nav>
+
+        <h2>{% trans 'Confirm quiz delete ?' %}</h2>
+        <p>{% trans 'Are your sure you want to delete the quiz' %} {{ quiz.name }} ? {% trans 'There is no recovery.' %}</p>
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <button class="btn btn-primary" type="submit">{% trans 'Delete' %}</button>
+            <a href="{% url 'teacher_update_quiz' quiz.pk %}" class="btn btn-secondary" role="button">{% trans 'Go back' %}</a>
+        </form>
+    </div>
+</div>
+ {% endblock %}

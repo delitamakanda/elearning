@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+{% trans 'New question' %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="module">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'My quizzes' %}</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'teacher_update_quiz' quiz.pk %}">{{ quiz.name }}</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{% trans 'New question' %}</li>
+            </ol>
+        </nav>
+
+        <h2>{% trans 'Add question' %}</h2>
+        <p>{% trans 'First add the text of the question. Next step you will be able to add answers.' %}</p>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-primary" type="submit">{% trans 'Save' %}</button>
+            <a href="{% url 'teacher_update_quiz' quiz.pk %}" class="btn btn-secondary" role="button">{% trans 'Go back' %}</a>
+        </form>
+    </div>
+</div>
+ {% endblock %}

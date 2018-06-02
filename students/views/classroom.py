@@ -8,7 +8,7 @@ def index(request):
     if request.user.is_authenticated:
         if request.user.is_teacher:
             pass
-            # return redirect('teachers:quiz_change_list') # TODO: 
+            return redirect('teacher_quiz_change_list')
         else:
-            return redirect('quiz_list')
+            return redirect('student_quiz_list')
     return render(request, 'students/index.html')

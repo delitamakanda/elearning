@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+{% trans 'My Quizzes' %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="module">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item" aria-current="page">{% trans 'My Quizzes' %}</li>
+            </ol>
+        </nav>
+
+        <h2>{% trans 'My Quizzes' %}</h2>
+        <a href="{% url 'teacher_add_quiz' %}" class="link" role="button">{% trans 'Add Quiz' %}</a>
+
+        <div class="quiz">
+            <table>
+                <thead>
+                    <tr>
+                        <th>{% trans 'Quiz' %}</th>
+                        <th>{% trans 'Tag' %}</th>
+                        <th>{% trans 'Question' %}</th>
+                        <th>{% trans 'Taken' %}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for quiz in quizzes %}
+                        <tr>
+                            <td><a href="{% url 'teacher_update_quiz' quiz.pk %}">{{ quiz.name }}</a></td>
+                            <td>{{ quiz.tag.get_html_badge }}</td>
+                            <td>{{ quiz.questions_count }}</td>
+                            <td>{{ quiz.taken_count }}</td>
+                            <td class="text-right">
+                              <a href="{% url 'teacher_quiz_results' quiz.pk %}" class="btn btn-primary">{% trans 'View results' %}</a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5">{% trans 'No quiz created right now.' %}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+ {% endblock %}
