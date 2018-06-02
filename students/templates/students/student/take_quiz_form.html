@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+{{ quiz.name }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="module">
+        <h2>{{ quiz.name }}</h2>
+        <p>{{ question.text }}</p>
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-primary" type="submit">{% trans 'Next' %}</button>
+        </form>
+    </div>
+</div>
+ {% endblock %}

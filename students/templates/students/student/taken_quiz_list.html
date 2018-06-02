@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+{% trans 'Taken quiz' %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>{% trans 'Taken quiz' %}</h2>
+    <div class="module">
+        {% include 'students/student/_title.html' with active='taken' %}
+        <div class="quiz">
+            <table>
+                <thead>
+                    <tr>
+                        <th>{% trans 'Quiz' %}</th>
+                        <th>{% trans 'Tag' %}</th>
+                        <th>{% trans 'Score' %}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for taken_quiz in taken_quizzes %}
+                        <tr>
+                            <td>{{ taken_quiz.quiz.name }}</td>
+                            <td>{{ taken_quiz.quiz.get_html_badge }}</td>
+                            <td>{{ taken_quiz.score }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="3">{% trans 'No quiz completed yet.' %}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+ {% endblock %}

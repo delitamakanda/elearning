@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+{% trans 'Update your interests' %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>{% trans 'Update your interests' %}</h2>
+    <div class="module">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-primary" type="submit">{% trans 'Save' %}</button>
+            <a href="{% url 'student_quiz_list' %}" class="btn btn-secondary">{% trans 'Cancel' %}</a>
+        </form>
+    </div>
+</div>
+ {% endblock %}

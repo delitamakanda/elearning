@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+{% trans 'Quiz' %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>{% trans 'Quiz' %}</h2>
+    <div class="module">
+        {% include 'students/student/_title.html' with active='new' %}
+        <div class="quiz">
+            <table>
+                <thead>
+                    <tr>
+                        <th>{% trans 'Quiz' %}</th>
+                        <th>{% trans 'Tag' %}</th>
+                        <th>{% trans 'Length' %}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for quiz in quizzes %}
+                        <tr>
+                            <td>{{ quiz.name }}</td>
+                            <td>{{ quiz.tag.get_html_badge }}</td>
+                            <td>{{ quiz.questions_count }}</td>
+                            <td><a href="{% url 'take_quiz' %}" class="btn btn-primary">{% trans 'Start quiz' %}</a></td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4">{% trans 'Sorry! No quiz matching your interests right now.' %}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+ {% endblock %}
