@@ -20,12 +20,14 @@
         <div class="container">
             <ul class="menu">
                 <li class="menu-item"><a href="{% url 'classroom' %}" class="logo">{% trans 'myelearning' %}</a></li>
-                <li class="menu-item"><a href="{% url 'course_list' %}">{% trans 'Training' %}</a></li>
+                <li class="menu-item"><a href="{% url 'course_list' %}">{% trans 'Learn' %}</a></li>
                 {% if user.is_authenticated and request.user.is_teacher or request.user.is_staff %}
                     <li class="menu-item dash-board"><a href="{% url 'manage_course_list' %}">{% trans 'Manage courses' %}</a></li>
+                    <li class="menu-item dash-board"><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'Manage quizzes' %}</a></li>
                 {% endif %}
-                {% if user.is_authenticated and request.user.is_student or request.user.is_staff %}
-                    <li class="menu-item dash-board"><a href="{% url 'student_course_list' %}">{% trans 'Dashboard' %}</a></li>
+                {% if user.is_authenticated and request.user.is_student %}
+                    <li class="menu-item dash-board"><a href="{% url 'student_quiz_list' %}">{% trans 'My Quiz' %}</a></li>
+                    <li class="menu-item dash-board"><a href="{% url 'student_course_list' %}">{% trans 'My Course' %}</a></li>
                 {% endif %}
                 {% if user.is_authenticated %}
                     <li class="menu-item fl-right"><a href="{% url 'logout' %}">{% trans 'Logout' %}</a></li>

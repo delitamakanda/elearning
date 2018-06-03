@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.mail import mail_admins
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
@@ -39,6 +40,7 @@ class TeacherRegistrationView(CreateView):
         cd = form.cleaned_data
         user = authenticate(username=cd['username'], password=cd['password1'])
         login(self.request, user)
+        mail_admins("A new teacher user is sign up", user)
         return result
 
 
