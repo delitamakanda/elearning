@@ -39,8 +39,8 @@ class TeacherRegistrationView(CreateView):
         result = super(TeacherRegistrationView, self).form_valid(form)
         cd = form.cleaned_data
         user = authenticate(username=cd['username'], password=cd['password1'])
+        mail_admins("A new teacher user is sign up ", "check your admin on myelearning")
         login(self.request, user)
-        mail_admins("A new teacher user is sign up", user)
         return result
 
 

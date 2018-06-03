@@ -69,7 +69,7 @@ class StudentRegistrationView(CreateView):
         result = super(StudentRegistrationView, self).form_valid(form)
         cd = form.cleaned_data
         user = authenticate(username=cd['username'], password=cd['password1'])
-        mail_admins("A new student user is sign up", user)
+        mail_admins("A new student user is sign up", "check email on myelearning")
         login(self.request, user)
         return result
 
