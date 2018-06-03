@@ -1,18 +1,19 @@
  {% extends "base.html" %}
+ {% load i18n %}
    {% block title %}My courses{% endblock %}
    {% block content %}
    <div class="container">
-       <h1>My courses</h1>
+       <h1>{% trans 'My courses' %}</h1>
        <div class="module">
            {% for course in object_list %}
                <div class="course-info">
                    <h3>{{ course.title }}</h3>
-                   <p><a href="{% url 'student_course_detail' course.id %}" class="btn btn-secondary">Access contents</a></p>
+                   <p><a href="{% url 'student_course_detail' course.id %}" class="btn btn-primary">{% trans 'Access contents' %}</a></p>
                </div>
            {% empty %}
                <p>
-                   You are not enrolled in any courses yet.
-                   <a href="{% url 'course_list' %}" class="link">Browse courses</a> to enroll in a course.
+                   {% trans 'You are not enrolled in any courses yet.' %}
+                   <a href="{% url 'course_list' %}" class="link">{% trans 'Browse courses' %}</a> {% trans 'to enroll in a course.' %}
                </p>
            {% endfor %}
        </div>

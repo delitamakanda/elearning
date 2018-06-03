@@ -31,7 +31,7 @@
                     {% for quiz in quizzes %}
                         <tr>
                             <td><a href="{% url 'teacher_update_quiz' quiz.pk %}">{{ quiz.name }}</a></td>
-                            <td>{{ quiz.tag.get_html_badge }}</td>
+                            <td>{{ quiz.tags.get_html_badge }}</td>
                             <td>{{ quiz.questions_count }}</td>
                             <td>{{ quiz.taken_count }}</td>
                             <td class="text-right">

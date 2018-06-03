@@ -19,7 +19,7 @@
 
         <div class="quiz">
             <div>
-                {% trans 'Taken Quizzes' %} <span class="badge">{% trans 'Average score' %}{{ quiz_score.average_score|default_if_none:0.0}}</span>
+                {% trans 'Taken Quizzes' %} <span class="badge">{% trans 'Average score' %}{{ quiz_score.average_score|default_if_none:0.0}} %</span>
             </div>
             <table>
                 <thead>
@@ -34,7 +34,7 @@
                         <tr>
                             <td>{{ taken_quiz.student.user.username }}</td>
                             <td>{{ taken_quiz.date }}</td>
-                            <td>{{ taken_quiz.score }}</td>
+                            <td>{{ taken_quiz.score }} %</td>
                         </tr>
                     {% endfor %}
                 </tbody>
