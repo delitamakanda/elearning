@@ -51,10 +51,10 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'students.middleware.SessionTimeoutMiddleware',
-    'django.middleware.cache.UpdateCacheMiddleware',
+    'students.middleware.SessionTimeoutMiddleware',
+    # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
+    # 'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -157,9 +157,9 @@ CACHES = {
     }
 }
 
-CACHE_MIDDLEWARE_ALIAS = 'default'
-CACHE_MIDDLEWARE_SECONDS = 60 * 15  # 15 minutes
-CACHE_MIDDLEWARE_KEY_PREFIX = 'myelearning'
+# CACHE_MIDDLEWARE_ALIAS = 'default'
+# CACHE_MIDDLEWARE_SECONDS = 60 * 15  # 15 minutes
+# CACHE_MIDDLEWARE_KEY_PREFIX = 'myelearning'
 
 # DRF
 REST_FRAMEWORK = {
@@ -174,5 +174,5 @@ DEFAULT_FROM_EMAIL = config('ADMIN_EMAIL')
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Session
-# SESSION_EXPIRE_SECONDS = 3600  # 1 hour
-# SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+SESSION_EXPIRE_SECONDS = 3600  # 1 hour
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
