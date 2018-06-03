@@ -15,7 +15,7 @@ ADMINS = [
   (config('ADMIN_NAME'), config('ADMIN_EMAIL')),
 ]
 
-ALLOWED_HOSTS = ['.herokuapp.com']
+ALLOWED_HOSTS = ['*',]
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
@@ -33,7 +33,8 @@ CACHES = {
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient"
         },
-        "KEY_PREFIX": "myelearning"
+        "KEY_PREFIX": "myelearning",
+        "TIMEOUT": None
     }
 }
 
