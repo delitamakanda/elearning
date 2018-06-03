@@ -1,2 +1,2 @@
-web: gunicorn myelearning.wsgi:application --preload --workers 1
+web: gunicorn myelearning.wsgi:application --preload
 worker: python3 manage.py enroll_reminder --days=20
