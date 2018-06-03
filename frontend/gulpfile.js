@@ -9,7 +9,8 @@ gulp.task('iconfont', function () {
         fontName: 'custom',
         centerHorizontally: true,
         normalize: true,
-        prependUnicode: true
+        prependUnicode: true,
+        fontHeight: 1001
     })).on('glyphs', function (glyphs) {
     gulp.src('scss/templates/_icons.scss')
         .pipe(consolidate('lodash', {
@@ -27,11 +28,16 @@ gulp.task('sass', function () {
     gulp.src('scss/**/*.scss')
     .pipe(sass({
       indentWidth: 4,
-      outputStyle: 'expanded'
+      outputStyle: 'compact'
     }))
     .pipe(gulp.dest('../courses/static/styles'));
 });
 
+
+gulp.task('watch', function() {
+    gulp.watch('scss/**/*.scss', ['sass'])
+})
+
 gulp.task('default', ['sass'], function () {
-    gulp.watch('scss/**/*.scss', ['sass']);
+    gulp.watch('scss/**/*.scss', ['sass', 'watch']);
 });

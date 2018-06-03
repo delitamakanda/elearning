@@ -8,38 +8,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>{% trans 'myelearning' %} - {% block title %} {% endblock %}</title>
-    <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
-    <link href="//fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
-    <script defer src="//use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
-    <link href="{% static 'styles/base.css' %}" rel="stylesheet">
     <link href="{% static 'styles/fonts.css' %}" rel="stylesheet">
     <link href="{% static 'styles/main.css' %}" rel="stylesheet">
 </head>
 <body>
     <div id="header">
-        <div class="container">
+        <a href="{% url 'classroom' %}"><h1>{% trans 'myelearning' %}</h1></a>
+        <nav>
             <ul class="menu">
-                <li class="menu-item"><a href="{% url 'classroom' %}" class="logo">{% trans 'myelearning' %}</a></li>
                 <li class="menu-item"><a href="{% url 'course_list' %}">{% trans 'Learn' %}</a></li>
                 {% if user.is_authenticated and request.user.is_teacher or request.user.is_staff %}
-                    <li class="menu-item dash-board"><a href="{% url 'manage_course_list' %}">{% trans 'Manage courses' %}</a></li>
-                    <li class="menu-item dash-board"><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'Manage quizzes' %}</a></li>
+                    <li class="menu-item"><a href="{% url 'manage_course_list' %}">{% trans 'Manage courses' %}</a></li>
+                    <li class="menu-item"><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'Manage quizzes' %}</a></li>
                 {% endif %}
                 {% if user.is_authenticated and request.user.is_student %}
-                    <li class="menu-item dash-board"><a href="{% url 'student_quiz_list' %}">{% trans 'My Quiz' %}</a></li>
-                    <li class="menu-item dash-board"><a href="{% url 'student_course_list' %}">{% trans 'My Course' %}</a></li>
+                    <li class="menu-item"><a href="{% url 'student_quiz_list' %}">{% trans 'My Quiz' %}</a></li>
+                    <li class="menu-item"><a href="{% url 'student_course_list' %}">{% trans 'My Course' %}</a></li>
                 {% endif %}
                 {% if user.is_authenticated %}
-                    <li class="menu-item fl-right"><a href="{% url 'logout' %}">{% trans 'Logout' %}</a></li>
-                    <li class="menu-item fl-right">{{ user.username }}</li>
+                    <li class="menu-item"><a href="{% url 'logout' %}">{% trans 'Logout' %}</a></li>
+                    <li class="menu-item"><a href="">{% trans 'Hello' %}, {{ user.username }} ! <i class="icon icon-cog"></i></a></li>
                 {% else %}
-                    <li class="menu-item log-in fl-right"><a href="{% url 'login' %}">{% trans 'Log in' %}</a></li>
-                    <li class="menu-item sign-up fl-right"><a href="{% url 'signup' %}">{% trans 'Sign up' %}</a></li>
+                    <li class="menu-item"><a href="{% url 'login' %}">{% trans 'Log in' %}</a></li>
+                    <li class="menu-item"><a href="{% url 'signup' %}">{% trans 'Sign up' %}</a></li>
                 {% endif %}
             </ul>
-            <div class="clearfix"></div>
-        </div>
+        </nav>
     </div>
+
     <div id="content">
 
         {% if messages %}
@@ -53,20 +49,17 @@
         {% block content %}
         {% endblock %}
     </div>
-    <footer id="footer" class="a-center">
-        <div class="container">
+    <footer id="footer">
+        <a href="{% url 'classroom' %}"><h3>{% trans 'myelearning' %}</h3></a>
+        <nav>
             {% get_flatpages as flatpages %}
-            <ul class="menu-secondary">
-                <li class="menu-item-secondary">
-                    <a href="{% url 'classroom' %}" class="logo">{% trans 'myelearning' %}</a>
-                </li>
+            <ul class="menu">
                 {% for page in flatpages %}
-                    <li class="menu-item-secondary"><a href="{{ page.url }}">{{ page.title }}</a></li>
+                    <li class="menu-item"><a href="{{ page.url }}">{{ page.title }}</a></li>
                 {% endfor %}
             </ul>
-            <hr class="divider" />
-            <small>{% trans 'Copyright (c) 2017 Copyright My e-learning All Rights Reserved.' %}</small>
-        </div>
+        </nav>
+        <small>{% trans 'Copyright (c) 2017 Copyright My e-learning All Rights Reserved.' %}</small>
     </footer>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
