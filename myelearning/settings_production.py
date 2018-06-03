@@ -25,6 +25,7 @@ SECURE_SSL_REDIRECT = True
 CSRF_COOKIE_SECURE = True
 
 # Configure Redis for caching results
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -35,3 +36,15 @@ CACHES = {
         "KEY_PREFIX": "myelearning"
     }
 }
+
+# Media storages
+
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+DEFAULT_FILE_STORAGE = 'myelearning.storage_backends.MediaStorage'
