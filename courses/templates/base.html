@@ -27,7 +27,7 @@
                 {% endif %}
                 {% if user.is_authenticated %}
                     <li class="menu-item"><a href="{% url 'logout' %}">{% trans 'Logout' %}</a></li>
-                    <li class="menu-item"><a href="">{% trans 'Hello' %}, {{ user.username }} ! <i class="icon icon-cog"></i></a></li>
+                    <li class="menu-item"><span>{% trans 'Hello' %}, {{ user.username }} !</span> <a href=""><i class="icon icon-cog"></i></a></li>
                 {% else %}
                     <li class="menu-item"><a href="{% url 'login' %}">{% trans 'Log in' %}</a></li>
                     <li class="menu-item"><a href="{% url 'signup' %}">{% trans 'Sign up' %}</a></li>

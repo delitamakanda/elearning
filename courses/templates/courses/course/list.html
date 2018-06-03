@@ -16,7 +16,7 @@
            All courses
        {% endif %}
    </h1>
-   <div class="contents">
+   <div class="subjects">
        <h3>Subjects</h3>
        <ul id="modules">
            <li {% if not subject %}class="selected"{% endif %}>
@@ -33,14 +33,16 @@
 </ul> </div>
    <div class="module">
        {% for course in courses %}
-           {% with subject=course.subject %}
-               <h3><a href="{% url 'course_detail' course.slug %}" class="link">{{ course.title }}</a></h3>
-               <p>
-                   <a href="{% url 'course_list_subject' subject.slug %}" class="link">{{ subject }} </a>.
-                   {{ course.total_modules }} modules.
-                   Instructor: {{ course.owner.username }}
-               </p>
-           {% endwith %}
+            <div class="courses">
+               {% with subject=course.subject %}
+                   <h3><a href="{% url 'course_detail' course.slug %}" class="link">{{ course.title }}</a></h3>
+                   <p>
+                       <a href="{% url 'course_list_subject' subject.slug %}" class="link">{{ subject }} </a>.
+                       {{ course.total_modules }} modules.
+                       Instructor: {{ course.owner.username }}
+                   </p>
+               {% endwith %}
+           </div>
        {% endfor %}
    </div>
 </div>

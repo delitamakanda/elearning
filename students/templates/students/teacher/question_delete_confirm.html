@@ -20,7 +20,7 @@
         <p>{% trans 'Are your sure you want to delete the question' %} {{ question.text }} ? {% trans 'There is no recovery.' %}</p>
         <form method="post" novalidate>
             {% csrf_token %}
-            <button class="btn btn-primary" type="submit">{% trans 'Delete' %}</button>
+            <button class="btn btn-primary" type="submit"><i class="icon icon-bin-2"></i> {% trans 'Delete' %}</button>
             <a href="{% url 'teacher_change_question' quiz.pk question.pk %}" class="btn btn-secondary" role="button">{% trans 'Go back' %}</a>
         </form>
     </div>

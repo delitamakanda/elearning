@@ -20,10 +20,10 @@
                    <form action="{% url 'student_enroll_course' %}" method="post">
                        {{ enroll_form }}
                        {% csrf_token %}
-                       <input type="submit" class="btn btn-secondary" value="Enroll now">
+                       <input type="submit" class="btn btn-primary" value="Enroll now">
                    </form>
                {% else %}
-                   <a href="{% url 'student_registration' %}" class="btn btn-secondary">
+                   <a href="{% url 'student_registration' %}" class="btn btn-primary">
                        Register to enroll
                    </a>
                {% endif %}

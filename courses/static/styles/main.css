@@ -16,7 +16,7 @@ body { font-size: 16px; color: #000000; font-family: 'Helvetica', Arial, sans-se
 
 #header nav li, #footer nav li { display: inline-block; padding: 0 2rem; }
 
-#content { padding: 10rem 6rem; }
+#content { padding: 10rem 0; }
 
 #footer { text-align: center; padding-top: 6rem; padding-bottom: 5rem; clear: both; }
 
@@ -42,7 +42,7 @@ p { margin: 1rem 0; }
 
 a:hover { text-decoration: underline; }
 
-a, p, label { font-size: 0.9rem; }
+a, p, label, span { font-size: 0.9rem; }
 
 table { width: 100%; border-collapse: collapse; }
 
@@ -56,13 +56,13 @@ table td { border-bottom: 1px solid #dcdcdc; }
 
 .badge.badge-primary { background-color: #007bff; border-radius: 3px; color: #fff; }
 
-.btn { text-align: center; -webkit-appearance: none; appearance: none; border: 0 none; padding: 0.3rem 0.5rem; cursor: pointer; }
+.btn { text-align: center; -webkit-appearance: none; appearance: none; border: 0 none; padding: 0.3rem 0.5rem; cursor: pointer; display: inline-block; }
 
 .btn.btn-primary { color: #ffffff; background-color: #000000; font-size: 1rem; }
 
-.btn:focus { outline: 0 none; }
+.btn.btn-primary:hover { background-color: #159bdc; text-decoration: none; }
 
-.btn:hover { background-color: #159bdc; text-decoration: none; }
+.btn:focus { outline: 0 none; }
 
 ul { list-style-type: none; }
 
@@ -96,4 +96,20 @@ img { max-width: 100%; width: 100%; }
 
 .helptext { font-size: .8rem; margin-top: .7rem; }
 
-.icon { color: #000; font-size: 1rem; }
+.courses { padding: 0.5rem 0.4rem; border: 1px solid #e1e1e4; margin-top: 1.5rem; border-radius: 3px; }
+
+.courses:nth-child(odd) { background-color: #fbfbfb; }
+
+.item-search { text-align: center; }
+
+.item-search input[type="search"] { height: 32px; -webkit-appearance: none; appearance: none; width: 350px; box-shadow: inset 0 1px 1px 1px rgba(0, 0, 0, 0.2); border: 0 none; padding: 0.2rem 0.3rem; border-radius: 3px; font-size: 1rem; }
+
+.item-search input[type="search"]:focus { outline: 0 none; }
+
+.item-search input[type="search"]:hover { box-shadow: inset 0 1px 1px 1px rgba(97, 204, 237, 0.2); }
+
+.icon { color: #000; font-size: 1rem; vertical-align: middle; }
+
+.icon-people-man-graduate, .icon-people-woman-glasses-1, .btn.btn-primary .icon-bin-2 { color: #ffffff; font-size: 1.5rem; }
+
+.btn.btn-primary .icon-bin-2 { font-size: 1rem; vertical-align: top; }

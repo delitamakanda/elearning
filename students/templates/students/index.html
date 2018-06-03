@@ -6,13 +6,13 @@ Index
 
 {% block content %}
 <section class="search a-center">
-    
+
     <div class="container">
 
         <div class="item-search">
             <form id="searchform" action="{% url 'classroom' %}" method="get" accept-charset="utf-8" class="form-search">
                 <input type="search" autocomplete="off" name="q"  id="searchbox" placeholder="{% trans 'Search for a new topic now...' %}" />
-                <button class="btn btn-primary" type="submit">{% trans "Search" %}</button>
+                <button class="btn btn-secondary" type="submit" title="{% trans 'Search' %}"><i class="icon icon-binocular"></i></button>
             </form>
         </div>
         <div class="item-search mlr">

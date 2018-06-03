@@ -24,7 +24,7 @@
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary">{% trans 'Save' %}</button>
             <a href="{% url 'teacher_quiz_change_list' %}" class="btn btn-secondary" role="button">{% trans 'Go back' %}</a>
-            <a href="{% url 'teacher_delete_quiz' quiz.pk %}" class="btn btn-secondary">{% trans 'Delete' %}</a>
+            <a href="{% url 'teacher_delete_quiz' quiz.pk %}" class="btn btn-secondary"><i class="icon icon-bin-2"></i> {% trans 'Delete' %}</a>
         </form>
 
         <div>
