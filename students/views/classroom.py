@@ -28,6 +28,7 @@ def get_query(query_string, search_fields):
 
 class SignupView(TemplateView):
     template_name = 'registration/signup.html'
+    
 
 def index(request):
     if request.user.is_authenticated:
