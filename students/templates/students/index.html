@@ -29,8 +29,7 @@ Index
                 {% for result in found_results %}
                     <div><a href="{% url 'course_detail' result.slug %}">{{ result.title }}</a></div>
                     <div>{{ result.subject }}</div>
-                    <div>{{ result.owner }}</div>
-                    <div>{{ result.created }}</div>
+                    <div>{% 'Author' %}: {{ result.owner }}</div>
                 {% endfor %}
             {% endif %}
         </div>
