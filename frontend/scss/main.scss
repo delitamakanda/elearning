@@ -35,6 +35,7 @@ body {
     transform: translate3d(0,0,0);
     transition: .25s transform;
     backface-visibility: hidden;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 #header h1,
@@ -175,6 +176,11 @@ table {
     }
     &.btn-secondary {
         //
+    }
+    &.btn-secondary.btn-search {
+        background-color: #fff;
+        color: #000;
+        height: 32px;
     }
     &:focus {
         outline: 0 none;
