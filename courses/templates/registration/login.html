@@ -17,6 +17,7 @@
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ next }}" />
             <p><input type="submit" class="btn btn-primary" value="{% trans 'Log In' %}"></p>
+            <p><a href="{% url 'password_reset' %}">{% trans 'Forgot password ?' %}</a>
         </form>
     </div>
 </div>
