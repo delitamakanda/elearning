@@ -9,7 +9,7 @@ e-learning django app (django, python3)
 ## TODO
 * Nice layout
 * Login via Google
-* API
+* ~~API~~
 * Celery worker
-* Reset Password
+* ~~Reset Password~~
 * ~~Search Form~~
