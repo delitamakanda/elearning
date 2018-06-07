@@ -325,3 +325,48 @@ img {
     font-size: 1rem;
     vertical-align: top;
 }
+
+.breadcrumb {
+    list-style-type: none;
+    margin: 0;
+    padding: 2em;
+    color: #333;
+     a {
+        max-width: 2em;
+        transition: max-width 300ms ease-in-out;
+    }
+    a:hover,
+    a:focus,
+    li:hover a {
+        max-width: 1000px;
+    }
+}
+
+.breadcrumb-item {
+    display: inline-block;
+    position: relative;
+    padding-right: 2em;
+    margin: 0;
+    overflow: hidden;
+    &::after {
+        content: '>';
+        position: absolute;
+        display: inline-block;
+        right: 0;
+        width: 2em;
+        text-align: center;
+        background: rgb(227,227,227);
+        background: linear-gradient(90deg, rgba(227,227,227,0.4) 0%, rgba(227,227,227,1) 35%);
+        padding-left: 1em;
+    }
+    &:last-child {
+        font-weight: bold;
+    }
+    &:last-child:after {
+        content: '';
+    }
+    &:hover::after {
+        padding-left: 0rem;
+        background: transparent;
+    }
+}
