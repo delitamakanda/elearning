@@ -36,25 +36,25 @@ Module {{ module.order|add:1 }}: {{ module.title }}
             <div data-id="{{ content.id }}">
                 {% with item=content.item %}
                 <p>{{ item }} ({{ item|model_name}})</p>
-                <a href="{% url 'module_content_update' module.id item|model_name item.id %}" class="btn btn-secondary">Edit</a>
+                <a href="{% url 'module_content_update' module.id item|model_name item.id %}" class="btn btn-secondary">{% trans 'Edit' %}</a>
                 <form action="{% url 'module_content_delete' content.id %}" method="post">
-                <input type="submit" class="btn btn-secondary" value="Delete">
+                <input type="submit" class="btn btn-secondary" value="{% trans 'Delete' %}">
                 {% csrf_token %}
             </form>
             {% endwith %}
         </div>
         {% empty %}
-        <p>This module has no contents yet.</p>
+        <p>{% trans 'This module has no contents yet.' %}</p>
         {% endfor %}
 
     </div>
     <hr>
-    <h3>Add new content:</h3>
+    <h3>{% trans 'Add new content' %}:</h3>
     <ul class="content-types">
-        <li><a href="{% url 'module_content_create' module.id 'text' %}" class="link">Text</a></li>
-        <li><a href="{% url 'module_content_create' module.id 'image'%}" class="link">Image</a></li>
-        <li><a href="{% url 'module_content_create' module.id 'video' %}" class="link">Video</a></li>
-        <li><a href="{% url 'module_content_create' module.id 'file' %}" class="link">File</a></li>
+        <li><a href="{% url 'module_content_create' module.id 'text' %}" class="link">{% trans 'Text' %}</a></li>
+        <li><a href="{% url 'module_content_create' module.id 'image'%}" class="link">{% trans 'Image' %}</a></li>
+        <li><a href="{% url 'module_content_create' module.id 'video' %}" class="link">{% trans 'Video' %}</a></li>
+        <li><a href="{% url 'module_content_create' module.id 'file' %}" class="link">{% trans 'File' %}</a></li>
     </ul>
     </div>
     {% endwith %}
