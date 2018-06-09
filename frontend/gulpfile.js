@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var sass = require('gulp-sass');
 var iconfont = require('gulp-iconfont');
 var consolidate = require('gulp-consolidate');
+var imagemin = require('gulp-imagemin');
 
 gulp.task('iconfont', function () {
     gulp.src('icons/**/*.svg')
@@ -33,6 +34,21 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('../courses/static/styles'));
 });
 
+gulp.task('image', function() {
+    gulp.src('images/*')
+    .pipe(imagemin([
+        imagemin.gifsicle({interlaced: true}),
+        imagemin.jpegtran({progressive: true}),
+        imagemin.optipng({optimizationLevel: 5}),
+        imagemin.svgo({
+        plugins: [
+            { removeViewBox: true },
+            { cleanupIDs: false }
+        ]
+    })
+    ]))
+    .pipe(gulp.dest('../courses/static/images'));
+});
 
 gulp.task('watch', function() {
     gulp.watch('scss/**/*.scss', ['sass'])

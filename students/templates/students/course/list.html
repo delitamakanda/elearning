@@ -4,9 +4,9 @@
    {% block content %}
    <div class="container">
        <h1>{% trans 'My courses' %}</h1>
-       <div class="module">
+       <div>
            {% for course in object_list %}
-               <div class="course-info">
+               <div>
                    <h3>{{ course.title }}</h3>
                    <p><a href="{% url 'student_course_detail' course.id %}" class="btn btn-primary">{% trans 'Access contents' %}</a></p>
                </div>

@@ -3,9 +3,9 @@
 {% block content %}
 <div class="container">
      <h1>My courses</h1>
-     <div class="module">
+     <div>
        {% for course in object_list %}
-         <div class="course-info">
+         <div>
            <h3>{{ course.title }}</h3>
            <p>
              <a href="{% url 'course_edit' course.id %}">Edit</a>

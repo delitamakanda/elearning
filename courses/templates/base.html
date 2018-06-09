@@ -16,7 +16,7 @@
         <a href="{% url 'classroom' %}"><h1>{% trans 'myelearning' %}</h1></a>
         <nav>
             <ul class="menu">
-                <li class="menu-item"><a href="{% url 'course_list' %}">{% trans 'Learn' %}</a></li>
+                <li class="menu-item"><a href="{% url 'course_list' %}" class="{% if section == "learn" %}active{% endif%}">{% trans 'Learn' %}</a></li>
                 {% if user.is_authenticated and request.user.is_teacher or request.user.is_staff %}
                     <li class="menu-item"><a href="{% url 'manage_course_list' %}">{% trans 'Manage courses' %}</a></li>
                     <li class="menu-item"><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'Manage quizzes' %}</a></li>
@@ -50,16 +50,15 @@
         {% endblock %}
     </div>
     <footer id="footer">
-        <a href="{% url 'classroom' %}"><h3>{% trans 'myelearning' %}</h3></a>
         <nav>
             {% get_flatpages as flatpages %}
             <ul class="menu">
                 {% for page in flatpages %}
                     <li class="menu-item"><a href="{{ page.url }}">{{ page.title }}</a></li>
                 {% endfor %}
+                    <li>&copy; {% trans '2017 My e-learning ' %}</li>
             </ul>
         </nav>
-        <small>{% trans 'Copyright (c) 2017 Copyright My e-learning All Rights Reserved.' %}</small>
     </footer>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>

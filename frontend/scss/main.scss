@@ -20,6 +20,7 @@ body {
 .container {
     width: 80%;
     margin: 0 auto;
+    display: table;
 }
 
 #header {
@@ -35,11 +36,9 @@ body {
     transform: translate3d(0,0,0);
     transition: .25s transform;
     backface-visibility: hidden;
-    border-bottom: 1px solid #e5e5e5;
 }
 
-#header h1,
-#footer h3 {
+#header h1 {
     float: left;
     font-size: 1.4rem;
     margin: 0 0 0 2rem;
@@ -65,26 +64,28 @@ body {
 }
 
 #content {
-    padding: 10rem 0;
+    padding: 9rem 0;
 }
 
 #footer {
-    text-align: center;
-    padding-top: 6rem;
-    padding-bottom: 5rem;
+    background-color: #e5e5e5;
+    padding-top: 3rem;
+    padding-bottom: 6rem;
     clear: both;
-}
-
-#footer nav {
-    margin-bottom: 2.5rem;
 }
 
 #footer nav li {
     border-left: 0 none;
+
 }
 
-#footer h3 {
-    font-size: 1.3rem;
+#footer nav li,
+#footer nav li a {
+    font-size: 0.8rem;
+}
+
+#footer nav li a:hover {
+    border-bottom: 0 none;
 }
 
 .alert {
@@ -123,7 +124,8 @@ a:hover {
 a,
 p,
 label,
-span {
+span,
+li {
     font-size: 0.9rem;
 }
 
@@ -224,7 +226,7 @@ ul {
 }
 
 img {
-    max-width: 100%;
+    max-width: 80%;
     width: 100%;
 }
 
@@ -260,7 +262,8 @@ img {
     }
 }
 
-.menu li a:hover {
+.menu li a:hover,
+.menu li a.active {
     text-decoration: none;
     border-bottom: 2px solid #000000;
 }
@@ -369,5 +372,27 @@ img {
     &:hover::after {
         padding-left: 0rem;
         background: transparent;
+    }
+}
+
+.align-center {
+    text-align: center;
+}
+
+.splashscreen {
+    font-size: 10rem;
+    margin-top: 3rem;
+    margin-bottom: 4rem;
+}
+
+.form.modules {
+    label,
+    input,
+    textarea {
+        display: block;
+    }
+
+    input[type="checkbox"] {
+        margin-bottom: 1rem;
     }
 }

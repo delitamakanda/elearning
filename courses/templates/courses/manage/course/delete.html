@@ -3,7 +3,7 @@
    {% block content %}
    <div class="container">
          <h1>Delete course "{{ object.title }}"</h1>
-         <div class="module">
+         <div>
            <form action="" method="post">
              {% csrf_token %}
              <p>Are you sure you want to delete "{{ object }}"?</p>
