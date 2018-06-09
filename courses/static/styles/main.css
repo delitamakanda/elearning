@@ -115,3 +115,19 @@ img { max-width: 100%; width: 100%; }
 .icon-people-man-graduate, .icon-people-woman-glasses-1, .btn.btn-primary .icon-bin-2 { color: #ffffff; font-size: 1.5rem; }
 
 .btn.btn-primary .icon-bin-2 { font-size: 1rem; vertical-align: top; }
+
+.breadcrumb { list-style-type: none; margin: 0; padding: 2em; color: #333; }
+
+.breadcrumb a { max-width: 2em; transition: max-width 300ms ease-in-out; }
+
+.breadcrumb a:hover, .breadcrumb a:focus, .breadcrumb li:hover a { max-width: 1000px; }
+
+.breadcrumb-item { display: inline-block; position: relative; padding-right: 2em; margin: 0; overflow: hidden; }
+
+.breadcrumb-item::after { content: '>'; position: absolute; display: inline-block; right: 0; width: 2em; text-align: center; background: #e3e3e3; background: linear-gradient(90deg, rgba(227, 227, 227, 0.4) 0%, #e3e3e3 35%); padding-left: 1em; }
+
+.breadcrumb-item:last-child { font-weight: bold; }
+
+.breadcrumb-item:last-child:after { content: ''; }
+
+.breadcrumb-item:hover::after { padding-left: 0rem; background: transparent; }
