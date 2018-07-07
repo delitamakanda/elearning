@@ -21,6 +21,8 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from students.views import students, classroom, teachers
 
+from django.views.generic import TemplateView
+
 urlpatterns = [
     url(r'^$', generic.RedirectView.as_view(url='/students/classroom/', permanent=False)),
     url(r'^accounts/login/$', auth_views.login, name='login'),
@@ -36,6 +38,7 @@ urlpatterns = [
     url(r'^course/', include('courses.urls')),
     url(r'^students/', include('students.urls')),
     url(r'^api/', include('courses.api.urls', namespace='api')),
+    url(r'^sw.js', (TemplateView.as_view(template_name="sw.js", content_type='application/javascript', )), name='sw.js'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

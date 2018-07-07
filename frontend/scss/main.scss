@@ -396,3 +396,38 @@ img {
         margin-bottom: 1rem;
     }
 }
+
+.is-offline {
+    a:not(.is-cached) {
+        cursor: not-allowed;
+        pointer-events: none;
+        opacity: .5;
+    }
+
+    a[href^="#"],
+    a[href^="mailto"],
+    a[href^="tel"] {
+        cursor: auto;
+        pointer-events: auto;
+        opacity: 1;
+    }
+}
+
+.is-offline form {
+    position: relative;
+    opacity: .65;
+    cursor: not-allowed;
+    pointer-events: none;
+
+    &::after {
+        content: "Offline";
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: "white";
+        background-color: #2d2d2d;
+        padding: 1rem 2rem;
+    }
+}
