@@ -1,6 +1,6 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; }
 
-body { font-size: 16px; color: #000000; font-family: 'Helvetica', Arial, sans-serif; background-color: #ffffff; }
+body { font-size: 16px; color: #000000; font-family: 'Helvetica', Arial, sans-serif; background-color: #ffffff; height: 100%; overflow-x: hidden; }
 
 .logo { font-size: 1.6em; font-weight: bold; margin-right: 30px; }
 
@@ -18,7 +18,7 @@ body { font-size: 16px; color: #000000; font-family: 'Helvetica', Arial, sans-se
 
 #content { padding: 9rem 0; }
 
-#footer { background-color: #e5e5e5; padding-top: 3rem; padding-bottom: 6rem; clear: both; }
+#footer { background-color: "white"; padding-top: 3rem; padding-bottom: 6rem; clear: both; }
 
 #footer nav li { border-left: 0 none; }
 
@@ -56,11 +56,9 @@ table td { border-bottom: 1px solid #dcdcdc; }
 
 .badge.badge-primary { background-color: #007bff; border-radius: 3px; color: #fff; }
 
-.btn { text-align: center; -webkit-appearance: none; appearance: none; border: 0 none; padding: 0.3rem 0.5rem; cursor: pointer; display: inline-block; }
+.btn { text-align: center; -webkit-appearance: none; appearance: none; border: 0 none; border-radius: 5em; padding: 0.5rem 1rem; cursor: pointer; display: inline-block; white-space: nowrap; }
 
-.btn.btn-primary { color: #ffffff; background-color: #000000; font-size: 1rem; }
-
-.btn.btn-primary:hover { background-color: #159bdc; text-decoration: none; }
+.btn.btn-primary { color: #ffffff; background-color: #000000; }
 
 .btn.btn-secondary.btn-search { background-color: #fff; color: #000; height: 32px; }
 
@@ -78,9 +76,7 @@ ul { list-style-type: none; }
 
 .contents #modules li.selected a { display: inline-block; width: 100%; height: 100%; color: #ffffff; padding: 0.5rem 0 0.5rem 0.3rem; }
 
-.module { width: 79%; }
-
-img { max-width: 80%; width: 100%; }
+img { max-width: 100%; height: auto; }
 
 .login-form label, .signup-form label { display: block; margin-bottom: 0.5rem; }
 
@@ -92,15 +88,9 @@ img { max-width: 80%; width: 100%; }
 
 .login-form input[type="text"]:focus, .login-form input[type="password"]:focus, .signup-form input[type="text"]:focus, .signup-form input[type="password"]:focus { outline: 0 none; border-color: #159bdc; }
 
-.menu li a:hover, .menu li a.active { text-decoration: none; border-bottom: 2px solid #000000; }
-
 .errorlist li { color: #f44336; }
 
 .helptext { font-size: .8rem; margin-top: .7rem; }
-
-.courses { padding: 0.5rem 0.4rem; border: 1px solid #e1e1e4; margin-top: 1.5rem; border-radius: 3px; }
-
-.courses:nth-child(odd) { background-color: #fbfbfb; }
 
 .item-search { text-align: center; }
 

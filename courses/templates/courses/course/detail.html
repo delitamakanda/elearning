@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
    {% block title %}
        {{ object.title }}
    {% endblock %}
@@ -9,20 +10,22 @@
                {{ object.title }}
            </h1>
            <div>
-               <h2>Overview</h2>
+               <h2>{% trans "Overview" %}</h2>
                <p>
                    <a href="{% url 'course_list_subject' subject.slug %}" class="link">{{ subject.title }}</a>.
                    {{ course.modules.count }} modules. Instructor: {{ course.owner.username }}
                </p>
                {{ object.overview|linebreaks }}
 
-               {% if request.user.is_authenticated %}
+               {% if request.user.is_authenticated and course.modules.count > 0%}
                    <form action="{% url 'student_enroll_course' %}" method="post">
                        {{ enroll_form }}
                        {% csrf_token %}
                        <input type="submit" class="btn btn-primary" value="Enroll now">
                    </form>
-               {% else %}
+                {% elif request.user.is_authenticated and course.modules.count == 0 %}
+                    {% trans "In progress" %}...
+                {% else %}
                    <a href="{% url 'student_registration' %}" class="btn btn-primary">
                        Register to enroll
                    </a>

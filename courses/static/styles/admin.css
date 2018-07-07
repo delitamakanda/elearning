@@ -1,0 +1,40 @@
+.admin { --spacing: 1rem; display: flex; flex-wrap: wrap; display: grid; height: 100vh; grid-template-rows: 70px 1fr 70px; grid-template-columns: 250px 1fr; grid-template-areas: "header header" "nav main" "footer footer"; }
+
+.admin__header { display: flex; flex-basis: 100%; grid-area: header; height: 70px; background-color: "white"; position: relative; }
+
+.admin__footer { display: flex; flex-basis: 100%; }
+
+.admin__nav { flex: 0 0 250px; grid-area: nav; background-color: #313541; }
+
+.admin__main { flex: 1; grid-area: main; padding: var(--spacing); overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; background-color: #f4f7fa; }
+
+.admin__footer { display: flex; grid-area: footer; flex-basis: 100%; height: 70px; padding: 0 var(--spacing); align-items: center; justify-content: space-between; color: #4e5561; }
+
+@media screen and (min-width: 48rem) { .admin { --spacing: 2rem; } }
+
+.dashboard { --column-count: 2
+
+    display: flex; flex-wrap: wrap; margin: 0 calc(var(--spacing) * -0.5); display: grid; grid-template-columns: repeat(var(--column-count), 1fr); grid-gap: 2rem; }
+
+.dashboard__item { flex: 1 1 50%; grid-column-end: span 2; padding: calc(var(--spacing) /2); }
+
+.dashboard__item--full { flex-basis: 100%; grid-column: 1 / -1; }
+
+.dashboard__item--col { flex-basis: calc(100% / var(--column-count)); grid-column: span 1; }
+
+@media screen and (min-width: 48rem) { .dashboard { --column-count: 4; } }
+
+@supports (display: grid) { .dashboard { margin: 0; }
+    .dashboard__item { padding: 0; } }
+
+.card { height: 100%; padding: 1rem; font-size: 2rem; font-weight: 300; background-color: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+
+.card:nth-child(n+2) { margin-top: 1rem; }
+
+.menu { list-style-type: none; padding: 0; }
+
+.menu__item { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+
+.menu__link { display: block; padding: 1rem 2rem; color: #76808f; text-decoration: none; }
+
+.menu__link:hover, .menu__link:focus { color: #fff; background-color: #1f222d; }
