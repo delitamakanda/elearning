@@ -1,0 +1,9 @@
+language: python
+python:
+  - 3.6
+env:
+  - DJANGO=2.0.1
+install:
+  - pip install -r requirements.txt
+script:
+  - python manage.py migrate --noinput
