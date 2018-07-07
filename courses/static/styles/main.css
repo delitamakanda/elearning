@@ -139,3 +139,11 @@ img { max-width: 80%; width: 100%; }
 .form.modules label, .form.modules input, .form.modules textarea { display: block; }
 
 .form.modules input[type="checkbox"] { margin-bottom: 1rem; }
+
+.is-offline a:not(.is-cached) { cursor: not-allowed; pointer-events: none; opacity: .5; }
+
+.is-offline a[href^="#"], .is-offline a[href^="mailto"], .is-offline a[href^="tel"] { cursor: auto; pointer-events: auto; opacity: 1; }
+
+.is-offline form { position: relative; opacity: .65; cursor: not-allowed; pointer-events: none; }
+
+.is-offline form::after { content: "Offline"; display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: "white"; background-color: #2d2d2d; padding: 1rem 2rem; }

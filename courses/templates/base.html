@@ -10,6 +10,7 @@
     <title>{% trans 'myelearning' %} - {% block title %} {% endblock %}</title>
     <link href="{% static 'styles/fonts.css' %}" rel="stylesheet">
     <link href="{% static 'styles/main.css' %}" rel="stylesheet">
+    <script src="{% static 'scripts/offline.js' %}"></script>
 </head>
 <body>
     <div id="header">
@@ -48,6 +49,16 @@
 
         {% block content %}
         {% endblock %}
+
+        <!-- Notif offline -->
+        <div
+            class="notification"
+            id="notification"
+            aria-live="assertive"
+            aria-relevant="text"
+            hidden
+        ></div>
+
     </div>
     <footer id="footer">
         <nav>
@@ -67,6 +78,14 @@
         {% block domready %}
         {% endblock %}
     });
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register("{% url 'sw.js' %}", { scope: '/static/' }).then(function(res) {
+            console.log("sw installed !" + res.scope);
+        }).catch(function(error) {
+            console.log("sw failed" + error);
+        });
+    }
     </script>
 </body>
 </html>
