@@ -1,7 +1,7 @@
-* {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
 }
 
 body {
@@ -9,6 +9,8 @@ body {
     color: #000000;
     font-family: 'Helvetica', Arial, sans-serif;
     background-color: #ffffff;
+    height: 100%;
+    overflow-x: hidden;
 }
 
 .logo {
@@ -68,7 +70,7 @@ body {
 }
 
 #footer {
-    background-color: #e5e5e5;
+    background-color: "white";
     padding-top: 3rem;
     padding-bottom: 6rem;
     clear: both;
@@ -164,21 +166,18 @@ table {
     -webkit-appearance: none;
     appearance: none;
     border: 0 none;
-    padding: 0.3rem 0.5rem;
+    border-radius: 5em;
+    padding: 0.5rem 1rem;
     cursor: pointer;
     display: inline-block;
+    white-space: nowrap;
+
     &.btn-primary {
         color: #ffffff;
         background-color: #000000;
-        font-size: 1rem;
-        &:hover {
-            background-color: #159bdc;
-            text-decoration: none;
-        }
     }
-    &.btn-secondary {
-        //
-    }
+    &.btn-secondary {}
+
     &.btn-secondary.btn-search {
         background-color: #fff;
         color: #000;
@@ -221,13 +220,10 @@ ul {
     }
 }
 
-.module {
-    width: 79%;
-}
 
 img {
-    max-width: 80%;
-    width: 100%;
+    max-width: 100%;
+    height: auto;
 }
 
 .login-form,
@@ -262,12 +258,6 @@ img {
     }
 }
 
-.menu li a:hover,
-.menu li a.active {
-    text-decoration: none;
-    border-bottom: 2px solid #000000;
-}
-
 .errorlist li {
     color: #f44336;
 }
@@ -275,16 +265,6 @@ img {
 .helptext {
     font-size: .8rem;
     margin-top: .7rem;
-}
-
-.courses {
-    padding: 0.5rem 0.4rem;
-    border: 1px solid #e1e1e4;
-    margin-top: 1.5rem;
-    border-radius: 3px;
-    &:nth-child(odd) {
-        background-color: #fbfbfb;
-    }
 }
 
 .item-search {
