@@ -6,10 +6,12 @@
        <h1>{% trans 'My courses' %}</h1>
        <div>
            {% for course in object_list %}
+                {% if course.modules.count > 0 %}
                <div>
                    <h3>{{ course.title }}</h3>
                    <p><a href="{% url 'student_course_detail' course.id %}" class="btn btn-primary">{% trans 'Access contents' %}</a></p>
                </div>
+               {% endif %}
            {% empty %}
                <p>
                    {% trans 'You are not enrolled in any courses yet.' %}
