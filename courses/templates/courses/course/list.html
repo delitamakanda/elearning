@@ -37,7 +37,7 @@
                 <div class="courses dashboard__item dashboard__item--col">
                    {% with subject=course.subject %}
                    <div class="card">
-                       <h3><a href="{% url 'course_detail' course.slug %}" class="link">{{ course.title }}</a></h3>
+                      <a href="{% url 'course_detail' course.slug %}" class="link"> <h3>{{ course.title }} </h3></a>
                        <p>
                            <a href="{% url 'course_list_subject' subject.slug %}" class="link">{{ subject }} </a>.
                            {{ course.total_modules }} modules.
