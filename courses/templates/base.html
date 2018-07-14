@@ -11,10 +11,9 @@
     <link href="{% static 'styles/fonts.css' %}" rel="stylesheet">
     <link href="{% static 'styles/main.css' %}" rel="stylesheet">
     <link href="{% static 'styles/admin.css' %}" rel="stylesheet">
-    <script src="{% static 'scripts/offline.js' %}"></script>
 </head>
 <body>
-    <div id="header">
+    <div id="header" class="js-header header sticky sticky--top">
         <a href="{% url 'classroom' %}"><h1 class="logo">{% trans 'My e-learning' %}</h1></a>
         <nav>
             <ul class="menu">
@@ -38,7 +37,7 @@
         </nav>
     </div>
 
-    <div id="content">
+    <div id="content" class="main">
 
         {% if messages %}
             <div class="container">
@@ -74,6 +73,8 @@
     </footer>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="{% static 'scripts/offline.js' %}"></script>
+    <script src="{% static 'scripts/header.js' %}"></script>
     <script>
     $(document).ready(function() {
         {% block domready %}

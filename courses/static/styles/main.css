@@ -1,4 +1,6 @@
-*, *::before, *::after { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+
+html { box-sizing: border-box; height: 100%; }
 
 @font-face { font-family: 'Oswald Regular'; font-weight: normal; font-style: normal; src: url("../fonts/Lato/Oswald-Regular.ttf") format("truetype"); }
 
@@ -38,13 +40,21 @@
 
 @font-face { font-family: 'Lato SemiBold Italic'; font-weight: normal; font-style: normal; src: url("../fonts/Lato/Lato-SemiBoldItalic.ttf") format("truetype"); }
 
-body { font-size: 16px; color: #000000; font-family: 'Lato Regular', Arial, sans-serif; background-color: #ffffff; height: 100%; overflow-x: hidden; }
+body { font-size: 16px; color: #000000; font-family: 'Lato Regular', Arial, sans-serif; background-color: #ffffff; line-height: 1.75; min-height: 100%; margin: 0; overflow-x: hidden; }
 
 .logo { font-family: "Oswald Medium"; font-size: 1.6em; font-weight: bold; margin-right: 30px; }
 
 .container { width: 80%; margin: 0 auto; display: table; }
 
-#header { position: fixed; left: 0; top: 0; width: 100%; height: 6rem; color: #000000; background: #ffffff; line-height: 6rem; transform: translateY(0); transform: translate3d(0, 0, 0); transition: .25s transform; backface-visibility: hidden; }
+#header { height: 6rem; color: #000000; background: #ffffff; line-height: 6rem; transform: translateY(0); transform: translate3d(0, 0, 0); transition: .25s transform; backface-visibility: hidden; }
+
+#header::after { bottom: 0; -webkit-box-shadow: 0 0.0625rem 0.5rem rgba(0, 0, 0, 0.3); box-shadow: 0 0.0625rem 0.5rem rgba(0, 0, 0, 0.3); content: ''; left: 0; opacity: 0; position: absolute; right: 0; top: 0; -webkit-transition: opacity 0.3s; transition: opacity 0.3s; z-index: -1; }
+
+#header.is-active::after { opacity: 1; }
+
+.sticky { position: -webkit-sticky; position: sticky; will-change: transform; }
+
+.sticky--top { top: 0; }
 
 #header h1 { float: left; margin: 0 0 0 2rem; }
 
@@ -54,7 +64,7 @@ body { font-size: 16px; color: #000000; font-family: 'Lato Regular', Arial, sans
 
 #header nav li, #footer nav li { display: inline-block; padding: 0 2rem; }
 
-#content { padding: 9rem 0; }
+#content { padding: 3rem 0; }
 
 #footer { background-color: "white"; padding-top: 3rem; padding-bottom: 6rem; clear: both; }
 
