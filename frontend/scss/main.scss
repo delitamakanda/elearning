@@ -4,16 +4,156 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: 'Oswald Regular';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Oswald-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Oswald ExtraLight';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Oswald-ExtraLight.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Oswald Light';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Oswald-Light.ttf') format('truetype');
+}
+
+
+@font-face {
+    font-family: 'Oswald Medium';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Oswald-Medium.ttf') format('truetype');
+}
+
+
+@font-face {
+    font-family: 'Oswald SemiBold';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Oswald-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Lato Regular';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Lato-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Lato Black';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Lato-Black.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Lato Black Italic';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Lato-BlackItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Lato Bold';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Lato-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Lato Bold Italic';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Lato-BoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Lato Hairline';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Lato-Hairline.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Lato Hairline Italic';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Lato-HairlineItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Lato Italic';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Lato-Italic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Lato Light';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Lato-Light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Lato Light Italic';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Lato-LightItalic.ttf') format('truetype');
+}
+
+
+@font-face {
+    font-family: 'Lato Medium';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Lato-Medium.ttf') format('truetype');
+}
+
+
+@font-face {
+    font-family: 'Lato Medium Italic';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Lato-MediumItalic.ttf') format('truetype');
+}
+
+
+@font-face {
+    font-family: 'Lato SemiBold';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Lato-SemiBold.ttf') format('truetype');
+}
+
+
+@font-face {
+    font-family: 'Lato SemiBold Italic';
+    font-weight: normal;
+    font-style: normal;
+    src: url('../fonts/Lato/Lato-SemiBoldItalic.ttf') format('truetype');
+}
+
 body {
     font-size: 16px;
     color: #000000;
-    font-family: 'Helvetica', Arial, sans-serif;
+    font-family: 'Lato Regular', Arial, sans-serif;
     background-color: #ffffff;
     height: 100%;
     overflow-x: hidden;
 }
 
 .logo {
+    font-family: "Oswald Medium";
     font-size: 1.6em;
     font-weight: bold;
     margin-right: 30px;
@@ -42,9 +182,7 @@ body {
 
 #header h1 {
     float: left;
-    font-size: 1.4rem;
     margin: 0 0 0 2rem;
-    text-transform: uppercase;
 }
 
 #header nav {
