@@ -17,7 +17,7 @@
         <a href="{% url 'classroom' %}"><h1 class="logo">{% trans 'My e-learning' %}</h1></a>
         <nav>
             <ul class="menu">
-                <li class="menu-item"><a href="{% url 'classroom' %}">{% trans 'Learn' %}</a></li>
+                <li class="menu-item"><a href="{% url 'course_list' %}">{% trans 'Learn' %}</a></li>
                 {% if user.is_authenticated and request.user.is_teacher or request.user.is_staff %}
                     <li class="menu-item"><a href="{% url 'manage_course_list' %}">{% trans 'Manage courses' %}</a></li>
                     <li class="menu-item"><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'Manage quizzes' %}</a></li>
