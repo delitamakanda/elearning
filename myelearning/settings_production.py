@@ -34,7 +34,7 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient"
         },
         "KEY_PREFIX": "myelearning",
-        "TIMEOUT": 356025
+        "TIMEOUT": 300
     }
 }
 
