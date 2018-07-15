@@ -2,15 +2,15 @@
 
 html { box-sizing: border-box; height: 100%; }
 
-@font-face { font-family: 'Oswald Regular'; font-weight: normal; font-style: normal; src: url("../fonts/Lato/Oswald-Regular.ttf") format("truetype"); }
+@font-face { font-family: 'Oswald Regular'; font-weight: normal; font-style: normal; src: url("../fonts/Oswald/Oswald-Regular.ttf") format("truetype"); }
 
-@font-face { font-family: 'Oswald ExtraLight'; font-weight: normal; font-style: normal; src: url("../fonts/Lato/Oswald-ExtraLight.ttf") format("truetype"); }
+@font-face { font-family: 'Oswald ExtraLight'; font-weight: normal; font-style: normal; src: url("../fonts/Oswald/Oswald-ExtraLight.ttf") format("truetype"); }
 
-@font-face { font-family: 'Oswald Light'; font-weight: normal; font-style: normal; src: url("../fonts/Lato/Oswald-Light.ttf") format("truetype"); }
+@font-face { font-family: 'Oswald Light'; font-weight: normal; font-style: normal; src: url("../fonts/Oswald/Oswald-Light.ttf") format("truetype"); }
 
-@font-face { font-family: 'Oswald Medium'; font-weight: normal; font-style: normal; src: url("../fonts/Lato/Oswald-Medium.ttf") format("truetype"); }
+@font-face { font-family: 'Oswald Medium'; font-weight: normal; font-style: normal; src: url("../fonts/Oswald/Oswald-Medium.ttf") format("truetype"); }
 
-@font-face { font-family: 'Oswald SemiBold'; font-weight: normal; font-style: normal; src: url("../fonts/Lato/Oswald-SemiBold.ttf") format("truetype"); }
+@font-face { font-family: 'Oswald SemiBold'; font-weight: normal; font-style: normal; src: url("../fonts/Oswald/Oswald-SemiBold.ttf") format("truetype"); }
 
 @font-face { font-family: 'Lato Regular'; font-weight: normal; font-style: normal; src: url("../fonts/Lato/Lato-Regular.ttf") format("truetype"); }
 
