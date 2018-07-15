@@ -38,7 +38,7 @@ html { box-sizing: border-box; height: 100%; }
 
 @font-face { font-family: 'Lato SemiBold'; font-weight: normal; font-style: normal; src: url("../fonts/Lato/Lato-SemiBold.ttf") format("truetype"); }
 
-@font-face { font-family: 'Lato SemiBold Italic'; font-weight: normal; font-style: normal; src: url("../fonts/Lato/Lato-SemiBoldItalic.ttf") format("truetype"); }
+@font-face { font-family: 'Lato SemiBold Italic'; font-weight: normal; font-style: normal; src: url("../fonts/Lato/Lato-SemiboldItalic.ttf") format("truetype"); }
 
 body { font-size: 16px; color: #000000; font-family: 'Lato Regular', Arial, sans-serif; background-color: #ffffff; line-height: 1.75; min-height: 100%; margin: 0; overflow-x: hidden; }
 
