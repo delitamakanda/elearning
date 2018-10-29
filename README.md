@@ -1,4 +1,4 @@
-# my-elearning [![Build Status](https://travis-ci.org/delitamakanda/my-elearning.svg?branch=master)](https://travis-ci.org/delitamakanda/my-elearning)
+# my-elearning [![Build Status](https://travis-ci.org/delitamakanda/elearning.svg?branch=master)](https://travis-ci.org/delitamakanda/elearning)
 e-learning django app (django, python3)
 
 ## TODO
