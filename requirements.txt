@@ -9,7 +9,7 @@ olefile
 Pillow
 python3-memcached
 pytz
-whitenoise
+whitenoise==3.3.1
 dj-database-url
 gunicorn
 psycopg2-binary
