@@ -8,3 +8,6 @@ e-learning django app (django, python3)
 * Celery worker
 * ~~Reset Password~~
 * ~~Search Form~~
+
+
+![Screenshot](konned-my_courses.gif)
