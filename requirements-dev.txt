@@ -10,7 +10,7 @@ olefile==0.44
 Pillow==4.2.1
 python3-memcached
 pytz==2017.2
-requests==2.18.4
+requests==2.20.0
 six==1.11.0
 urllib3==1.22
 whitenoise==3.3.1
