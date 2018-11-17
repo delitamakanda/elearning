@@ -1,0 +1,13 @@
+{
+  "name": "My elearning",
+  "short_name": "elearning",
+  "description": "Learn to code anywhere",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FFFFFF",
+  "theme_color": "#222222",
+  "dir": "ltr",
+  "lang": "en-US",
+  "gcm_sender_id": ""
+}

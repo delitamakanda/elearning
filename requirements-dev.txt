@@ -1,6 +1,6 @@
 certifi==2017.7.27.1
 chardet==3.0.4
-Django==1.11.5
+Django==1.11.15
 django-braces==1.8.1
 django-embed-video==1.0.0
 django-memcache-status==1.1
@@ -10,7 +10,7 @@ olefile==0.44
 Pillow==4.2.1
 python3-memcached
 pytz==2017.2
-requests==2.18.4
+requests==2.20.0
 six==1.11.0
 urllib3==1.22
 whitenoise==3.3.1
