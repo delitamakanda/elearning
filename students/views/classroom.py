@@ -28,14 +28,14 @@ def get_query(query_string, search_fields):
 
 class SignupView(TemplateView):
     template_name = 'registration/signup.html'
-    
+
 
 def index(request):
-    if request.user.is_authenticated:
-        if request.user.is_teacher:
-            return redirect('teacher_quiz_change_list')
-        else:
-            return redirect('student_quiz_list')
+    # if request.user.is_authenticated:
+    #     if request.user.is_teacher:
+    #         return redirect('teacher_quiz_change_list')
+    #     else:
+    #         return redirect('student_quiz_list')
 
     query_string = ''
     found_results = None

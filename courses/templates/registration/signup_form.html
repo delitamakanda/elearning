@@ -9,7 +9,7 @@
        <div class="signup">
            <p>{% trans "Enter your details to create an account as" %} {{ user_type }}</p>
            <div class="signup-form">
-               <form id="user_form" accept-charset="utf-8" action="" method="post">
+               <form id="user_form" accept-charset="utf-8" action="" method="post" novalidate>
                    {{ form.as_p }}
                    {% csrf_token %}
 

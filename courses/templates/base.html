@@ -1,34 +1,40 @@
 {% load staticfiles %}
 {% load flatpages %}
 {% load i18n %}
+{% load gravatar %}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>{% trans 'myelearning' %} - {% block title %} {% endblock %}</title>
-    <link href="{% static 'styles/fonts.css' %}" rel="stylesheet">
-    <link href="{% static 'styles/main.css' %}" rel="stylesheet">
-    <link href="{% static 'styles/admin.css' %}" rel="stylesheet">
+    <title>{% trans 'elearning' %} - {% block title %} {% endblock %}</title>
+    <link href="{% static 'styles/styles.css' %}" rel="stylesheet">
 </head>
 <body>
     <div id="header" class="js-header header sticky sticky--top">
-        <a href="{% url 'classroom' %}"><h1 class="logo">{% trans 'My e-learning' %}</h1></a>
+        <a href="{% url 'course_list' %}"><h1 class="logo">{% trans 'elearning' %}</h1></a>
+        <a href="{% url 'course_list' %}">{% trans "Browse" %}</a>
+        <form id="searchform" class="item-search" action="{% url 'classroom' %}" method="get" accept-charset="utf-8" class="form-search">
+            <input type="search" autocomplete="off" name="q"  id="searchbox" placeholder="{% trans 'Search for a new topic now...' %}" />
+        </form>
         <nav>
             <ul class="menu">
                 <li class="menu-item"><a href="{% url 'course_list' %}">{% trans 'Learn' %}</a></li>
-                {% if user.is_authenticated and request.user.is_teacher or request.user.is_staff %}
-                    <li class="menu-item"><a href="{% url 'manage_course_list' %}">{% trans 'Manage courses' %}</a></li>
-                    <li class="menu-item"><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'Manage quizzes' %}</a></li>
-                {% endif %}
-                {% if user.is_authenticated and request.user.is_student %}
-                    <li class="menu-item"><a href="{% url 'student_quiz_list' %}">{% trans 'My Quiz' %}</a></li>
-                    <li class="menu-item"><a href="{% url 'student_course_list' %}">{% trans 'My Course' %}</a></li>
-                {% endif %}
                 {% if user.is_authenticated %}
-                    <li class="menu-item"><a href="{% url 'logout' %}">{% trans 'Logout' %}</a></li>
-                    <li class="menu-item"><span>{% trans 'Hello' %}, {{ user.username }} !</span> <a href=""><i class="icon icon-cog"></i></a></li>
+                    <li class="menu-item"><a class="navbar-burger" href="#sidebar"><img class="avatar" src="{{ user|gravatar }}" alt="{{ user.username }}"></a>
+                        <ul id="sidebar" class="submenu">
+                            {% if user.is_authenticated and request.user.is_teacher or request.user.is_staff %}
+                                <li class="submenu-item"><a href="{% url 'manage_course_list' %}">{% trans 'Manage courses' %}</a></li>
+                                <li class="submenu-item"><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'Manage quizzes' %}</a></li>
+                            {% endif %}
+                            {% if user.is_authenticated and request.user.is_student %}
+                                <li class="submenu-item"><a href="{% url 'student_quiz_list' %}">{% trans 'My Quiz' %}</a></li>
+                                <li class="submenu-item"><a href="{% url 'student_course_list' %}">{% trans 'My Course' %}</a></li>
+                            {% endif %}
+                            <li class="submenu-item"><a href="{% url 'logout' %}">{% trans 'Logout' %}</a></li>
+                        </ul>
+                    </li>
                 {% else %}
                     <li class="menu-item"><a href="{% url 'login' %}">{% trans 'Log in' %}</a></li>
                     <li class="menu-item"><a href="{% url 'signup' %}">{% trans 'Sign up' %}</a></li>
@@ -67,14 +73,13 @@
                 {% for page in flatpages %}
                     <li class="menu-item"><a href="{{ page.url }}">{{ page.title }}</a></li>
                 {% endfor %}
-                    <li>&copy; {% trans '2017-2018 My e-learning ' %}</li>
+                    <li>&copy; {% trans '2017-2018 elearning ' %}</li>
             </ul>
         </nav>
     </footer>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-    <script src="{% static 'scripts/offline.js' %}"></script>
-    <script src="{% static 'scripts/header.js' %}"></script>
+    <script src="{% static 'scripts/libs/jquery.min.js' %}"></script>
+    <script src="{% static 'scripts/libs/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'scripts/main.min.js' %}"></script>
     <script>
     $(document).ready(function() {
         {% block domready %}

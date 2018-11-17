@@ -11,7 +11,7 @@
         <p>{% trans 'Please, use the following form to log-in:' %}</p>
     {% endif %}
     <div class="login-form">
-        <form method="post">
+        <form method="post" novalidate>
             <input type="hidden" name="next" value="{{ next }}">
             {{ form.as_p }}
             {% csrf_token %}
