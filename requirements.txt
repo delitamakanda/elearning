@@ -14,7 +14,7 @@ dj-database-url
 gunicorn
 psycopg2-binary
 python-decouple
-redis
+redis==2.10.6
 django-redis
 django-storages
 boto3
