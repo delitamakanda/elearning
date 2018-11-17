@@ -164,5 +164,5 @@ typings/
 
 # next.js build output
 .next
-frontend/icons/
 frontend/images/
+frontend/icons/
