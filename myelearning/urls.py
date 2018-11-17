@@ -24,7 +24,7 @@ from students.views import students, classroom, teachers
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    url(r'^$', generic.RedirectView.as_view(url='/students/classroom/', permanent=False)),
+    url(r'^$', generic.RedirectView.as_view(url='/course/', permanent=True)),
     url(r'^accounts/login/$', auth_views.login, name='login'),
     url(r'^accounts/logout/$', auth_views.logout, name='logout'),
     url(r'^accounts/signup/$', classroom.SignupView.as_view(), name='signup'),

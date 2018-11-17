@@ -146,7 +146,7 @@ AUTH_USER_MODEL = 'students.User'
 LOGIN_REDIRECT_URL = reverse_lazy('student_course_list')
 LOGIN_URL = reverse_lazy('login')
 LOGOOUT_URL = reverse_lazy('logout')
-LOGOUT_REDIRECT_URL = reverse_lazy('classroom')
+LOGOUT_REDIRECT_URL = reverse_lazy('course_list')
 
 
 # Cache
