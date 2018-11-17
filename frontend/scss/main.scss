@@ -6,7 +6,6 @@
 
 html {
   box-sizing: border-box;
-  height: 100%;
 }
 
 @font-face {
@@ -150,9 +149,9 @@ html {
 
 body {
     font-size: 16px;
-    color: #000000;
+    color: #999;
     font-family: 'Lato Regular', Arial, sans-serif;
-    background-color: #ffffff;
+    background-color: #eee;
     line-height: 1.75;
     min-height: 100%;
     margin: 0;
@@ -160,23 +159,19 @@ body {
 }
 
 .logo {
-    font-family: "Oswald Medium";
+    font-family: "Lato Bold";
     font-size: 1.6em;
-    font-weight: bold;
-    margin-right: 30px;
 }
 
 .container {
     width: 80%;
     margin: 0 auto;
-    display: table;
 }
 
 #header {
-    height: 6rem;
-    color: #000000;
+    height: 4rem;
     background: #ffffff;
-    line-height: 6rem;
+    line-height: 4rem;
     transform: translateY(0);
     transform: translate3d(0,0,0);
     transition: .25s transform;
@@ -212,27 +207,74 @@ body {
     top: 0;
 }
 
-#header h1 {
-    float: left;
-    margin: 0 0 0 2rem;
+#header {
+    h1 {
+       float: left;
+       margin: 0 0 0 2rem;
+   }
+
+   nav {
+       float: right;
+       font-size: 1rem;
+
+       ul {
+           margin: 0;
+           padding: 0;
+           list-style: none inside;
+           display: flex;
+
+           li.menu-item {
+               vertical-align: middle;
+               padding: 0 1rem;
+           }
+       }
+   }
+
+   .avatar {
+      border-radius: 100% 100%;
+      height: 48px;
+      width: 48px;
+  }
+
+  > a {
+      padding: 0 1.5rem;
+  }
+
+  .submenu {
+      position: absolute;
+      background-color: #fff;
+      right: 1%;
+      top: 60px;
+      z-index: 88;
+      display: none;
+
+      &.is-active {
+          display: block;
+      }
+
+      li.submenu-item {
+
+         line-height: 1.8rem;
+
+         a {
+             display: block;
+             padding: 0 1rem 0 1rem;
+         }
+     }
+  }
 }
 
-#header nav {
-    float: right;
-    font-size: 1.4rem;
-}
 
-#header nav ul,
+
 #footer nav ul {
     margin: 0;
     padding: 0;
     list-style: none inside;
-}
 
-#header nav li,
-#footer nav li {
-    display: inline-block;
-    padding: 0 2rem;
+    li {
+        display: inline-block;
+        padding: 0 1rem;
+    }
 }
 
 #content {
@@ -240,9 +282,8 @@ body {
 }
 
 #footer {
-    background-color: #ffffff;
-    padding-top: 3rem;
-    padding-bottom: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
     clear: both;
 }
 
@@ -280,7 +321,7 @@ body {
 }
 
 a {
-    color: #000;
+    color: #333;
     font-weight: bold;
     text-decoration: none;
 }
@@ -336,7 +377,6 @@ table {
     -webkit-appearance: none;
     appearance: none;
     border: 0 none;
-    border-radius: 5em;
     padding: 0.5rem 1rem;
     cursor: pointer;
     display: inline-block;
@@ -438,7 +478,7 @@ img {
 }
 
 .item-search {
-    text-align: center;
+    display: inline-block;
 
     input[type="search"] {
         height: 32px;
@@ -448,7 +488,6 @@ img {
         box-shadow: inset 0 1px 1px 1px rgba(0,0,0,0.2);
         border: 0 none;
         padding: 0.2rem 0.3rem;
-        border-radius: 3px;
         font-size: 1rem;
 
         &:focus {
@@ -456,7 +495,7 @@ img {
         }
 
         &:hover {
-            box-shadow: inset 0 1px 1px 1px rgba(97, 204, 237, 0.2);
+            /*box-shadow: inset 0 1px 1px 1px rgba(97, 204, 237, 0.2);*/
         }
     }
 }

@@ -10,7 +10,7 @@ $admin-nav-width: 250px;
 
 
     display: grid;
-    height: 100vh;
+    height: 100%;
     grid-template-rows: $admin-header-height 1fr $admin-footer-height;
     grid-template-columns: $admin-nav-width 1fr;
     grid-template-areas: "header header"
@@ -22,7 +22,7 @@ $admin-nav-width: 250px;
         flex-basis: 100%;
         grid-area: header;
         height: $admin-header-height;
-        background-color: "white";
+        background-color: #fff;
         position: relative;
     }
 
@@ -64,7 +64,7 @@ $admin-nav-width: 250px;
 }
 
 .dashboard {
-    --column-count: 2
+    --column-count: 2;
 
     display: flex;
     flex-wrap: wrap;
