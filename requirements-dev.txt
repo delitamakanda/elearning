@@ -15,3 +15,4 @@ six==1.11.0
 urllib3==1.22
 whitenoise==3.3.1
 python-decouple==3.1
+django-widget-tweaks==1.4.3

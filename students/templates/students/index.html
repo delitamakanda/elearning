@@ -6,21 +6,24 @@
 {% endblock %}
 
 {% block content %}
-<section class="search a-center">
 
-    <div class="container">
-        <div>
+<div class="container">
+    <div>
+        {% if found_results %}
+            <h2>{% trans 'Results for :' %} {{ query_string }}</h2>
 
-            {% if found_results %}
-                <h3>{% trans 'Results for :' %} {{ query_string }}</h3>
+            {% for result in found_results %}
+                <div class="list-group">
+                    <a href="{% url 'course_detail' result.slug %}" class="list-group-item">
+                        <h4>{{ result.title }}</h4>
 
-                {% for result in found_results %}
-                    <div><a href="{% url 'course_detail' result.slug %}">{{ result.title }}</a></div>
-                    <div>{{ result.subject }}</div>
-                    <div>{% trans 'Author' %}: {{ result.owner }}</div>
-                {% endfor %}
-            {% endif %}
-        </div>
+                        <p>{{ result.subject }}</p>
+
+                        <small>{% trans 'Author' %}: {{ result.owner }}</small>
+                    </a>
+                </div>
+            {% endfor %}
+        {% endif %}
     </div>
-</section>
+</div>
  {% endblock %}

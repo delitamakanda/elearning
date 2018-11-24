@@ -1,4 +1,6 @@
 from django import forms
+from django.utils.text import capfirst
+from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 from django.forms.utils import ValidationError
@@ -30,6 +32,9 @@ class TeacherSignupForm(UserCreationForm):
 
 
 class StudentSignupForm(UserCreationForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    password1 = forms.CharField(label=_('Password'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    password2 = forms.CharField(label=_('Password verification'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
     interests = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
         widget=forms.CheckboxSelectMultiple,

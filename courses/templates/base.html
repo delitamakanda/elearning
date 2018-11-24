@@ -13,43 +13,73 @@
     <link rel="manifest" href="{% static 'manifest.json' %}">
 </head>
 <body>
-    <div id="header" class="js-header header sticky sticky--top">
-        <a href="{% url 'course_list' %}"><h1 class="logo">{% trans 'elearning' %}</h1></a>
-        <a href="{% url 'course_list' %}">{% trans "Browse" %}</a>
-        <form id="searchform" class="item-search" action="{% url 'classroom' %}" method="get" accept-charset="utf-8" class="form-search">
-            <input type="search" autocomplete="off" name="q"  id="searchbox" placeholder="{% trans 'Search for a new topic now...' %}" />
-        </form>
-        <nav>
-            <ul class="menu">
-                <li class="menu-item"><a href="{% url 'course_list' %}">{% trans 'Learn' %}</a></li>
-                {% if user.is_authenticated %}
-                    <li class="menu-item"><a class="navbar-burger" href="#sidebar"><img class="avatar" src="{{ user|gravatar }}" alt="{{ user.username }}"></a>
-                        <ul id="sidebar" class="submenu">
-                            {% if user.is_authenticated and request.user.is_teacher or request.user.is_staff %}
-                                <li class="submenu-item"><a href="{% url 'manage_course_list' %}">{% trans 'Manage courses' %}</a></li>
-                                <li class="submenu-item"><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'Manage quizzes' %}</a></li>
-                            {% endif %}
-                            {% if user.is_authenticated and request.user.is_student %}
-                                <li class="submenu-item"><a href="{% url 'student_quiz_list' %}">{% trans 'My Quiz' %}</a></li>
-                                <li class="submenu-item"><a href="{% url 'student_course_list' %}">{% trans 'My Course' %}</a></li>
-                            {% endif %}
-                            <li class="submenu-item"><a href="{% url 'logout' %}">{% trans 'Logout' %}</a></li>
-                        </ul>
-                    </li>
-                {% else %}
-                    <li class="menu-item"><a href="{% url 'login' %}">{% trans 'Log in' %}</a></li>
-                    <li class="menu-item"><a href="{% url 'signup' %}">{% trans 'Sign up' %}</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-    </div>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'course_list' %}">{% trans 'elearning' %}</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{% trans "Browse" %} <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="{% url 'course_list' %}">{% trans 'All courses' %}</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">{% trans 'Videos' %}</a></li>
+              </ul>
+            </li>
+          </ul>
+          <form class="navbar-form navbar-left" action="{% url 'classroom' %}" method="get" accept-charset="utf-8" role="search">
+            <div class="form-group">
+              <input type="search" class="form-control" autocomplete="off" name="q" placeholder="{% trans 'Search for a new topic now...' %}">
+            </div>
+            <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+          </form>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{% url 'course_list' %}">{% trans 'Learn' %}</a></li>
+            {% if user.is_authenticated %}
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="avatar" src="{{ user|gravatar }}" alt="{{ user.username }}"> <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                  {% if user.is_authenticated and request.user.is_teacher or request.user.is_staff %}
+                      <li><a href="{% url 'manage_course_list' %}">{% trans 'Manage courses' %}</a></li>
+                      <li><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'Manage quizzes' %}</a></li>
+                  {% endif %}
+                  {% if user.is_authenticated and request.user.is_student %}
+                      <li><a href="{% url 'student_quiz_list' %}">{% trans 'My Quiz' %}</a></li>
+                      <li><a href="{% url 'student_course_list' %}">{% trans 'My Course' %}</a></li>
+                  {% endif %}
+                <li role="separator" class="divider"></li>
+                <li><a href="{% url 'logout' %}">{% trans 'Logout' %}</a></li>
+              </ul>
+            </li>
+            {% else %}
+                <li><a href="{% url 'login' %}">{% trans 'Log in' %}</a></li>
+                <li><a href="{% url 'signup' %}">{% trans 'Sign up' %}</a></li>
+            {% endif %}
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
 
     <div id="content" class="main">
 
         {% if messages %}
             <div class="container">
                 {% for message in messages %}
-                <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>{{ message }}</div>
+                <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible" {% endif %} role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{ message }}
+                </div>
                 {% endfor %}
             </div>
         {% endif %}
@@ -68,14 +98,15 @@
 
     </div>
     <footer id="footer">
-        <nav>
-            {% get_flatpages as flatpages %}
-            <ul class="menu">
-                {% for page in flatpages %}
-                    <li class="menu-item"><a href="{{ page.url }}">{{ page.title }}</a></li>
-                {% endfor %}
-                    <li>&copy; {% trans '2017-2018 elearning ' %}</li>
-            </ul>
+        <nav class="navbar">
+            <div class="container">
+                {% get_flatpages as flatpages %}
+                <ul class="list-inline">
+                    {% for page in flatpages %}
+                        <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
         </nav>
     </footer>
     <script src="{% static 'scripts/libs/jquery.min.js' %}"></script>

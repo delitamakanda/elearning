@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'embed_video',
     'rest_framework',
     'storages',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [

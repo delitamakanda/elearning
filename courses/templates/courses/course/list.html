@@ -20,13 +20,13 @@
    <div class="admin__nav" class="subjects">
        <ul id="modules" class="menu">
            <li class="{% if not subject %}selected{% endif %} menu__item">
-               <a href="{% url 'course_list' %}" class="menu__link">All</a>
+               <a href="{% url 'course_list' %}" class="menu__link">{% trans 'All' %}</a>
            </li>
            {% for s in subjects %}
                <li class="{% if subject == s %}selected{% endif %} menu__item">
                    <a href="{% url 'course_list_subject' s.slug %}" class="menu__link">
 {{ s.title }}
-                       <br><span>{{ s.total_courses }} courses</span>
+                       <br><span>{{ s.total_courses }} {% trans 'courses' %}</span>
                    </a>
                </li>
            {% endfor %}
@@ -40,8 +40,8 @@
                       <a href="{% url 'course_detail' course.slug %}" class="link"> <h3>{{ course.title }} </h3></a>
                        <p>
                            <a href="{% url 'course_list_subject' subject.slug %}" class="link">{{ subject }} </a>.
-                           {{ course.total_modules }} modules.
-                           Instructor: {{ course.owner.username }}
+                           {{ course.total_modules }} {% trans 'modules' %}.
+                           {% trans 'Instructor' %}: {{ course.owner.username }}
                        </p>
                    </div>
                    {% endwith %}

@@ -18,3 +18,4 @@ redis==2.10.6
 django-redis
 django-storages
 boto3
+django-widget-tweaks==1.4.3
