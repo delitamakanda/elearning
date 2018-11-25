@@ -43,6 +43,9 @@
                            {{ course.total_modules }} {% trans 'modules' %}.
                            {% trans 'Instructor' %}: {{ course.owner.username }}
                        </p>
+                       <p>
+                           {{ course.created | date:"M d" }}
+                       </p>
                    </div>
                    {% endwith %}
                </div>

@@ -19,6 +19,9 @@ class CourseEnrollForm(forms.Form):
 
 
 class TeacherSignupForm(UserCreationForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    password1 = forms.CharField(label=_('Password'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    password2 = forms.CharField(label=_('Password verification'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
 
     class Meta(UserCreationForm.Meta):
         model = User
