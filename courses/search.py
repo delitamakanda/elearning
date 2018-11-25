@@ -23,7 +23,7 @@ DEVELOPER_KEY = settings.DEVELOPER_KEY
 YOUTUBE_API_SERVICE_NAME = 'youtube'
 YOUTUBE_API_VERSION = 'v3'
 
-def youtube_search(q, max_results=25):
+def youtube_search(q, max_results):
   youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
     developerKey=DEVELOPER_KEY)
 
@@ -64,6 +64,6 @@ def youtube_search(q, max_results=25):
 if __name__ == '__main__':
 
   try:
-      youtube_search(q)
+      youtube_search(q, max_results)
   except HttpError as e:
       print( 'An HTTP error %d occurred:\n%s' % (e.resp.status, e.content))

@@ -15,8 +15,18 @@
 <form method="get" novalidate>
     <div class="row">
       <div class="col-lg-6">
+          {% trans 'Number of results ' %}
+
+          <select name="results">
+              <option value="10"{% if results == '10'%}selected="selected"{% endif %}>10</option>
+              <option value="15"{% if results == '15'%}selected="selected"{% endif %}>15</option>
+              <option value="20"{% if results == '20'%}selected="selected"{% endif %}>20</option>
+              <option value="25"{% if results == '25'%}selected="selected"{% endif %}>25</option>
+              <option value="30"{% if results == '30'%}selected="selected"{% endif %}>30</option>
+              <option value="50"{% if results == '50'%}selected="selected"{% endif %}>50</option>
+          </select>
         <div class="input-group">
-          <input type="text" name="q"  class="form-control" placeholder="{% trans 'Search for...' %}">
+          <input type="text" name="q" value="{{ q }}"  class="form-control" placeholder="{% trans 'Search for...' %}">
           <span class="input-group-btn">
             <button class="btn btn-default" type="submit">{% trans 'Go!' %}</button>
           </span>
@@ -28,9 +38,17 @@
   <br />
   {% if videos %}
       <div class="row">
-          <div class="col-md-4 list-videos-content">
+          <div class="col-md-4 list-videos-content list-group">
           {% for item in videos.items %}
-            <div class="media">
+            <div class="media list-group-item">
+                {% if item.id.kind == 'youtube#video' %}
+              <span class="badge">{% trans 'video' %}</span>
+                  {% elif item.id.kind == 'youtube#channel' %}
+              <span class="badge">{% trans 'channel' %}</span>
+                  {% elif item.id.kind == 'youtube#playlist' %}
+              <span class="badge">{% trans 'playlist' %}</span>
+                  {% endif %}
+
                 <div class="media-left pull-left">
                     {% if item.id.kind == 'youtube#video' %}
                   <a href="#" class="video" data-video-src="https://www.youtube.com/embed/{{ item.id.videoId }}">

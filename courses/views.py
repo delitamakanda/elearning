@@ -40,10 +40,12 @@ def edit(request):
 def list_videos(request):
     videos = []
     q  = ''
-    if 'q' in request.GET:
+    results = None
+    if 'q' and 'results' in request.GET:
         q = request.GET['q']
-        videos =  youtube_search(q)
-    return render(request,'videos/list.html', {'videos': videos, 'q': q})
+        results = request.GET['results']
+        videos =  youtube_search(q, results)
+    return render(request,'videos/list.html', {'videos': videos, 'q': q, 'results': results})
 
 
 class CourseListView(TemplateResponseMixin, View):
