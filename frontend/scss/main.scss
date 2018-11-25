@@ -133,6 +133,11 @@ iframe {
     padding: 5rem 0;
 }
 
+.list-videos-content {
+    overflow-y: scroll;
+    height: 370px;
+}
+
 .is-offline {
     a:not(.is-cached) {
         cursor: not-allowed;

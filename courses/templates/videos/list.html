@@ -24,26 +24,57 @@
       </div><!-- /.col-lg-6 -->
     </div><!-- /.row -->
   </form>
+  <br />
+  <br />
   {% if videos %}
-      {% for item in videos.items %}
-        <div class="media">
-            <div class="media-left pull-left">
-                {% if item.id.kind == 'youtube#video' %}
-              <a href="https://www.youtube.com/watch?v={{ item.id.videoId }}" target="_blank">
-                  {% elif item.id.kind == 'youtube#channel' %}
-              <a href="https://www.youtube.com/channel/{{ item.id.channelId }}" target="_blank">
-                  {% elif item.id.kind == 'youtube#playlist' %}
-              <a href="https://www.youtube.com/playlist?list={{ item.id.playlistId }}" target="_blank">
-                  {% endif %}
-                <img class="media-object" src="{{ item.snippet.thumbnails.default.url }}" width="{{ item.snippet.thumbnails.default.width }}" height="{{ item.snippet.thumbnails.default.height }}" alt="{{ item.snippet.title }}">
-              </a>
+      <div class="row">
+          <div class="col-md-4 list-videos-content">
+          {% for item in videos.items %}
+            <div class="media">
+                <div class="media-left pull-left">
+                    {% if item.id.kind == 'youtube#video' %}
+                  <a href="#" class="video" data-video-src="https://www.youtube.com/embed/{{ item.id.videoId }}">
+                      {% elif item.id.kind == 'youtube#channel' %}
+                  <a href="https://www.youtube.com/channel/{{ item.id.channelId }}" target="_blank">
+                      {% elif item.id.kind == 'youtube#playlist' %}
+                  <a href="https://www.youtube.com/playlist?list={{ item.id.playlistId }}" target="_blank">
+                      {% endif %}
+                    <img class="media-object" src="{{ item.snippet.thumbnails.default.url }}" width="{{ item.snippet.thumbnails.default.width }}" height="{{ item.snippet.thumbnails.default.height }}" alt="{{ item.snippet.title }}">
+                  </a>
+                </div>
+                <div class="media-body">
+                  <h4 class="media-heading">{{ item.snippet.title }}</h4>
+                  {{ item.snippet.description }}
+                </div>
             </div>
-            <div class="media-body">
-              <h4 class="media-heading">{{ item.snippet.title }}</h4>
-              {{ item.snippet.description }}
-            </div>
-        </div>
-      {% endfor %}
+          {% endfor %}
+          </div>
+          <div class="col-md-8 offset-sm-2">
+              <div class="embed-responsive embed-responsive-16by9">
+                  <!-- https://www.youtube.com/watch?v={{ item.id.videoId }} -->
+                   <iframe id="video-iframe" class="embed-responsive-item hidden" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+               </div>
+          </div>
+      </div>
   {% endif %}
 </div>
  {% endblock %}
+
+{% block domready %}
+$('.video').on('click', function(evt) {
+    evt.preventDefault();
+
+    var $this = $(this);
+    var videoSrc = $this.data('video-src');
+
+    if ($('#video-iframe').length) {
+        $('#video-iframe').removeClass('hidden');
+        $('#video-iframe').attr('src', videoSrc);
+
+        return false
+    }
+
+    return true;
+});
+{% endblock %}
