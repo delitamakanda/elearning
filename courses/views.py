@@ -1,7 +1,9 @@
 import requests
 
+from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Count
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.generic.base import TemplateResponseMixin, View
 from django.forms.models import modelform_factory
@@ -17,8 +19,23 @@ from students.forms import CourseEnrollForm
 from django.utils.decorators import method_decorator
 from students.decorators import teacher_required
 from django.core.cache import cache
+from courses.forms import UserEditForm
 
 from courses.search import youtube_search
+
+@login_required
+def edit(request):
+    if request.method == 'POST':
+        user_form = UserEditForm(instance=request.user, data=request.POST)
+        if user_form.is_valid():
+            user_form.save()
+            messages.success(request, _('Profile updated successfully'))
+        else:
+            messages.error(request, _('Error updating your profile'))
+    else:
+        user_form = UserEditForm(instance=request.user)
+    return render(request, 'registration/edit.html', {'user_form': user_form})
+
 
 def list_videos(request):
     videos = []
