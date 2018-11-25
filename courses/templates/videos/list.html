@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+{% trans 'Videos' %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>{% trans 'Search for a video' %}</h2>
+
+    {% if q %}
+        <h3>{% trans 'Results for' %} : {{ q }}</h3>
+    {% endif %}
+
+<form method="get" novalidate>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="input-group">
+          <input type="text" name="q"  class="form-control" placeholder="{% trans 'Search for...' %}">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="submit">{% trans 'Go!' %}</button>
+          </span>
+        </div><!-- /input-group -->
+      </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+  </form>
+  {% if videos %}
+      {% for item in videos.items %}
+        <div class="media">
+            <div class="media-left pull-left">
+                {% if item.id.kind == 'youtube#video' %}
+              <a href="https://www.youtube.com/watch?v={{ item.id.videoId }}" target="_blank">
+                  {% elif item.id.kind == 'youtube#channel' %}
+              <a href="https://www.youtube.com/channel/{{ item.id.channelId }}" target="_blank">
+                  {% elif item.id.kind == 'youtube#playlist' %}
+              <a href="https://www.youtube.com/playlist?list={{ item.id.playlistId }}" target="_blank">
+                  {% endif %}
+                <img class="media-object" src="{{ item.snippet.thumbnails.default.url }}" width="{{ item.snippet.thumbnails.default.width }}" height="{{ item.snippet.thumbnails.default.height }}" alt="{{ item.snippet.title }}">
+              </a>
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading">{{ item.snippet.title }}</h4>
+              {{ item.snippet.description }}
+            </div>
+        </div>
+      {% endfor %}
+  {% endif %}
+</div>
+ {% endblock %}

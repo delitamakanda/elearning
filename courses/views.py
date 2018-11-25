@@ -1,3 +1,5 @@
+import requests
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Count
 from django.contrib.auth.decorators import login_required
@@ -15,6 +17,17 @@ from students.forms import CourseEnrollForm
 from django.utils.decorators import method_decorator
 from students.decorators import teacher_required
 from django.core.cache import cache
+
+from courses.search import youtube_search
+
+def list_videos(request):
+    videos = []
+    q  = ''
+    if 'q' in request.GET:
+        q = request.GET['q']
+        videos =  youtube_search(q)
+    return render(request,'videos/list.html', {'videos': videos, 'q': q})
+
 
 class CourseListView(TemplateResponseMixin, View):
     model = Course

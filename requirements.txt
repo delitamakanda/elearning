@@ -19,3 +19,4 @@ django-redis
 django-storages
 boto3
 django-widget-tweaks==1.4.3
+google-api-python-client==1.7.4

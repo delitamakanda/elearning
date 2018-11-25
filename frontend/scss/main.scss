@@ -118,6 +118,12 @@ body {
    float: left;
 }
 
+img,
+iframe {
+    max-width: 100%;
+    width: 100%;
+}
+
 .is-offline {
     a:not(.is-cached) {
         cursor: not-allowed;

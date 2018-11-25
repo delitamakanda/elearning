@@ -177,3 +177,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Session
 SESSION_EXPIRE_SECONDS = 3600  # 1 hour
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+
+DEVELOPER_KEY = config('DEVELOPER_API_KEY')
