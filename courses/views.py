@@ -36,16 +36,18 @@ def edit(request):
         user_form = UserEditForm(instance=request.user)
     return render(request, 'registration/edit.html', {'user_form': user_form})
 
-
+@login_required
 def list_videos(request):
+    subjects = Subject.objects.all()
     videos = []
     q  = ''
+    max_lengths = [10, 15, 20, 25, 30, 50]
     results = None
     if 'q' and 'results' in request.GET:
         q = request.GET['q']
         results = request.GET['results']
         videos =  youtube_search(q, results)
-    return render(request,'videos/list.html', {'videos': videos, 'q': q, 'results': results})
+    return render(request,'videos/list.html', {'videos': videos, 'q': q, 'results': results, 'subjects': subjects, 'max_lengths': max_lengths})
 
 
 class CourseListView(TemplateResponseMixin, View):

@@ -17,16 +17,17 @@
       <div class="col-lg-6">
           {% trans 'Number of results ' %}
 
-          <select name="results">
-              <option value="10"{% if results == '10'%}selected="selected"{% endif %}>10</option>
-              <option value="15"{% if results == '15'%}selected="selected"{% endif %}>15</option>
-              <option value="20"{% if results == '20'%}selected="selected"{% endif %}>20</option>
-              <option value="25"{% if results == '25'%}selected="selected"{% endif %}>25</option>
-              <option value="30"{% if results == '30'%}selected="selected"{% endif %}>30</option>
-              <option value="50"{% if results == '50'%}selected="selected"{% endif %}>50</option>
+          <select name="results" id="results">
+              {% for max_length in max_lengths %}
+              <option value="{{ max_length }}">{{ max_length }}</option>
+              {% endfor %}
           </select>
-        <div class="input-group">
-          <input type="text" name="q" value="{{ q }}"  class="form-control" placeholder="{% trans 'Search for...' %}">
+        <div>
+        {% for subject in subjects %}
+            <label class="form-group">
+                <input type="radio" name="q" id="q" value="{{ subject }}" class="form-control" />{{ subject }}
+            </label>
+        {% endfor %}
           <span class="input-group-btn">
             <button class="btn btn-default" type="submit">{% trans 'Go!' %}</button>
           </span>
