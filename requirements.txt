@@ -1,6 +1,6 @@
 certifi
 chardet
-Django==1.11.18
+Django>=1.11.19
 django-braces==1.8.1
 django-embed-video
 djangorestframework
