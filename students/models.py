@@ -70,7 +70,13 @@ class TakenQuiz(models.Model):
     score = models.FloatField()
     date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return '{}. {} {}%'.format(self.quiz, self.student, self.score)
+
 
 class StudentAnswer(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='quiz_answers')
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name='+')
+
+    def __str__(self):
+        return '{} {}'.format(self.student, self.answer)
