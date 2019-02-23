@@ -1,5 +1,7 @@
 import requests
+import datetime
 
+from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Count
@@ -9,10 +11,10 @@ from django.views.generic.base import TemplateResponseMixin, View
 from django.forms.models import modelform_factory
 from django.apps import apps
 from braces.views import LoginRequiredMixin, PermissionRequiredMixin, CsrfExemptMixin, JsonRequestResponseMixin
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.views.generic.list import ListView
-from .models import Course, Module, Content, Subject
-from .forms import ModuleFormSet
+from .models import Course, Module, Content, Subject, Review
+from .forms import ModuleFormSet, ReviewForm
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from students.forms import CourseEnrollForm
@@ -91,7 +93,29 @@ class CourseDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(CourseDetailView, self).get_context_data(**kwargs)
         context['enroll_form'] = CourseEnrollForm(initial={'course': self.object})
+        context['review_form'] = ReviewForm()
+        context['reviews'] = Review.objects.order_by('-pub_date')[:9]
         return context
+
+
+def add_review(request, subject):
+    subject = get_object_or_404(Course, slug=subject)
+    form = ReviewForm(request.POST)
+    if form.is_valid():
+        rating = form.cleaned_data['rating']
+        comment = form.cleaned_data['comment']
+        review = Review()
+        review.course = subject
+        review.user_name = request.user
+        review.rating = rating
+        review.comment = comment
+        review.pub_date = datetime.datetime.now()
+        review.save()
+        return HttpResponseRedirect(reverse('course_detail', args=(subject.slug,)))
+    else:
+        # TODO: flash message for error
+        return HttpResponseRedirect(reverse('course_detail', args=(subject.slug,)))
+    return render(request, 'courses/course/detail.html', {'subject': subject, 'form': form})
 
 
 class ModuleOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):

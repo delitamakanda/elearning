@@ -7,6 +7,8 @@ from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.utils.text import slugify
 
+import numpy as np
+
 class Subject(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
@@ -34,6 +36,10 @@ class Course(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super(Course, self).save(*args, **kwargs)
+
+    def average_rating(self):
+        all_ratings = map(lambda x: x.rating, self.review_set.all())
+        return np.mean(all_ratings)
 
     def __str__(self):
         return self.title
@@ -88,3 +94,18 @@ class Content(models.Model):
 
     class Meta:
         ordering = ['order']
+
+
+class Review(models.Model):
+    RATING_CHOICES = (
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5')
+    )
+    course = models.ForeignKey(Course)
+    pub_date = models.DateTimeField(auto_now_add=True)
+    user_name = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='reviewers')
+    comment = models.CharField(max_length=200)
+    rating = models.IntegerField(choices=RATING_CHOICES)
