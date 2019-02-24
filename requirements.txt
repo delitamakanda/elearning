@@ -21,3 +21,4 @@ boto3
 django-widget-tweaks==1.4.3
 google-api-python-client==1.7.4
 numpy==1.16.1
+pandas==0.24.1
