@@ -104,7 +104,7 @@ class Review(models.Model):
         (4, '4'),
         (5, '5')
     )
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(Course, related_name='reviews')
     pub_date = models.DateTimeField(auto_now_add=True)
     user_name = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='reviewers')
     comment = models.CharField(max_length=200)

@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Count
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.views.generic.base import TemplateResponseMixin, View
 from django.forms.models import modelform_factory
 from django.apps import apps
@@ -68,7 +69,7 @@ class CourseListView(TemplateResponseMixin, View):
         if not subjects:
             subjects = Subject.objects.annotate(total_courses=Count('courses'))
             cache.set('all_subjects', subjects)
-        all_courses = Course.objects.annotate(total_modules=Count('modules'))
+        all_courses = Course.objects.annotate(total_modules=Count('modules', distinct=True)).annotate(total_reviews=Count('reviews', distinct=True))
         # subjects = Course.objects.annotate(total_modules=Count('courses'))
         # courses = Course.objects.annotate(total_modules=Count('modules'))
 
@@ -84,7 +85,7 @@ class CourseListView(TemplateResponseMixin, View):
             if not courses:
                 courses = all_courses
                 cache.set('all_courses', courses)
-        return self.render_to_response({'subjects': subjects, 'subject': subject, 'courses': courses })
+        return self.render_to_response({'subjects': subjects, 'subject': subject, 'courses': courses})
 
 class CourseDetailView(DetailView):
     model = Course
@@ -111,9 +112,10 @@ def add_review(request, subject):
         review.comment = comment
         review.pub_date = datetime.datetime.now()
         review.save()
+        messages.success(request, 'Review added.')
         return HttpResponseRedirect(reverse('course_detail', args=(subject.slug,)))
     else:
-        # TODO: flash message for error
+        messages.warning(request, 'Error Occured.')
         return HttpResponseRedirect(reverse('course_detail', args=(subject.slug,)))
     return render(request, 'courses/course/detail.html', {'subject': subject, 'form': form})
 

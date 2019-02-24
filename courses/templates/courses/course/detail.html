@@ -33,9 +33,9 @@
            </div>
        {% endwith %}
        <hr />
-       {% if course.review_set.all %}
+       {% if course.reviews.all %}
             {% trans 'Reviews' %}
-           {% for review in course.review_set.all %}
+           {% for review in course.reviews.all %}
            <div>
                <h6>{% trans 'rated' %} {{ review.rating }} {% trans 'of 5 by' %} {{ review.user_name }}</h6>
                <p>{{ review.comment }}</p>

@@ -46,6 +46,9 @@
                        <p>
                            {{ course.created | date:"M d" }}
                        </p>
+                       <p>
+                           {{ course.total_reviews }} {% trans 'reviews' %}
+                       </p>
                    </div>
                    {% endwith %}
                </div>
