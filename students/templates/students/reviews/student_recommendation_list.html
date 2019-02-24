@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+{% trans 'Courses recommended' %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="recommended-courses">
+
+        <h2>{% trans 'Recommendations for' %} {{ student }}</h2>
+
+        <ul>
+         {% for course in  course_list %}
+            <li>{{ course.title }}</li>
+         {% endfor %}
+        </ul>
+
+    </div>
+</div>
+ {% endblock %}
