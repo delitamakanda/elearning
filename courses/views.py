@@ -4,7 +4,7 @@ import datetime
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Count
+from django.db.models import Count, F, Sum, FloatField, Avg
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -69,7 +69,7 @@ class CourseListView(TemplateResponseMixin, View):
         if not subjects:
             subjects = Subject.objects.annotate(total_courses=Count('courses'))
             cache.set('all_subjects', subjects)
-        all_courses = Course.objects.annotate(total_modules=Count('modules', distinct=True)).annotate(total_reviews=Count('reviews', distinct=True))
+        all_courses = Course.objects.annotate(total_modules=Count('modules', distinct=True)).annotate(total_reviews=Count('reviews', distinct=True)).annotate(average_rating=Avg(F('reviews__rating'), distinct=True))
         # subjects = Course.objects.annotate(total_modules=Count('courses'))
         # courses = Course.objects.annotate(total_modules=Count('modules'))
 

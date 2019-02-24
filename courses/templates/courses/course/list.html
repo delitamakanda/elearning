@@ -49,6 +49,11 @@
                        <p>
                            {{ course.total_reviews }} {% trans 'reviews' %}
                        </p>
+                       <p>
+                           {% if course.average_rating %}
+                            {{ course.average_rating  }} {% trans 'average rating' %}
+                           {% endif %}
+                       </p>
                    </div>
                    {% endwith %}
                </div>

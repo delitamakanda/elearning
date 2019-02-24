@@ -7,6 +7,7 @@ from courses.models import Subject
 from courses.models import Course
 from courses.models import Module
 from courses.models import Review
+from courses.models import Cluster
 from django.utils.translation import gettext_lazy as _
 
 def export_to_csv(modeladmin, request, queryset):
@@ -57,3 +58,8 @@ class ReviewAdmin(admin.ModelAdmin):
     list_filter = ['pub_date', 'user_name']
     search_fields = ['comment']
     actions = [export_to_csv]
+
+
+@admin.register(Cluster)
+class ClusterAdmin(admin.ModelAdmin):
+    list_display = ['name', 'get_members']
