@@ -42,10 +42,12 @@
            </div>
            {% endfor %}
        {% endif %}
-       <form action="{% url 'add_review' course.slug %}" method="post" novalidate>
-           {% csrf_token %}
-           {{ review_form.as_p }}
-           <input type="submit" class="btn btn-default" value="{% trans 'Add review'%}" />
-       </form>
+      {% if request.user.is_authenticated %}
+          <form action="{% url 'add_review' course.slug %}" method="post" novalidate>
+              {% csrf_token %}
+              {{ review_form.as_p }}
+              <input type="submit" class="btn btn-default" value="{% trans 'Add review'%}" />
+          </form>
+      {% endif %}
    </div>
    {% endblock %}
