@@ -14,7 +14,7 @@ from django.apps import apps
 from braces.views import LoginRequiredMixin, PermissionRequiredMixin, CsrfExemptMixin, JsonRequestResponseMixin
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.views.generic.list import ListView
-from .models import Course, Module, Content, Subject, Review
+from .models import Course, Module, Content, Subject, Review, Cluster
 from .forms import ModuleFormSet, ReviewForm
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -25,6 +25,7 @@ from django.core.cache import cache
 from courses.forms import UserEditForm
 
 from courses.search import youtube_search
+from courses.suggestions import update_clusters
 
 @login_required
 def edit(request):
@@ -112,6 +113,7 @@ def add_review(request, subject):
         review.comment = comment
         review.pub_date = datetime.datetime.now()
         review.save()
+        update_clusters()
         messages.success(request, 'Review added.')
         return HttpResponseRedirect(reverse('course_detail', args=(subject.slug,)))
     else:

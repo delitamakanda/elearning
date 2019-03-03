@@ -10,11 +10,18 @@
 
         <h2>{% trans 'Recommendations for' %} {{ student }}</h2>
 
-        <ul>
-         {% for course in  course_list %}
-            <li>{{ course.title }}</li>
+        <div>
+         {% for course in course_list %}
+             <a href="{% url 'course_detail' course.slug %}" class="link"> <h3>{{ course.title }} </h3></a>
+              <p>
+                  {{ course.subject }}
+                  {% trans 'Instructor' %}: {{ course.owner.username }}
+              </p>
+              <p>
+                  {{ course.created | date:"M d" }}
+              </p>
          {% endfor %}
-        </ul>
+        </div>
 
     </div>
 </div>

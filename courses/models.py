@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Avg
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -38,8 +39,9 @@ class Course(models.Model):
         super(Course, self).save(*args, **kwargs)
 
     def average_rating(self):
-        all_ratings = map(lambda x: x.rating, self.review_set.all())
-        return np.mean(all_ratings)
+        # all_ratings = map(lambda x: x.rating, self.reviews.all())
+        # return np.mean(all_ratings)
+        return self.reviews.aggregate(Avg('rating'))['rating__avg']
 
     def __str__(self):
         return self.title

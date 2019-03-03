@@ -51,7 +51,7 @@
                        </p>
                        <p>
                            {% if course.average_rating %}
-                            {{ course.average_rating  }} {% trans 'average rating' %}
+                            {{ course.average_rating|floatformat:1  }} {% trans 'average rating' %}
                            {% endif %}
                        </p>
                    </div>

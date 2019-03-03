@@ -28,6 +28,8 @@ from django.core.mail import mail_admins
 from django.contrib import messages
 from students.decorators import student_required
 
+from courses.suggestions import update_clusters
+
 class StudentCourseListView(LoginRequiredMixin, ListView):
     model = Course
     template_name = 'students/course/list.html'
@@ -186,15 +188,22 @@ def student_recommendation_list(request):
     user_reviews = Review.objects.filter(user_name=request.user).prefetch_related('course')
     user_review_course_ids = set(map(lambda x: x.course.id, user_reviews))
 
-    user_cluster_name = User.objects.get(username=request.user).cluster_set.first().name
-    user_cluster_other_members = Cluster.objects.get(name=user_cluster_name).users.exclude(username=request.user).all()
+    try:
+        user_cluster_name = User.objects.get(username=request.user.username).cluster_set.first().name
+    except:
+        update_clusters()
+        user_cluster_name = User.objects.get(username=request.user.username).cluster_set.first().name
+
+
+    user_cluster_other_members = Cluster.objects.get(name=user_cluster_name).users.exclude(username=request.user.username).all()
     others_members_usernames = set(map(lambda x: x, user_cluster_other_members))
+
     others_users_reviews = Review.objects.filter(user_name__in=others_members_usernames).exclude(course__id__in=user_review_course_ids)
     others_users_reviews_courses_ids = set(map(lambda x: x.course.id, others_users_reviews))
 
     course_list = sorted(
         list(Course.objects.filter(id__in=others_users_reviews_courses_ids)),
-        key=lambda x: x.average_rating,
+        key=lambda x: x.average_rating(),
         reverse=True
     )
     return render(request, 'students/reviews/student_recommendation_list.html', {'student': request.user.username, 'course_list': course_list})
