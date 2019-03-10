@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'students',
+    'agenda',
     'embed_video',
     'rest_framework',
     'storages',
