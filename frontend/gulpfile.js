@@ -18,7 +18,7 @@ function onError(err) {
 
 var paths = {
     sass: {
-        src: './scss/**/*.{scss,sass}',
+        src: './scss/styles.{scss,sass}',
         dest: '../courses/static/styles/',
         opts: {}
     },
@@ -102,7 +102,7 @@ gulp.task('iconfont', function () {
 
 // ---------------------------------------------- Gulp Watch
 gulp.task('watch:styles', function () {
-  gulp.watch(paths.sass.src, gulp.series('sass'));
+  gulp.watch('./scss/' + '*.scss', gulp.series('sass'));
 });
 
 gulp.task('watch', gulp.series('sass',
