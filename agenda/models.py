@@ -4,7 +4,7 @@ from students.models import User
 
 # Create your models here.
 class Event(models.Model):
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=250, unique=True)
     description = models.TextField(blank=True, null=True)
     guests = models.ManyToManyField(User, through='EventGuest')
     date = models.DateTimeField()
@@ -23,6 +23,9 @@ class EventGuest(models.Model):
     event = models.ForeignKey(Event)
     guest = models.ForeignKey(User)
     status = models.IntegerField(choices=status_choices)
+
+    class Meta:
+        unique_together = ('event', 'guest')
 
     def __str__(self):
         return '{} - {}'.format(self.event, self.guest)
