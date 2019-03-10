@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n %}
+   {% block title %}
+    {{ event.name }}
+   {% endblock %}
+   {% block content %}
+   <div class="container">
+         <div>
+           <h2>{{ event.name }}</h2>
+           <p>{{ event.description }}</p>
+           <p>{{ event.date }}</p>
+           <p>{{ event.location }}</p>
+         </div>
+         <div>
+             {% for guest in event.eventguest_set.all %}
+                <p>{{ guest.guest }}</p>
+                <p>{{ guest.get_status_display }}</p>
+             {% endfor %}
+         </div>
+         <div>
+           <form action="" method="post" enctype="multipart/form-data">
+             {{ form.as_p }}
+             {% csrf_token %}
+             <p><input type="submit" class="btn btn-primary" value="{% trans 'Joining event' %}"></p>
+           </form>
+         </div>
+     </div>
+   {% endblock %}
