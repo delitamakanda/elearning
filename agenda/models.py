@@ -14,7 +14,10 @@ class Event(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return "/calendar/%s/detail" % self.id
+        return "/calendar/%s/detail/" % self.id
+
+    def delete_url(self):
+        return "/calendar/%s/delete/" % self.id
 
 
 class EventGuest(models.Model):
@@ -32,3 +35,6 @@ class EventGuest(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.event, self.guest)
+
+    def delete_url(self):
+        return "/calendar/%i/guest/%i/delete/" % (self.event.id, self.guest.id)

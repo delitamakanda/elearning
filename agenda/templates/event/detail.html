@@ -16,10 +16,9 @@
                 <p>{{ guest.guest }}</p>
                 <div>
                     {{ guest.get_status_display }}
-                    <form action="{% url 'delete_guest' event.id guest.guest.id %}" method="post">
-                        {% csrf_token %}
-                        <input type="submit" class="btn btn-default" value="{% trans 'Supprimer' %}">
-                    </form>
+                    {% with delete_url=guest.delete_url %}
+                    {% include 'partial/delete_form.html' %}
+                    {% endwith %}
                 </div>
              {% endfor %}
          </div>
