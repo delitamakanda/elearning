@@ -9,8 +9,8 @@
 {% endblock %}
 
 {% block content %}
+{% include "partial/tabs.html" %}
 <div class="container admin">
-    {% include "partial/tabs.html" %}
    <h1 class="header">
        {% if subject %}
            {{ subject.title }} {% trans 'courses' %}

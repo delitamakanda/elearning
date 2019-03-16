@@ -13,6 +13,9 @@ class Event(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return "/calendar/%s/detail" % self.id
+
 
 class EventGuest(models.Model):
     status_choices = (
