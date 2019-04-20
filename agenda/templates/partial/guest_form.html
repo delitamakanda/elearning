@@ -1,0 +1,6 @@
+{% load i18n %}
+<form action="" method="post" enctype="multipart/form-data" id="guest_form">
+  {{ form.as_p }}
+  {% csrf_token %}
+  <p><input type="submit" class="btn btn-primary" value="{% trans 'Joining event' %}"></p>
+</form>

@@ -1,4 +1,10 @@
-from django.shortcuts import render, HttpResponseRedirect
+import json
+
+from django.shortcuts import render, HttpResponseRedirect, render_to_response
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from django.template import RequestContext
+
 from django.forms import HiddenInput
 from agenda.models import Event
 from agenda.models import EventGuest
@@ -26,12 +32,31 @@ def detail_event(request, id):
         form = EventGuestForm(request.POST)
         if form.is_valid():
             form.save()
+            if request.is_ajax():
+                delete_form = render_to_string(
+                    "partial/delete_form.html",
+                    {'delete_url': form.instance.delete_url()}
+                )
+                data = {
+                    'guest': form.instance.guest.username,
+                    'get_status_display' : form.instance.get_status_display(),
+                    'delete_form': delete_form
+                }
+                return HttpResponse(
+                    json.dumps(data),
+                    content_type="application/json"
+                )
             return HttpResponseRedirect('/calendar/%s/detail/' % id)
     else:
         form = EventGuestForm(initial={'event': event})
         guests = [user.pk for user in event.guests.all()]
         form.fields['guest'].queryset=User.objects.exclude(pk__in=guests)
         form.fields['event'].widget = HiddenInput()
+    if request.is_ajax():
+        render_to_response(
+            'partial/guest_form.html',
+            { 'event': event, 'form': form}
+        )
     return render(request, 'event/detail.html', {'event': event, 'form': form})
 
 def delete_guest(request, id, guest):
@@ -43,6 +68,8 @@ def delete_guest(request, id, guest):
             guest = guest
         )
         to_delete.delete()
+        if request.is_ajax():
+            return HttpResponse('OK')
     return HttpResponseRedirect('/calendar/%s/detail/' % id)
 
 
