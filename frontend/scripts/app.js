@@ -1,7 +1,6 @@
 'use strict';
 
 $(function() {
-
     // navbar dropdown
     var $navbarBurgers = $('body').find('.navbar-burger');
 
