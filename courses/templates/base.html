@@ -60,7 +60,8 @@
                       <li><a href="{% url 'student_course_list' %}">{% trans 'My Course' %}</a></li>
                   {% endif %}
                 <li role="separator" class="divider"></li>
-                <li><a href="{% url 'student_recommendation_list' %}">{% trans 'Recommendations' %}</a></li>
+                <li><a href="{% url 'student_recommendation_list' %}">{% trans 'My recommended courses' %}</a></li>
+                <li><a href="{% url 'listes_events' %}">{% trans 'My events' %}</a></li>
                 <li><a href="{% url 'edit' %}">{% trans 'My account' %}</a></li>
                 <li><a href="{% url 'logout' %}">{% trans 'Logout' %}</a></li>
               </ul>

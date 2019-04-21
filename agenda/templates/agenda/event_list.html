@@ -6,7 +6,7 @@
    {% block content %}
    <div class="container">
          <ul>
-             {% for event in events %}
+             {% for event in object_list %}
                 <li>
                     <h3>
                         <a href="" class="titre">{{ event.name }}</a>
@@ -30,16 +30,16 @@
          </ul>
 
          <ul class="pagination">
-             {% if events.has_previous %}
-             <li><a href="?page={{ events.previous_page_number }}">{% trans 'Previous' %}</a></li>
+             {% if page_obj.has_previous %}
+             <li><a href="?page={{ page_obj.previous_page_number }}">{% trans 'Previous' %}</a></li>
              {% endif %}
-             {% for l in events.paginator.page_range %}
+             {% for l in page_obj.paginator.page_range %}
                 {% if forloop.counter < 5 %}
                     <li {% if l == events.number %}class="active"{% endif %}><a href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
                 {% endif %}
              {% endfor %}
-             {% if events.has_next %}
-             <li><a href="?page={{ events.next_page_number }}">{% trans 'Next' %}</a></li>
+             {% if page_obj.has_next %}
+             <li><a href="?page={{ page_obj.next_page_number }}">{% trans 'Next' %}</a></li>
              {% endif %}
         </ul>
 

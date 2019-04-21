@@ -1,9 +1,12 @@
 import json
+import datetime
 
 from django.shortcuts import render, HttpResponseRedirect, render_to_response
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.template import RequestContext
+from django.views.generic.list import ListView
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
 from django.forms import HiddenInput
 from agenda.models import Event
@@ -14,7 +17,31 @@ from students.models import User
 # Create your views here.
 def liste_events(request):
     events = Event.objects.all()
+    paginator = Paginator(events, 10)
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+    try:
+        events = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        events = paginator.page(paginator.num_pages)
     return render(request, 'event/liste.html', {'events': events})
+
+
+class ListEvents(ListView):
+
+    def get_queryset(self):
+        events = Event.objects.filter(
+            guests = self.request.user,
+            date__gte = datetime.datetime.now()
+        )
+        if 'champ' in self.kwargs:
+            events = events.filter(
+                (self.kwargs['champ'],
+                self.kwargs['terme'])
+            )
+        return events
 
 def create_event(request):
     if request.method == "POST":
