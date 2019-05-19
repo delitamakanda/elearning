@@ -20,6 +20,7 @@ class CourseEnrollForm(forms.Form):
 
 class TeacherSignupForm(UserCreationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    email = forms.EmailField(required=True, label=_('E-mail'), widget=forms.TextInput(attrs={'class':'form-control'}))
     password1 = forms.CharField(label=_('Password'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
     password2 = forms.CharField(label=_('Password verification'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
 
@@ -29,6 +30,7 @@ class TeacherSignupForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.is_teacher = True
+        user.email = self.cleaned_data['email']
         if commit:
             user.save()
         return user
@@ -36,6 +38,7 @@ class TeacherSignupForm(UserCreationForm):
 
 class StudentSignupForm(UserCreationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    email = forms.EmailField(required=True, label=_('E-mail'), widget=forms.TextInput(attrs={'class':'form-control'}))
     password1 = forms.CharField(label=_('Password'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
     password2 = forms.CharField(label=_('Password verification'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
     interests = forms.ModelMultipleChoiceField(
@@ -51,6 +54,7 @@ class StudentSignupForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.is_student = True
+        user.email = self.cleaned_data['email']
         user.save()
         student = Student.objects.create(user=user)
         student.interests.add(*self.cleaned_data.get('interests'))

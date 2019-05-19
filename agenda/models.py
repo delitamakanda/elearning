@@ -82,3 +82,17 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.owner
+
+
+class Invitation(models.Model):
+    email = models.EmailField()
+    sender = models.ForeignKey(User)
+
+    class Meta:
+        unique_together = ('email', 'sender')
+
+    def __str__(self):
+        return self.email
+
+    def get_absolute_url(self):
+        return reverse('invitation_list')
