@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.template import RequestContext
 from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
 from django.forms import HiddenInput
@@ -42,6 +43,45 @@ class ListEvents(ListView):
                 self.kwargs['terme'])
             )
         return events
+
+
+class DetailEvents(DetailView):
+    model = Event
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailEvents, self).get_context_data(**kwargs)
+        form = EventGuestForm(initial={'event': self.object})
+        context['form'] = form
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = EventGuestForm(self.request.POST)
+        if form.is_valid():
+            form.save()
+            if self.request.is_ajax():
+                delete_form = render_to_string(
+                    "partial/delete_form.html",
+                    {'delete_url': form.instance.delete_url()}
+                )
+                data = {
+                    'guest': form.instance.guest.username,
+                    'get_status_display' : form.instance.get_status_display(),
+                    'delete_form': delete_form
+                }
+                return HttpResponse(
+                    json.dumps(data),
+                    content_type="application/json"
+                )
+            else:
+                return HttpResponseRedirect('/calendar/%s/detail/' % form.instance.event.id)
+        else:
+            if request.is_ajax():
+                return render(request,
+                    'partial/guest_form.html',
+                    { 'event': form.instance.event, 'form': form}
+                )
+            else:
+                return render(request, 'event/detail.html', {'event': form.instance.event, 'form': form})
 
 def create_event(request):
     if request.method == "POST":

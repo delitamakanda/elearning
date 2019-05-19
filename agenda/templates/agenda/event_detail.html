@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+{{ object.name }}
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div>
+        <h2>{{ object.name }} (<a href="{% url 'update_event' object.id %}">{% trans 'edit' %}</a>)</h2>
+        <p>{{ object.description }}</p>
+        <p>{{ object.date }}</p>
+        <p>{{ object.location }}</p>
+    </div>
+    <div>
+        {% for guest in object.eventguest_set.all %}
+        <div>
+            {{ guest.guest }} : {{ guest.get_status_display }}
+            {% with delete_url=guest.delete_url %}
+            {% include 'partial/delete_form.html' %}
+            {% endwith %}
+        </div>
+        {% endfor %}
+    </div>
+    <div>
+        {% include 'partial/guest_form.html' %}
+        {% with delete_url=object.delete_url %}
+        {% include 'partial/delete_form.html' %}
+        {% endwith %}
+    </div>
+</div>
+{% endblock %}
