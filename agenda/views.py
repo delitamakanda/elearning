@@ -7,13 +7,21 @@ from django.template.loader import render_to_string
 from django.template import RequestContext
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 from django.forms import HiddenInput
 from agenda.models import Event
 from agenda.models import EventGuest
-from agenda.forms import EventForm, EventGuestForm
+from agenda.forms import EventForm, EventGuestForm, InvitationForm
 from students.models import User
+
+from agenda.models import Circle
+from agenda.models import Contact
+from agenda.models import Invitation
+from agenda.models import UserInfo
 
 # Create your views here.
 def liste_events(request):
@@ -156,3 +164,32 @@ def update_event(request, id):
     else:
         form = EventForm(instance = event)
     return render(request, 'event/create.html', {'form': form})
+
+
+
+@method_decorator([login_required], name='dispatch')
+class InvitationListView(ListView):
+
+    def get_queryset(self):
+        return Invitation.objects.filter(sender=self.request.user)
+
+
+@method_decorator([login_required], name='dispatch')
+class InvitationView(CreateView):
+    form_class = InvitationForm
+    model = Invitation
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.sender = self.request.user
+
+        try:
+            Invitation.objects.get(email=obj.email, sender=obj.sender)
+            form._errors['email'] = ErrorList(
+                [u"Une invitation a déja été envoyée à cette adresse."]
+            )
+            return super(InvitationView, self).form_invalid(form)
+        except Invitation.DoesNotExist:
+            pass
+        obj.save()
+        return HttpResponseRedirect(obj.get_absolute_url())

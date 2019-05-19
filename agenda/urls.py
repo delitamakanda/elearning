@@ -11,4 +11,6 @@ urlpatterns = [
     url(r'^(\d+)/guest/(\d+)/delete/$', views.delete_guest, name='delete_guest'),
     url(r'^(\d+)/delete/$', views.delete_event, name='delete_event'),
     url(r'^(\d+)/update/$', views.update_event, name='update_event'),
+    url(r'^invitation/liste/$', views.InvitationListView.as_view(), name='invitation_list'),
+    url(r'^invitation/$', views.InvitationView.as_view(), name='invitation'),
 ]

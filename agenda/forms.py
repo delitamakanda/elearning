@@ -1,5 +1,5 @@
 from django import forms
-from agenda.models import Event, EventGuest
+from agenda.models import Event, EventGuest, Invitation
 from students.models import (
     User
 )
@@ -25,3 +25,11 @@ class EventGuestForm(forms.ModelForm):
         if 'event' in self.initial:
             guests = [user.pk for user in self.initial['event'].guests.all()]
             self.fields['guest'].queryset=User.objects.exclude(pk__in=guests)
+
+
+class InvitationForm(forms.ModelForm):
+
+    class Meta:
+        model = Invitation
+        fields = ('email', 'sender',)
+        exclude = ('sender',)
