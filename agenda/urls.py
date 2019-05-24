@@ -12,5 +12,5 @@ urlpatterns = [
     url(r'^(\d+)/delete/$', views.delete_event, name='delete_event'),
     url(r'^(\d+)/update/$', views.update_event, name='update_event'),
     url(r'^invitation/liste/$', views.InvitationListView.as_view(), name='invitation_list'),
-    url(r'^invitation/$', views.InvitationView.as_view(), name='invitation'),
+    url(r'^invitation/$', views.InvitationCreateView.as_view(), name='create_invitation'),
 ]

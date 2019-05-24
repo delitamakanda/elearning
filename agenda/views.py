@@ -1,16 +1,21 @@
 import json
 import datetime
 
+from django.contrib.sites.models import Site
 from django.shortcuts import render, HttpResponseRedirect, render_to_response
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.translation import gettext as _
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.template import RequestContext
+from django.forms.utils import ErrorList
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 
 from django.forms import HiddenInput
 from agenda.models import Event
@@ -174,8 +179,18 @@ class InvitationListView(ListView):
         return Invitation.objects.filter(sender=self.request.user)
 
 
+def send_invitation(invitation):
+    try:
+        User.objects.get(email=invitation.email)
+        message = _('%s vous a ajouté à ses contacts.' % invitation.sender.username)
+    except User.DoesNotExist:
+        message = _('%s vous invite à rejoindre ses contacts. %s Inscrivez vous sur http://%s/accounts/signup/ pour accepter son invitation.' % invitation.sender.username, Site.objects.get_current().domain)
+
+    send_mail(_('Une invitation a été envoyée'),message,invitation.sender,[invitation.email], fail_silently=False)
+
+
 @method_decorator([login_required], name='dispatch')
-class InvitationView(CreateView):
+class InvitationCreateView(CreateView):
     form_class = InvitationForm
     model = Invitation
 
@@ -186,10 +201,11 @@ class InvitationView(CreateView):
         try:
             Invitation.objects.get(email=obj.email, sender=obj.sender)
             form._errors['email'] = ErrorList(
-                [u"Une invitation a déja été envoyée à cette adresse."]
+                [_('Une invitation a déja été envoyée à cette adresse.')]
             )
-            return super(InvitationView, self).form_invalid(form)
+            return super(InvitationCreateView, self).form_invalid(form)
         except Invitation.DoesNotExist:
             pass
         obj.save()
+        send_invitation(obj)
         return HttpResponseRedirect(obj.get_absolute_url())
