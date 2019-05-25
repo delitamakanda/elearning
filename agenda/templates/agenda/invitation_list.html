@@ -5,6 +5,10 @@
 {% endblock %}
 {% block content %}
    <div class="container">
-        
+       <ul>
+        {% for obj in object_list %}
+            <li>{{ obj.email }}</li>
+        {% endfor %}
+        </ul>
      </div>
 {% endblock %}

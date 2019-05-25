@@ -1,5 +1,5 @@
 from django import forms
-from agenda.models import Event, EventGuest, Invitation
+from agenda.models import Event, EventGuest, Invitation, Circle
 from students.models import (
     User
 )
@@ -33,3 +33,11 @@ class InvitationForm(forms.ModelForm):
         model = Invitation
         fields = ('email', 'sender',)
         exclude = ('sender',)
+
+
+class CircleForm(forms.ModelForm):
+
+    class Meta:
+        model = Circle
+        fields = ('name',)
+        exclude = ('owner',)

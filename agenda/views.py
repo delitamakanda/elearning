@@ -20,7 +20,7 @@ from django.core.mail import send_mail
 from django.forms import HiddenInput
 from agenda.models import Event
 from agenda.models import EventGuest
-from agenda.forms import EventForm, EventGuestForm, InvitationForm
+from agenda.forms import EventForm, EventGuestForm, InvitationForm, CircleForm
 from students.models import User
 
 from agenda.models import Circle
@@ -174,19 +174,10 @@ def update_event(request, id):
 
 @method_decorator([login_required], name='dispatch')
 class InvitationListView(ListView):
+    model = Invitation
 
     def get_queryset(self):
         return Invitation.objects.filter(sender=self.request.user)
-
-
-def send_invitation(invitation):
-    try:
-        User.objects.get(email=invitation.email)
-        message = _('%s vous a ajouté à ses contacts.' % invitation.sender.username)
-    except User.DoesNotExist:
-        message = _('%s vous invite à rejoindre ses contacts. %s Inscrivez vous sur http://%s/accounts/signup/ pour accepter son invitation.' % invitation.sender.username, Site.objects.get_current().domain)
-
-    send_mail(_('Une invitation a été envoyée'),message,invitation.sender,[invitation.email], fail_silently=False)
 
 
 @method_decorator([login_required], name='dispatch')
@@ -197,7 +188,6 @@ class InvitationCreateView(CreateView):
     def form_valid(self, form):
         obj = form.save(commit=False)
         obj.sender = self.request.user
-
         try:
             Invitation.objects.get(email=obj.email, sender=obj.sender)
             form._errors['email'] = ErrorList(
@@ -207,5 +197,36 @@ class InvitationCreateView(CreateView):
         except Invitation.DoesNotExist:
             pass
         obj.save()
-        send_invitation(obj)
+        return send_invitation(obj)
+
+
+def send_invitation(invitation):
+    try:
+        user = User.objects.get(email=invitation.email)
+        message = _('{0} vous a ajouté à ses contacts.'.format(invitation.sender.username))
+        contact = Contact(owner=invitation.sender, user=user, invitation_send=True, invitation_accepted=False)
+        contact.save()
+        invitation.delete()
+        return HttpResponseRedirect(contact.get_absolute_url())
+    except User.DoesNotExist:
+        message = _('{0} vous invite à rejoindre ses contacts. Inscrivez vous sur http://{1}/accounts/signup/ pour accepter son invitation.'.format(invitation.sender.username, Site.objects.get_current().domain))
+
+        send_mail(_('Une invitation a été envoyée'),message,invitation.sender,[invitation.email], fail_silently=False)
+        return HttpResponseRedirect(invitation.get_absolute_url())
+
+
+@method_decorator([login_required], name='dispatch')
+class ContactDetailView(DetailView):
+    model = Contact
+
+
+@method_decorator([login_required], name='dispatch')
+class CircleCreateView(CreateView):
+    form_class = CircleForm
+    model = Circle
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.owner = self.request.user
+        obj.save()
         return HttpResponseRedirect(obj.get_absolute_url())

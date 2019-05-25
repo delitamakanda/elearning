@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+    {% trans 'Contact' %}
+{% endblock %}
+{% block content %}
+   <div class="container">
+       {{ object.user }}
+       {{ object.user.email }}
+       {{ object.user.is_student }}
+       {{ object.user.is_teacher }}
+     </div>
+{% endblock %}
