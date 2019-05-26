@@ -74,6 +74,19 @@ class Contact(models.Model):
     invitation_accepted = models.BooleanField()
     optional_informations = models.OneToOneField(UserInfo, blank=True, null=True)
 
+    def save(self, *args, **kwargs):
+        super(Contact, self).save(*args, **kwargs)
+        if self.optional_informations == None:
+            infos = UserInfo.objects.create()
+            self.optional_informations = infos
+            self.save()
+            infos.save()
+
+    def delete(self, *args, **kwargs):
+        optional_informations = self.optional_informations
+        super(Contact, self).delete(*args, **kwargs)
+        optional_informations.delete()
+
     def all_contacts(self, user):
         return Contact.objects.filter(owner=user)
 
@@ -84,7 +97,7 @@ class Contact(models.Model):
         return reverse('contact_detail', kwargs={'pk':self.pk})
 
     def __str__(self):
-        return '{} x {}'.format(self.owner, self.user)
+        return '{} : {}'.format(self.owner, self.user)
 
 
 class Invitation(models.Model):

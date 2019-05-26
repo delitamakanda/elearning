@@ -11,7 +11,7 @@ from django.template import RequestContext
 from django.forms.utils import ErrorList
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -230,3 +230,12 @@ class CircleCreateView(CreateView):
         obj.owner = self.request.user
         obj.save()
         return HttpResponseRedirect(obj.get_absolute_url())
+
+
+@method_decorator([login_required], name='dispatch')
+class UserInfoUpdateView(UpdateView):
+
+    def get_form(self, form_class):
+        form = super(UserInfoUpdateView, self).get_form(form_class)
+        form.fields['circle'].queryset = Circle.objects.filter(owner=self.request.user)
+        return form
