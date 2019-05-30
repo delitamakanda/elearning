@@ -2,10 +2,10 @@ import json
 import datetime
 
 from django.contrib.sites.models import Site
-from django.shortcuts import render, HttpResponseRedirect, render_to_response
+from django.shortcuts import render, HttpResponseRedirect, render_to_response, get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext as _
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.template.loader import render_to_string
 from django.template import RequestContext
 from django.forms.utils import ErrorList
@@ -57,20 +57,29 @@ class ListEvents(ListView):
             )
         return events
 
-
-class DetailEvents(DetailView):
+@method_decorator([login_required], name='dispatch')
+class DetailEventView(DetailView):
     model = Event
 
     def get_context_data(self, **kwargs):
-        context = super(DetailEvents, self).get_context_data(**kwargs)
+        context = super(DetailEventView, self).get_context_data(**kwargs)
         form = EventGuestForm(initial={'event': self.object})
+        guests = [user.pk for user in self.object.guests.all()]
+        queryset = form.fields['guest'].queryset
+        form.fields['guest'].queryset = queryset.filter(contact__owner=self.request.user)
+        form.fields['event'].widget = HiddenInput()
         context['form'] = form
         return context
 
     def post(self, request, *args, **kwargs):
         form = EventGuestForm(self.request.POST)
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+            obj.status = 1
+            cd = form.cleaned_data
+            if not self.request.user in cd['event'].guests.all():
+                EventGuest.objects.create(event=cd['event'],status=0,guest=self.request.user)
+            obj.save()
             if self.request.is_ajax():
                 delete_form = render_to_string(
                     "partial/delete_form.html",
@@ -139,6 +148,7 @@ def detail_event(request, id):
         )
     return render(request, 'event/detail.html', {'event': event, 'form': form})
 
+@login_required
 def delete_guest(request, id, guest):
     if request.method == "POST":
         event = Event.objects.get(pk=id)
@@ -152,22 +162,30 @@ def delete_guest(request, id, guest):
             return HttpResponse('OK')
     return HttpResponseRedirect('/calendar/%s/detail/' % id)
 
-
+@login_required
 def delete_event(request, id):
-    if request.method == "POST":
+    try:
         event = Event.objects.get(pk = id)
-        event.delete()
+        if request.method == "POST":
+            event.delete()
+    except Event.DoesNotExist:
+        raise Http404(_('No event exist'))
+
     return HttpResponseRedirect('/calendar/liste/')
 
+@login_required
 def update_event(request, id):
-    event = Event.objects.get(pk = id)
-    if request.method == "POST":
-        form = EventForm(request.POST, instance=event)
-        if form.is_valid():
-            u = form.save()
-            return HttpResponseRedirect('/calendar/%i/detail/' % u.pk)
-    else:
-        form = EventForm(instance = event)
+    try:
+        event = Event.objects.get(pk = id)
+        if request.method == "POST":
+            form = EventForm(request.POST, instance=event)
+            if form.is_valid():
+                u = form.save()
+                return HttpResponseRedirect('/calendar/%i/detail/' % u.pk)
+        else:
+            form = EventForm(instance = event)
+    except Event.DoesNotExist:
+        raise Http404(_('This event doesnt exist'))
     return render(request, 'event/create.html', {'form': form})
 
 

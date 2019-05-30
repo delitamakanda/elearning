@@ -1,5 +1,5 @@
 from django import forms
-from agenda.models import Event, EventGuest, Invitation, Circle
+from agenda.models import Event, EventGuest, Invitation, Circle, Contact
 from students.models import (
     User
 )
@@ -16,7 +16,8 @@ class EventGuestForm(forms.ModelForm):
 
     class Meta:
         model = EventGuest
-        fields = ('event', 'guest', 'status',)
+        fields = ('event', 'guest',)
+        exclude = ('status',)
 
     def __init__(self, *args, **kwargs):
         super(EventGuestForm, self).__init__(*args, **kwargs)

@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
     url(r'^liste/$', views.liste_events, name='liste_events'),
     url(r'^listes/$', views.ListEvents.as_view(paginate_by=5), name='listes_events'),
-    url(r'^(?P<pk>\d+)/detail/$', views.DetailEvents.as_view(), name='detail_event'),
+    url(r'^(?P<pk>\d+)/detail/$', views.DetailEventView.as_view(), name='detail_event'),
     url(r'^listes/(?P<champ>[\w-]+)/(?P<terme>[\w-]+)/$', views.ListEvents.as_view(paginate_by=5), name='listes_events_filter'),
     url(r'^create/$', views.create_event, name='create_event'),
     url(r'^contact/(?P<pk>\d+)/$', views.ContactDetailView.as_view(), name='contact_detail'),
