@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^(\d+)/update/$', views.update_event, name='update_event'),
     url(r'^invitation/liste/$', views.InvitationListView.as_view(), name='invitation_list'),
     url(r'^invitation/$', views.InvitationCreateView.as_view(), name='create_invitation'),
+    url(r'^participation/(?P<pk>\d+)/$', views.UpdateGuestView.as_view(), name='participation_form'),
 ]

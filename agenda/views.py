@@ -16,11 +16,12 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
+from django.core.urlresolvers import reverse_lazy
 
 from django.forms import HiddenInput
 from agenda.models import Event
 from agenda.models import EventGuest
-from agenda.forms import EventForm, EventGuestForm, InvitationForm, CircleForm
+from agenda.forms import EventForm, EventGuestForm, InvitationForm, CircleForm, UpdateGuestForm
 from students.models import User
 
 from agenda.models import Circle
@@ -80,6 +81,7 @@ class DetailEventView(DetailView):
             if not self.request.user in cd['event'].guests.all():
                 EventGuest.objects.create(event=cd['event'],status=0,guest=self.request.user)
             obj.save()
+            send_invitation_to_guest(obj)
             if self.request.is_ajax():
                 delete_form = render_to_string(
                     "partial/delete_form.html",
@@ -104,6 +106,15 @@ class DetailEventView(DetailView):
                 )
             else:
                 return render(request, 'event/detail.html', {'event': form.instance.event, 'form': form})
+
+
+def send_invitation_to_guest(event_guest):
+    sender = event_guest.event.eventguest_set.get(status=0)
+    message = _("{0} vous invite à l'évenement {1} qui se déroulera le {2} à {3}: {4} \n Indiquez votre choix sur http://{5}/calendar/participation/{6}/".format(sender.guest, event_guest.event.name, event_guest.event.date, event_guest.event.location, event_guest.event.description,Site.objects.get_current().domain,event_guest.pk))
+    sender = sender.guest.email
+    subject = _("Vous êtes invité par {0}".format(sender))
+    recipient_list = [event_guest.guest.email]
+    send_mail(subject, message, sender, recipient_list, fail_silently=False)
 
 def create_event(request):
     if request.method == "POST":
@@ -257,3 +268,13 @@ class UserInfoUpdateView(UpdateView):
         form = super(UserInfoUpdateView, self).get_form(form_class)
         form.fields['circle'].queryset = Circle.objects.filter(owner=self.request.user)
         return form
+
+
+# @method_decorator([login_required], name='dispatch')
+class UpdateGuestView(UpdateView):
+    model = EventGuest
+    form_class = UpdateGuestForm
+
+    def form_valid(self, form):
+        form.save()
+        return HttpResponseRedirect('/calendar/listes/')

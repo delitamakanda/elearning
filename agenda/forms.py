@@ -1,5 +1,6 @@
 from django import forms
 from agenda.models import Event, EventGuest, Invitation, Circle, Contact
+from django.utils.translation import ugettext_lazy as _
 from students.models import (
     User
 )
@@ -10,6 +11,7 @@ class EventForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = ('name', 'description', 'date', 'location',)
+        exclude = ('guests',)
 
 
 class EventGuestForm(forms.ModelForm):
@@ -42,3 +44,13 @@ class CircleForm(forms.ModelForm):
         model = Circle
         fields = ('name',)
         exclude = ('owner',)
+
+
+class UpdateGuestForm(forms.ModelForm):
+
+    class Meta:
+        model = EventGuest
+        fields = ('status',)
+        exclude = ('event', 'guest',)
+
+    status = forms.ChoiceField(choices=((2, _('Desisted'), (3, ('Confirmed')))))

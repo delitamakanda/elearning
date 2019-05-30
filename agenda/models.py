@@ -26,6 +26,7 @@ class EventGuest(models.Model):
         (0, _('Host')),
         (1, _('Guest')),
         (2, _('Desisted')),
+        (3, _('Confirmed')),
     )
     event = models.ForeignKey(Event)
     guest = models.ForeignKey(settings.AUTH_USER_MODEL)
@@ -35,7 +36,7 @@ class EventGuest(models.Model):
         unique_together = ('event', 'guest')
 
     def __str__(self):
-        return '{} - {}'.format(self.event, self.guest)
+        return '{}'.format(self.guest)
 
     def delete_url(self):
         return "/calendar/%i/guest/%i/delete/" % (self.event.id, self.guest.id)
@@ -97,7 +98,7 @@ class Contact(models.Model):
         return reverse('contact_detail', kwargs={'pk':self.pk})
 
     def __str__(self):
-        return '{} : {}'.format(self.owner, self.user)
+        return '{} - {}'.format(self.owner, self.user)
 
 
 class Invitation(models.Model):
