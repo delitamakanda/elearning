@@ -35,8 +35,8 @@ class EventGuest(models.Model):
     class Meta:
         unique_together = ('event', 'guest')
 
-    # def __str__(self):
-        # return self.guest.username
+    def __str__(self):
+        return self.guest.username
 
     def delete_url(self):
         return "/calendar/%i/guest/%i/delete/" % (self.event.id, self.guest.id)

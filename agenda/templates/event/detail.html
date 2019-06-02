@@ -15,10 +15,12 @@
         {% for guest in event.eventguest_set.all %}
         <p>{{ guest.guest }}</p>
         <div>
-            {{ guest.get_status_display }}
+            {{ guest.guest }} : {{ guest.get_status_display }}
+            {% if guest.status != 0 %}
             {% with delete_url=guest.delete_url %}
             {% include 'partial/delete_form.html' %}
             {% endwith %}
+            {% endif %}
         </div>
         {% endfor %}
     </div>

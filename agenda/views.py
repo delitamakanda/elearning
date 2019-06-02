@@ -22,8 +22,7 @@ from django.forms import HiddenInput
 from agenda.models import Event
 from agenda.models import EventGuest
 from agenda.forms import EventForm, EventGuestForm, InvitationForm, CircleForm, UpdateGuestForm
-# from students.models import User
-from django.contrib.auth import get_user_model
+from students.models import User
 
 from agenda.models import Circle
 from agenda.models import Contact
@@ -66,13 +65,8 @@ class DetailEventView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailEventView, self).get_context_data(**kwargs)
         form = EventGuestForm(initial={'event': self.object}, user=self.request.user)
-        # guests = [user.pk for user in self.object.guests.all()]
-        # form.fields['guest'].queryset=User.objects.exclude(pk__in=guests)
-        # eventguest__guest=self.request.user,contact__pk__in=contacts
-        # contacts = [contact.pk for contact in Contact().all_contacts(self.request.user)]
         queryset = form.fields['guest'].queryset
         form.fields['guest'].queryset = queryset.all()
-        print(form.fields['guest'].queryset)
         form.fields['event'].widget = HiddenInput()
         context['form'] = form
         return context
@@ -83,7 +77,7 @@ class DetailEventView(DetailView):
             obj = form.save(commit=False)
             obj.status = 1
             cleaned_data = form.cleaned_data
-            if not self.request.user in cleaned_data['event'].guests.all():
+            if not self.request.user in cleaned_data['event'].guests.all() and not cleaned_data['event'].eventguest_set.filter(status=0).first():
                 EventGuest.objects.create(event=cleaned_data['event'],status=0, guest=self.request.user)
             obj.save()
             send_invitation_to_guest(obj)
@@ -134,7 +128,7 @@ def create_event(request):
 def detail_event(request, id):
     event = Event.objects.get(pk=id)
     if request.method == "POST":
-        form = EventGuestForm(request.POST)
+        form = EventGuestForm(request.POST, user=self.request.user)
         if form.is_valid():
             form.save()
             if request.is_ajax():
@@ -153,7 +147,7 @@ def detail_event(request, id):
                 )
             return HttpResponseRedirect('/calendar/%s/detail/' % id)
     else:
-        form = EventGuestForm(initial={'event': event})
+        form = EventGuestForm(initial={'event': event},user=self.request.user)
         guests = [user.pk for user in event.guests.all()]
         form.fields['guest'].queryset=User.objects.exclude(pk__in=guests)
         form.fields['event'].widget = HiddenInput()
