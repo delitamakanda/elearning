@@ -44,7 +44,7 @@ def edit(request):
 def list_videos(request):
     subjects = Subject.objects.all()
     videos = []
-    q  = ''
+    q  = None
     max_lengths = [10, 15, 20, 25, 30, 50]
     results = None
     if 'q' and 'results' in request.GET:
