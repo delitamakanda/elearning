@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+    {% trans 'Circle' %}
+{% endblock %}
+{% block content %}
+   <div class="container">
+       <h1>Contacts dans le cercle {{object.name }}</h1>
+        {% for user in object.contacts %}
+        <a href="{% url 'contact_detail' user.contact.pk %}">{{ user.contact.user.username }}</a>
+        <p> Email : {{user.contact.user.email}}</p>
+        <p> Note : {{user.contact.optional_informations.notes}}</p>
+        <p>Dans les cercles :
+        {% for circle in user.contact.optional_informations.circle.all %}
+        <a href="{{circle.get_absolute_url}}">{{circle}}
+          ({{circle.contacts.count}})</a>
+        {% endfor %}
+        {% endfor %}
+     </div>
+{% endblock %}

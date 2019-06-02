@@ -1,13 +1,19 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block title %}
-    {% trans 'Contact' %}
+    {% trans 'Contact' %} - {{ object.user.username }}
 {% endblock %}
 {% block content %}
    <div class="container">
-       {{ object.user }}
-       {{ object.user.email }}
-       {{ object.user.is_student }}
-       {{ object.user.is_teacher }}
+       (<a href="{% url 'contact_update' object.pk %}">{% trans 'Edit' %}</a>)
+        <p> {% trans 'Email' %} : {{object.user.email}}</p>
+        <p> {% trans 'Notes' %} : {{object.optional_informations.notes}}
+        <h2>{% trans 'In circle' %}</h2>
+        <ul>
+        {% for circle in object.optional_informations.circle.all %}
+        <li><a href="{{circle.get_absolute_url}}">{{circle}} ({{circle.contacts.count}})</a></li>
+        {% endfor %}
+        </ul>
+        <a href="{% url 'contact_delete' object.pk %}">{% trans 'Delete contact' %}</a>
      </div>
 {% endblock %}

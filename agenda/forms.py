@@ -22,19 +22,22 @@ class EventGuestForm(forms.ModelForm):
         exclude = ('status',)
 
     def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
         super(EventGuestForm, self).__init__(*args, **kwargs)
         self.fields['event'].widget = forms.HiddenInput()
 
         if 'event' in self.initial:
             guests = [user.pk for user in self.initial['event'].guests.all()]
             self.fields['guest'].queryset=User.objects.exclude(pk__in=guests)
+            contacts = [contact.user.pk for contact in Contact.objects.filter(owner=self.user)]
+            self.fields['guest'].queryset=User.objects.filter(pk__in=contacts)
 
 
 class InvitationForm(forms.ModelForm):
 
     class Meta:
         model = Invitation
-        fields = ('email', 'sender',)
+        fields = ('email',)
         exclude = ('sender',)
 
 
@@ -53,4 +56,7 @@ class UpdateGuestForm(forms.ModelForm):
         fields = ('status',)
         exclude = ('event', 'guest',)
 
-    status = forms.ChoiceField(choices=((2, _('Desisted'), (3, ('Confirmed')))))
+    status = forms.ChoiceField(choices=(
+        (2, 'Desisted'),
+        (3, 'Confirmed')
+        ))

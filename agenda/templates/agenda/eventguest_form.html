@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+    {% trans 'Confirm your participation' %}
+{% endblock %}
+{% block content %}
+   <div class="container">
+       <div>
+         <form action="" method="post">
+           {{ form.as_ul }}
+           {% csrf_token %}
+           <p><input type="submit" class="btn btn-primary" value="{% trans 'Confirm' %}"></p>
+         </form>
+       </div>
+     </div>
+{% endblock %}

@@ -11,7 +11,7 @@ from django.template import RequestContext
 from django.forms.utils import ErrorList
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -22,7 +22,8 @@ from django.forms import HiddenInput
 from agenda.models import Event
 from agenda.models import EventGuest
 from agenda.forms import EventForm, EventGuestForm, InvitationForm, CircleForm, UpdateGuestForm
-from students.models import User
+# from students.models import User
+from django.contrib.auth import get_user_model
 
 from agenda.models import Circle
 from agenda.models import Contact
@@ -64,22 +65,26 @@ class DetailEventView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailEventView, self).get_context_data(**kwargs)
-        form = EventGuestForm(initial={'event': self.object})
-        guests = [user.pk for user in self.object.guests.all()]
+        form = EventGuestForm(initial={'event': self.object}, user=self.request.user)
+        # guests = [user.pk for user in self.object.guests.all()]
+        # form.fields['guest'].queryset=User.objects.exclude(pk__in=guests)
+        # eventguest__guest=self.request.user,contact__pk__in=contacts
+        # contacts = [contact.pk for contact in Contact().all_contacts(self.request.user)]
         queryset = form.fields['guest'].queryset
-        form.fields['guest'].queryset = queryset.filter(contact__owner=self.request.user)
+        form.fields['guest'].queryset = queryset.all()
+        print(form.fields['guest'].queryset)
         form.fields['event'].widget = HiddenInput()
         context['form'] = form
         return context
 
     def post(self, request, *args, **kwargs):
-        form = EventGuestForm(self.request.POST)
+        form = EventGuestForm(self.request.POST, user=self.request.user)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.status = 1
-            cd = form.cleaned_data
-            if not self.request.user in cd['event'].guests.all():
-                EventGuest.objects.create(event=cd['event'],status=0,guest=self.request.user)
+            cleaned_data = form.cleaned_data
+            if not self.request.user in cleaned_data['event'].guests.all():
+                EventGuest.objects.create(event=cleaned_data['event'],status=0, guest=self.request.user)
             obj.save()
             send_invitation_to_guest(obj)
             if self.request.is_ajax():
@@ -233,7 +238,7 @@ def send_invitation(invitation):
     try:
         user = User.objects.get(email=invitation.email)
         message = _('{0} vous a ajouté à ses contacts.'.format(invitation.sender.username))
-        contact = Contact(owner=invitation.sender, user=user, invitation_send=True, invitation_accepted=False)
+        contact = Contact(owner=invitation.sender, user=user, invitation_send=True, invitation_accepted=True)
         contact.save()
         invitation.delete()
         return HttpResponseRedirect(contact.get_absolute_url())
@@ -245,8 +250,24 @@ def send_invitation(invitation):
 
 
 @method_decorator([login_required], name='dispatch')
+class ContactListView(ListView):
+
+    def get_context_data(self, **kwargs):
+        context = super(ContactListView, self).get_context_data(**kwargs)
+        context['circles'] = Contact().all_circles(self.request.user)
+        return context
+
+    def get_queryset(self):
+        return Contact().all_contacts(self.request.user)
+
+@method_decorator([login_required], name='dispatch')
 class ContactDetailView(DetailView):
     model = Contact
+
+
+@method_decorator([login_required], name='dispatch')
+class CircleDetailView(DetailView):
+    model = Circle
 
 
 @method_decorator([login_required], name='dispatch')
@@ -263,14 +284,17 @@ class CircleCreateView(CreateView):
 
 @method_decorator([login_required], name='dispatch')
 class UserInfoUpdateView(UpdateView):
+    model = UserInfo
+    fields = ['circle', 'notes',]
 
-    def get_form(self, form_class):
+    def get_form(self, form_class=None):
+        if form_class is None:
+            form_class = self.form_class
         form = super(UserInfoUpdateView, self).get_form(form_class)
         form.fields['circle'].queryset = Circle.objects.filter(owner=self.request.user)
         return form
 
 
-# @method_decorator([login_required], name='dispatch')
 class UpdateGuestView(UpdateView):
     model = EventGuest
     form_class = UpdateGuestForm
@@ -278,3 +302,8 @@ class UpdateGuestView(UpdateView):
     def form_valid(self, form):
         form.save()
         return HttpResponseRedirect('/calendar/listes/')
+
+@method_decorator([login_required], name='dispatch')
+class DeleteContactView(DeleteView):
+    model = Contact
+    success_url = reverse_lazy('all_contacts')

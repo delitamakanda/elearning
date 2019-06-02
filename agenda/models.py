@@ -15,7 +15,7 @@ class Event(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('detail_event', kwargs={'pk': self.pk})
+        return reverse('detail_event', kwargs=({'pk': self.pk}))
 
     def delete_url(self):
         return "/calendar/%s/delete/" % self.id
@@ -35,8 +35,8 @@ class EventGuest(models.Model):
     class Meta:
         unique_together = ('event', 'guest')
 
-    def __str__(self):
-        return '{}'.format(self.guest)
+    # def __str__(self):
+        # return self.guest.username
 
     def delete_url(self):
         return "/calendar/%i/guest/%i/delete/" % (self.event.id, self.guest.id)
@@ -49,23 +49,26 @@ class Circle(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     def contacts(self):
-        return self.user_info.contact_set.all()
+        return self.userinfo_set.all()
 
     def is_in_circle(self, user):
         if user in self.user_info.contact_set.all():
             return True
         return False
 
+    def get_absolute_url(self):
+        return reverse('circle_detail', kwargs=({'pk':self.pk}))
+
     def __str__(self):
         return self.name
 
 
 class UserInfo(models.Model):
-    circle = models.ManyToManyField(Circle)
-    notes = models.TextField()
+    circle = models.ManyToManyField(Circle, blank=True)
+    notes = models.TextField(null=True, blank=True)
 
-    def __str__(self):
-        return self.circle
+    def get_absolute_url(self):
+        return reverse('contact_detail', kwargs=({'pk':self.contact.pk}))
 
 
 class Contact(models.Model):
@@ -95,10 +98,10 @@ class Contact(models.Model):
         return Circle.objects.filter(owner=user)
 
     def get_absolute_url(self):
-        return reverse('contact_detail', kwargs={'pk':self.pk})
+        return reverse('contact_detail', kwargs=({'pk':self.pk}))
 
     def __str__(self):
-        return '{} - {}'.format(self.owner, self.user)
+        return self.user.username
 
 
 class Invitation(models.Model):

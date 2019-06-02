@@ -24,6 +24,9 @@
     </div>
     <div>
         {% include 'partial/guest_form.html' %}
+        {% with delete_url=object.delete_url %}
+        {% include 'partial/delete_form.html' %}
+        {% endwith %}
     </div>
 </div>
 {% endblock %}

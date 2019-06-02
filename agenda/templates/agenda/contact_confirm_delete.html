@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+    {% trans 'Êtes-vous certain de vouloir supprimer le contact' %} {{ object }} ?
+{% endblock %}
+{% block content %}
+   <div class="container">
+       <p>{% trans 'Êtes-vous certain de vouloir supprimer le contact' %} {{ object }} ?</p>
+
+       <form method="POST" action="">
+        {% csrf_token %}
+        <input type="submit" value="{% trans 'Yes' %}" />
+        </form>
+        <a href="{{ object.get_absolute_url }}">{% trans 'No' %}</a>
+     </div>
+{% endblock %}

@@ -64,7 +64,7 @@ class Student(models.Model):
         return questions
 
     def __str__(self):
-        return '{} - {}'.format(self.user, self.user.email)
+        return '{} - {}'.format(self.user.username, self.user.email)
 
 
 class TakenQuiz(models.Model):
@@ -90,7 +90,7 @@ def create_contact_on_user_create(sender, instance, created, **kwargs):
         try:
             invitations = Invitation.objects.filter(email=instance.email)
             for invitation in invitations:
-                contact = Contact(owner=invitation.sender, user=instance, invitation_send=True, invitation_accepted=False)
+                contact = Contact(owner=invitation.sender, user=instance, invitation_send=True, invitation_accepted=True)
                 contact.save()
                 invitation.delete()
         except Invitation.DoesNotExist:
