@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
    <div class="container">
-       (<a href="{% url 'contact_update' object.pk %}">{% trans 'Edit' %}</a>)
+       (<a href="{% url 'contact_update' object.optional_informations.pk %}">{% trans 'Edit' %}</a>)
         <p> {% trans 'Email' %} : {{object.user.email}}</p>
         <p> {% trans 'Notes' %} : {{object.optional_informations.notes}}
         <h2>{% trans 'In circle' %}</h2>

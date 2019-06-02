@@ -7,7 +7,7 @@
    <div class="container">
        <h1>Contacts dans le cercle {{object.name }}</h1>
         {% for user in object.contacts %}
-        <a href="{% url 'contact_detail' user.contact.pk %}">{{ user.contact.user.username }}</a>
+        <p><a href="{% url 'contact_detail' user.contact.pk %}">{{ user.contact.user.username }}</a></p>
         <p> Email : {{user.contact.user.email}}</p>
         <p> Note : {{user.contact.optional_informations.notes}}</p>
         <p>Dans les cercles :
