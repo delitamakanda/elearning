@@ -289,6 +289,7 @@ class UserInfoUpdateView(UpdateView):
         return form
 
 
+@method_decorator([login_required], name='dispatch')
 class UpdateGuestView(UpdateView):
     model = EventGuest
     form_class = UpdateGuestForm
@@ -296,6 +297,7 @@ class UpdateGuestView(UpdateView):
     def form_valid(self, form):
         form.save()
         return HttpResponseRedirect('/calendar/listes/')
+
 
 @method_decorator([login_required], name='dispatch')
 class DeleteContactView(DeleteView):
