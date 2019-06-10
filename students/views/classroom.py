@@ -49,3 +49,12 @@ def index(request):
         'query_string': query_string,
         'found_results': found_results
     })
+
+
+class MessagesView(TemplateView):
+    template_name = 'notification/messages.html'
+
+    def get(self, request, *args, **kwargs):
+        if 'unread' in request.GET:  # quick and dirty
+            kwargs['unread'] = True
+        return super(MessagesView, self).get(request, *args, **kwargs)
