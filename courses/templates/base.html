@@ -2,6 +2,7 @@
 {% load flatpages %}
 {% load i18n %}
 {% load gravatar %}
+{% load stored_messages_tags %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,9 +48,13 @@
             </div>
             <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
           </form>
-          <ul class="nav navbar-nav navbar-right">
+          <ul class="nav navbar-nav navbar-right" ng-app="elearningApp">
             <li><a href="{% url 'course_list' %}">{% trans 'Learn' %}</a></li>
             {% if user.is_authenticated %}
+            <li class="{% block messages_active %}{% endblock %}" ng-controller="MainCtrl">
+                <a href="{% url 'messages' %}?unread"><i class="glyphicon glyphicon-bell" title="{% trans 'Notifications' %}"></i>
+                    <span class="badge" ng-if="messages.length">{% verbatim %}{{ messages.length }}{% endverbatim %}</span></a>
+            </li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="avatar" src="{{ user|gravatar }}" alt="{{ user.username }}"> <span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -115,6 +120,7 @@
             </div>
         </nav>
     </footer>
+    <script src="{% static 'scripts/libs/angular.min.js' %}"></script>
     <script src="{% static 'scripts/libs/jquery.min.js' %}"></script>
     <script src="{% static 'scripts/libs/jquery-ui.min.js' %}"></script>
     <script src="{% static 'scripts/main.min.js' %}"></script>
