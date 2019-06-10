@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'students',
     'agenda',
     'embed_video',
+    'stored_messages',
     'rest_framework',
     'storages',
     'widget_tweaks',
@@ -169,7 +170,7 @@ CACHES = {
 # DRF
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly'
     ]
 }
 
@@ -179,7 +180,16 @@ DEFAULT_FROM_EMAIL = config('ADMIN_EMAIL')
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Session
-SESSION_EXPIRE_SECONDS = 3600  # 1 hour
+SESSION_EXPIRE_SECONDS = 18000  # 5 hours
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 
 DEVELOPER_KEY = config('DEVELOPER_API_KEY')
+
+# Notifications
+MESSAGE_STORAGE = 'stored_messages.storage.PersistentStorage'
+
+STORED_MESSAGES = {
+    # 'STORAGE_BACKEND': 'stored_messages.backends.redis'
+    'STORAGE_BACKEND': 'stored_messages.backends.DefaultBackend'
+    # 'REDIS_URL': 'redis://localhost:6379/0',
+}

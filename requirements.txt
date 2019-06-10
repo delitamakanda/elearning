@@ -25,3 +25,4 @@ pandas==0.24.1
 scikit-learn==0.20.3
 scipy==1.2.1
 sklearn==0.0
+django-stored-messages==1.4.0
