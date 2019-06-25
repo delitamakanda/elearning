@@ -1,6 +1,6 @@
 certifi==2017.7.27.1
 chardet==3.0.4
-Django==2.2.2
+Django==1.11.21
 django-braces==1.8.1
 django-embed-video==1.0.0
 django-memcache-status==1.1
@@ -23,3 +23,4 @@ scikit-learn==0.20.3
 scipy==1.2.1
 sklearn==0.0
 django-stored-messages==1.4.0
+django-storages==1.7.1
