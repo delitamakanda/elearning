@@ -1,0 +1,139 @@
+$admin-header-height: 70px;
+$admin-footer-height: 70px;
+$admin-nav-width: 250px;
+
+
+.admin {
+    --spacing: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+
+
+    display: grid;
+    height: 100%;
+    grid-template-rows: $admin-header-height 1fr $admin-footer-height;
+    grid-template-columns: $admin-nav-width 1fr;
+    grid-template-areas: "header header"
+                        "nav main"
+                        "footer footer";
+
+    &__header {
+        display: flex;
+        flex-basis: 100%;
+        grid-area: header;
+        height: $admin-header-height;
+        background-color: #fff;
+        position: relative;
+    }
+
+    &__footer {
+        display: flex;
+        flex-basis: 100%;
+    }
+
+    &__nav {
+        flex: 0 0 $admin-nav-width;
+        grid-area: nav;
+        background-color: #313541;
+    }
+
+    &__main {
+        flex: 1;
+        grid-area: main;
+        padding: var(--spacing);
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        background-color: #f4f7fa;
+    }
+
+    &__footer {
+        display: flex;
+        grid-area: footer;
+        flex-basis: 100%;
+        height: $admin-footer-height;
+        padding: 0 var(--spacing);
+        align-items: center;
+        justify-content: space-between;
+        color: #4e5561;
+    }
+
+    @media screen and (min-width: 48rem) {
+        --spacing: 2rem;
+    }
+}
+
+.dashboard {
+    --column-count: 2;
+
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 calc(var(--spacing) * -0.5);
+
+    display: grid;
+    grid-template-columns: repeat(var(--column-count), 1fr);
+    grid-gap: 2rem;
+
+    &__item {
+        flex: 1 1 50%;
+        grid-column-end: span 2;
+        padding: calc(var(--spacing) /2);
+
+        &--full {
+            flex-basis: 100%;
+            grid-column: 1 / -1;
+        }
+
+        &--col {
+            flex-basis: calc(100% / var(--column-count));
+            grid-column: span 1;
+        }
+    }
+
+    @media screen and (min-width: 48rem) {
+        --column-count: 4;
+    }
+
+    @supports(display: grid) {
+        margin: 0;
+
+        &__item {
+            padding: 0;
+        }
+    }
+}
+
+.card {
+    height: 100%;
+    padding: 1rem;
+    font-weight: 300;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    &:nth-child(n+2) {
+        margin-top: 1rem;
+    }
+}
+
+.menu {
+    list-style-type: none;
+    padding: 0;
+
+    &__item {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    &__link {
+        display: block;
+        padding: 1rem 2rem;
+        color: #76808f;
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+            color: #fff;
+            background-color: #1f222d;
+        }
+    }
+}
