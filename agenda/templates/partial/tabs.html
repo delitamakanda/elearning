@@ -1,7 +1,5 @@
 {% load i18n %}
-<div class="container">
-    <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation"><a href="{% url 'course_list' %}">{% trans 'Classes' %}</a></li>
-        <li role="presentation"><a href="{% url 'liste_events' %}">{% trans 'Calendar' %}</a></li>
-    </ul>
+<div class="center-block">
+    <a href="{% url 'course_list' %}" class="btn btn-default" role="button">{% trans 'Classes' %}</a>
+    <a href="{% url 'liste_events' %}" class="btn btn-default" role="button">{% trans 'Calendar' %}</a></
 </div>

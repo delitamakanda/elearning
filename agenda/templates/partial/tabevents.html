@@ -1,0 +1,7 @@
+{% load i18n %}
+<ul class="nav nav-tabs">
+    <li role="presentation"><a href="{% url 'all_contacts' %}">{% trans 'All contacts' %}</a></li>
+    <li role="presentation"><a href="{% url 'create_invitation' %}">{% trans 'Invite a friend' %}</a></li>
+    <li role="presentation"><a href="{% url 'invitation_list' %}">{% trans 'List of invitations' %}</a></li>
+    <li role="presentation"><a href="{% url 'create_circle' %}">{% trans 'Create circle' %}</a></li>
+</ul>

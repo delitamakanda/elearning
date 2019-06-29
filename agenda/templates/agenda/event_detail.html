@@ -5,6 +5,7 @@
 {% endblock %}
 {% block content %}
 <div class="container">
+    {% include "partial/tabevents.html" %}
     <div>
         <h2>{{ object.name }} (<a href="{% url 'update_event' object.id %}">{% trans 'edit' %}</a>)</h2>
         <p>{{ object.description }}</p>

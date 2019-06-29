@@ -1,6 +1,5 @@
 import json
 import datetime
-import stored_messages
 
 from django.contrib.sites.models import Site
 from django.shortcuts import render, HttpResponseRedirect, render_to_response, get_object_or_404
@@ -17,7 +16,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
-from django.contrib.messages import add_message
+from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 
 from django.forms import HiddenInput
@@ -122,7 +121,7 @@ def create_event(request):
         form = EventForm(request.POST)
         if form.is_valid():
             event = form.save()
-            add_message(request, stored_messages.STORED_INFO, _('created an event.'))
+            messages.success(request, _('created an event'))
             return HttpResponseRedirect('/calendar/%i/detail/' % event.pk)
     else:
         form = EventForm()
@@ -228,7 +227,7 @@ class InvitationCreateView(CreateView):
         except Invitation.DoesNotExist:
             pass
         obj.save()
-        add_message(self.request, stored_messages.STORED_INFO, _('created an invitation.'))
+        messages.success(request, _('created an invitation.'))
         return send_invitation(obj)
 
 

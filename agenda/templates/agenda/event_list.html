@@ -5,10 +5,7 @@
    {% endblock %}
    {% block content %}
    <div class="container">
-       <a href="{% url 'all_contacts' %}">{% trans 'All contacts' %}</a>
-       <a href="{% url 'create_invitation' %}">{% trans 'Invite a friend' %}</a>
-       <a href="{% url 'invitation_list' %}">{% trans 'List of invitations' %}</a>
-       <a href="{% url 'create_circle' %}">{% trans 'Create circle' %}</a>
+       {% include "partial/tabevents.html" %}
          <ul>
              {% for event in object_list %}
                 <li>

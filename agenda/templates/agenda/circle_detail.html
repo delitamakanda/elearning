@@ -5,6 +5,7 @@
 {% endblock %}
 {% block content %}
    <div class="container">
+       {% include "partial/tabevents.html" %}
        <h1>Contacts dans le cercle {{object.name }}</h1>
         {% for user in object.contacts %}
         <p><a href="{% url 'contact_detail' user.contact.pk %}">{{ user.contact.user.username }}</a></p>

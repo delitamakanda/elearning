@@ -5,6 +5,7 @@
 {% endblock %}
 {% block content %}
    <div class="container">
+       {% include "partial/tabevents.html" %}
        <div>
          <form action="" method="post" enctype="multipart/form-data">
            {{ form.as_p }}

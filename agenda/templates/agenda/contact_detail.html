@@ -5,6 +5,7 @@
 {% endblock %}
 {% block content %}
    <div class="container">
+       {% include "partial/tabevents.html" %}
        (<a href="{% url 'contact_update' object.optional_informations.pk %}">{% trans 'Edit' %}</a>)
         <p> {% trans 'Email' %} : {{object.user.email}}</p>
         <p> {% trans 'Notes' %} : {{object.optional_informations.notes}}
