@@ -40,7 +40,6 @@ urlpatterns = [
     url(r'^students/', include('students.urls')),
     url(r'^calendar/', include('agenda.urls')),
     url(r'^api/', include('courses.api.urls', namespace='api')),
-    url(r'^stored-messages/', include('stored_messages.urls')),
     url(r'^sw.js', (TemplateView.as_view(template_name="sw.js", content_type='application/javascript', )), name='sw.js'),
 ]
 

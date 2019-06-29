@@ -2,7 +2,6 @@
 {% load flatpages %}
 {% load i18n %}
 {% load gravatar %}
-{% load stored_messages_tags %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,7 +16,7 @@
 </head>
 <body>
     <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container-fluid">
+      <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -26,7 +25,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{% url 'course_list' %}">{% trans 'elearning' %}</a>
+          <a class="navbar-brand" href="{% url 'course_list' %}">{% trans 'E-learning' %}</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -44,31 +43,27 @@
           </ul>
           <form class="navbar-form navbar-left" action="{% url 'classroom' %}" method="get" accept-charset="utf-8" role="search">
             <div class="form-group">
-              <input type="search" class="form-control" autocomplete="off" name="q" placeholder="{% trans 'Search for a new topic now...' %}">
+              <input type="search" class="form-control search-bar" name="q" placeholder="{% trans 'Search for a topic ' %}">
+              <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
             </div>
-            <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
           </form>
           <ul class="nav navbar-nav navbar-right" ng-app="elearningApp">
             <li><a href="{% url 'course_list' %}">{% trans 'Learn' %}</a></li>
+            {% if user.is_authenticated and request.user.is_student %}
+                <li><a href="{% url 'student_quiz_list' %}">{% trans 'My Quizzes' %}</a></li>
+                <li><a href="{% url 'student_course_list' %}">{% trans 'My Courses' %}</a></li>
+            {% endif %}
+            {% if user.is_authenticated and request.user.is_teacher or request.user.is_staff %}
+                <li><a href="{% url 'manage_course_list' %}">{% trans 'Manage courses' %}</a></li>
+                <li><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'Manage quizzes' %}</a></li>
+            {% endif %}
             {% if user.is_authenticated %}
-            <li class="{% block messages_active %}{% endblock %}" ng-controller="MainCtrl">
-                <a href="{% url 'messages' %}?unread"><i class="glyphicon glyphicon-bell" title="{% trans 'Notifications' %}"></i>
-                    <span class="badge" ng-if="messages.length">{% verbatim %}{{ messages.length }}{% endverbatim %}</span></a>
-            </li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="avatar" src="{{ user|gravatar }}" alt="{{ user.username }}"> <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                  {% if user.is_authenticated and request.user.is_teacher or request.user.is_staff %}
-                      <li><a href="{% url 'manage_course_list' %}">{% trans 'Manage courses' %}</a></li>
-                      <li><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'Manage quizzes' %}</a></li>
-                  {% endif %}
-                  {% if user.is_authenticated and request.user.is_student %}
-                      <li><a href="{% url 'student_quiz_list' %}">{% trans 'My Quiz' %}</a></li>
-                      <li><a href="{% url 'student_course_list' %}">{% trans 'My Course' %}</a></li>
-                  {% endif %}
+                  <li><a href="{% url 'student_recommendation_list' %}">{% trans 'My recommended courses' %}</a></li>
+                  <li><a href="{% url 'listes_events' %}">{% trans 'My events' %}</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="{% url 'student_recommendation_list' %}">{% trans 'My recommended courses' %}</a></li>
-                <li><a href="{% url 'listes_events' %}">{% trans 'My events' %}</a></li>
                 <li><a href="{% url 'edit' %}">{% trans 'My account' %}</a></li>
                 <li><a href="{% url 'logout' %}">{% trans 'Logout' %}</a></li>
               </ul>
@@ -108,19 +103,20 @@
         ></div>
 
     </div>
-    <footer id="footer">
-        <nav class="navbar">
-            <div class="container">
+
+    <div class="container">
+        <footer id="footer" class="footer">
+            <nav class="navbar">
                 {% get_flatpages as flatpages %}
                 <ul class="list-inline">
                     {% for page in flatpages %}
                         <li><a href="{{ page.url }}">{{ page.title }}</a></li>
                     {% endfor %}
                 </ul>
-            </div>
-        </nav>
-    </footer>
-    <script src="{% static 'scripts/libs/angular.min.js' %}"></script>
+            </nav>
+        </footer>
+    </div>
+
     <script src="{% static 'scripts/libs/jquery.min.js' %}"></script>
     <script src="{% static 'scripts/libs/jquery-ui.min.js' %}"></script>
     <script src="{% static 'scripts/main.min.js' %}"></script>
