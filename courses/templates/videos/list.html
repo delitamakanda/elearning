@@ -6,40 +6,31 @@
 
 {% block content %}
 <div class="container">
-    <h2>{% trans 'Search for a video' %}</h2>
+    <div class="page-header">
+        <h2>{% trans 'Search for a video' %} {% if q %}<small>{% trans 'Results for' %} : {{ q }}</small>{% endif %}</h2> <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#filtersVideos" aria-expanded="false" aria-controls="filtersVideos">{% trans 'Filters' %}</button>
+    </div>
+    <div class="collapse" id="filtersVideos">
+        <form method="get" novalidate>
+                  {% trans 'Number of results ' %}
 
-    {% if q %}
-        <h3>{% trans 'Results for' %} : {{ q }}</h3>
-    {% endif %}
-
-<form method="get" novalidate>
-    <div class="row">
-      <div class="col-lg-6">
-          {% trans 'Number of results ' %}
-
-          <select name="results" id="results">
-              {% for max_length in max_lengths %}
-              <option value="{{ max_length }}">{{ max_length }}</option>
-              {% endfor %}
-          </select>
-        <div>
-        {% for subject in subjects %}
-            <label class="form-group">
-                <input type="radio" name="q" id="q" value="{{ subject }}" />{{ subject }}
-            </label>
-        {% endfor %}
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="submit">{% trans 'Go!' %}</button>
-          </span>
-        </div><!-- /input-group -->
-      </div><!-- /.col-lg-6 -->
-    </div><!-- /.row -->
-  </form>
-  <br />
-  <br />
+                  <select name="results" id="results">
+                      {% for max_length in max_lengths %}
+                      <option value="{{ max_length }}">{{ max_length }}</option>
+                      {% endfor %}
+                  </select>
+                {% for subject in subjects %}
+                <div class="input-group">
+                    <input type="radio" name="q" id="q" value="{{ subject }}" /> {{ subject }}
+                </div>
+                {% endfor %}
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">{% trans 'Go!' %}</button>
+                  </span>
+          </form>
+    </div>
   {% if videos %}
       <div class="row">
-          <div class="col-md-4 list-videos-content list-group">
+          <div class="col-md-4 col-xs-12 list-videos-content list-group">
           {% for item in videos.items %}
             <div class="media list-group-item">
                 {% if item.id.kind == 'youtube#video' %}
@@ -68,7 +59,7 @@
             </div>
           {% endfor %}
           </div>
-          <div class="col-md-8 offset-sm-2">
+          <div class="col-md-8 col-xs-12 offset-md-2">
               <div class="embed-responsive embed-responsive-16by9">
                   <!-- https://www.youtube.com/watch?v={{ item.id.videoId }} -->
                    <iframe id="video-iframe" class="embed-responsive-item hidden" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>

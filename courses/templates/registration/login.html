@@ -4,15 +4,16 @@
 {% block title %}{% trans 'Log In' %}{% endblock %}
 {% block content %}
 <div class="container">
-<h1>Log in</h1>
+
 <div class="login">
-    {% if form.errors %}
-        <p>{% trans 'Your username and password didn\'t match. Please try again.' %}</p>
-    {% else %}
-        <p>{% trans 'Please, use the following form to log-in:' %}</p>
-    {% endif %}
     <div class="login-form">
-        <form method="post" novalidate>
+        <form method="post" novalidate class="form-signin">
+            <h2>Log in</h2>
+            {% if form.errors %}
+                <p>{% trans 'Your username and password didn\'t match. Please try again.' %}</p>
+            {% else %}
+                <p>{% trans 'Please, use the following form to log-in:' %}</p>
+            {% endif %}
             <input type="hidden" name="next" value="{{ next }}">
             {% csrf_token %}
             {% for field in form %}
@@ -28,9 +29,9 @@
                 {% endif %}
               </div>
             {% endfor %}
-            <input type="submit" class="btn btn-primary" value="{% trans 'Log In' %}" />
+            <p><a href="{% url 'password_reset' %}">{% trans 'Forgot password ?' %}</a></p>
+            <input type="submit" class="btn btn-lg btn-primary btn-block" value="{% trans 'Log In' %}" />
         </form>
-        <p><a href="{% url 'password_reset' %}">{% trans 'Forgot password ?' %}</a>
     </div>
 </div>
 </div>

@@ -5,17 +5,17 @@
    {% endblock %}
    {% block content %}
    <div class="container">
-       <h1>{% trans 'Sign up ' %}</h1>
-       <div class="signup">
-           <p>{% trans "Enter your details to create an account as" %} {{ user_type }}</p>
-           <div class="signup-form">
-               <form id="user_form" accept-charset="utf-8" action="" method="post" novalidate>
-                   {{ form.as_p }}
-                   {% csrf_token %}
 
-                    <input type="submit" class="btn btn-primary" value="{% trans 'Create an account' %}">
-               </form>
-           </div>
+       <div class="signup">
+           <form class="form-signin" id="user_form" accept-charset="utf-8" action="" method="post" novalidate>
+               <h2>{% trans 'Sign up ' %}</h2>
+               <p>{% trans "Enter your details to create an account as" %} {{ user_type }}</p>
+
+               {{ form.as_p }}
+               {% csrf_token %}
+
+                <input type="submit" class="btn btn-lg btn-primary btn-block" value="{% trans 'Create an account' %}">
+           </form>
             <p>{% trans "Already an account ?" %} <a href="{% url 'login' %}">{% trans 'Log in' %}</a>.</p>
        </div>
    </div>
