@@ -1,6 +1,6 @@
 certifi==2017.7.27.1
 chardet==3.0.4
-Django==1.11.21
+Django==1.11.22
 django-braces==1.8.1
 django-embed-video==1.0.0
 django-memcache-status==1.1
