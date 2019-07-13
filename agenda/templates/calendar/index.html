@@ -6,8 +6,10 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-     <div id="app">
-     </div>
+    <h2>{% trans 'Calendar' %}</h2>
+     {% include "partial/tabs.html" %}
+    <div id="app">
+    </div>
+     {% render_bundle 'app' %}
  </div>
- {% render_bundle 'app' %}
 {% endblock %}

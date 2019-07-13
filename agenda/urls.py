@@ -20,5 +20,5 @@ urlpatterns = [
     url(r'^invitation/$', views.InvitationCreateView.as_view(), name='create_invitation'),
     url(r'^participation/(?P<pk>\d+)/$', views.UpdateGuestView.as_view(), name='participation_form'),
     url(r'^circle/create/', views.CircleCreateView.as_view(), name='create_circle'),
-    url(r'^.*$', TemplateView.as_view(template_name='calendar/index.html'), name='calendar')
+    url(r'^.*$', TemplateView.as_view(template_name='calendar/index.html'), name='calendar'),
 ]
