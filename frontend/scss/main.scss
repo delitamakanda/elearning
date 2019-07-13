@@ -120,6 +120,8 @@ body {
 .container {
     width: 90%;
     margin: 0 auto;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
 }
 
 .avatar {
@@ -133,8 +135,7 @@ body {
     background-color: #ffffff;
 }
 
-img,
-iframe {
+img {
     max-width: 100%;
     width: 100%;
     height: auto;

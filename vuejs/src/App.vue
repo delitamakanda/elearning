@@ -1,27 +1,21 @@
 <template>
-  <div id="app">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <v-app>
+    <CalendarEvent />
+    </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import CalendarEvent from './components/CalendarEvent'
 
 export default {
-  name: 'app',
+  name: 'App',
   components: {
-    HelloWorld
+    CalendarEvent
+  },
+  data () {
+    return {
+      //
+    }
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
