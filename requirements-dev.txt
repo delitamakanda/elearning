@@ -23,3 +23,5 @@ scikit-learn==0.20.3
 scipy==1.2.1
 sklearn==0.0
 django-storages==1.7.1
+django-webpack-loader==0.6.0
+django-cors-headers==3.0.2

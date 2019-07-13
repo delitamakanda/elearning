@@ -16,6 +16,8 @@ from django.core.urlresolvers import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TEMPLATES_DIR = os.path.join(BASE_DIR,'templates/calendar')
+FRONTEND_DIR = os.path.join(BASE_DIR, 'vuejs')
 
 
 # Quick-start development settings - unsuitable for production
@@ -50,6 +52,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'storages',
     'widget_tweaks',
+    'webpack_loader',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -76,7 +80,7 @@ ROOT_URLCONF = 'myelearning.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -142,8 +146,33 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+if not DEBUG:
+    STATICFILES_DIRS = (
+        os.path.join(FRONTEND_DIR, 'dist'),
+        os.path.join(BASE_DIR, 'static'),
+    )
+else:
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, 'static'),
+    )
+
+WEBPACK_LOADER = {
+    'DEFAULT' : {
+        'CACHE': DEBUG,
+        'BUNDLE_DIR_NAME': '/bundles/',
+        'STATS_FILE': os.path.join(FRONTEND_DIR, 'webpack-stats.json')
+    }
+}
+
+if not DEBUG:
+    WEBPACK_LOADER['DEFAULT'].update({
+        'BUNDLE_DIR_NAME': '/dist/',
+        'STATS_FILE': os.path.join(FRONTEND_DIR, 'webpack-stats.json')
+    })
 
 # Custom auth
 
@@ -183,3 +212,20 @@ SESSION_EXPIRE_SECONDS = 18000  # 5 hours
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 
 DEVELOPER_KEY = config('DEVELOPER_API_KEY')
+
+# corsheaders
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ORIGIN_WHITELIST = (
+    'https://myelearning.herokuapp.com',
+    'http://localhost:8080',
+    'http://127.0.0.1:8080',
+)
+
+CORS_ALLOW_METHODS = (
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+)
