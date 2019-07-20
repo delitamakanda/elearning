@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'webpack_loader',
     'corsheaders',
+    'taggit',
+    'taggit_serializer',
 ]
 
 MIDDLEWARE = [
@@ -177,7 +179,7 @@ if not DEBUG:
 # Custom auth
 
 AUTH_USER_MODEL = 'students.User'
-LOGIN_REDIRECT_URL = reverse_lazy('student_course_list')
+LOGIN_REDIRECT_URL = reverse_lazy('classroom')
 LOGIN_URL = reverse_lazy('login')
 LOGOOUT_URL = reverse_lazy('logout')
 LOGOUT_REDIRECT_URL = reverse_lazy('course_list')
@@ -198,8 +200,13 @@ CACHES = {
 # DRF
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly'
-    ]
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+    'TEST_REQUEST_RENDERER_CLASSES': (
+        'rest_framework.renderers.MultiPartRenderer',
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.TemplateHTMLRenderer',
+    )
 }
 
 # Mailer

@@ -48,6 +48,7 @@
           :event-margin-bottom="3"
           :now="today"
           :type="type"
+          :weekdays="[1, 2, 3, 4, 5, 6, 0]"
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"

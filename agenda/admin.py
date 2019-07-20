@@ -6,6 +6,9 @@ from agenda.models import UserInfo
 from agenda.models import Contact
 from agenda.models import Invitation
 
+from agenda.models import Post
+from agenda.models import Comment
+
 # Register your models here.
 admin.site.register(Event)
 admin.site.register(EventGuest)
@@ -13,3 +16,6 @@ admin.site.register(Circle)
 admin.site.register(UserInfo)
 admin.site.register(Contact)
 admin.site.register(Invitation)
+
+admin.site.register(Post)
+admin.site.register(Comment)

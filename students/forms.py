@@ -109,3 +109,15 @@ class TakeQuizForm(forms.ModelForm):
         question = kwargs.pop('question')
         super().__init__(*args,**kwargs)
         self.fields['answer'].queryset = question.answers.order_by('text')
+
+
+class ContactForm(forms.Form):
+    contact_name = forms.CharField(label="Your name", required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
+    contact_email = forms.EmailField(label="Your email address", required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
+    content = forms.CharField(label="Your message", required=True, widget=forms.Textarea(attrs={'class':'form-control'}))
+
+    def __init__(self, *args, **kwargs):
+        super(ContactForm, self).__init__(*args, **kwargs)
+        self.fields['contact_name'].label = 'Your name:'
+        self.fields['contact_email'].label = 'Your email address:'
+        self.fields['content'].label = 'Subject of your message:'

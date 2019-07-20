@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+    {% trans 'Contact Us' %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h2>{% trans 'Contact Us' %}</h2>
+
+    <form class="" action="" method="post" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="button" class="btn btn-lg btn-primary btn-block">{% trans 'Send message' %}</button>
+    </form>
+</div>
+ {% endblock %}

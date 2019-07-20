@@ -1,10 +1,9 @@
 from django import forms
-from agenda.models import Event, EventGuest, Invitation, Circle, Contact
+from agenda.models import Event, EventGuest, Invitation, Circle, Contact, Post, Comment
 from django.utils.translation import ugettext_lazy as _
 from students.models import (
     User
 )
-
 
 class EventForm(forms.ModelForm):
 
@@ -60,3 +59,36 @@ class UpdateGuestForm(forms.ModelForm):
         (2, 'Desisted'),
         (3, 'Confirmed')
         ))
+
+
+class EmailPostForm(forms.Form):
+    name = forms.CharField(max_length=25)
+    email = forms.EmailField()
+    to = forms.EmailField()
+    comments = forms.CharField(required=False, widget=forms.Textarea)
+
+
+class CommentForm(forms.ModelForm):
+    name = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    email = forms.EmailField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    body = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control'}))
+
+    class Meta:
+        model = Comment
+        fields = ('name', 'email', 'body',)
+
+
+class PostForm(forms.ModelForm):
+    title = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    header = forms.EmailField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    body = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control'}))
+    status = forms.ChoiceField(widget=forms.RadioSelect(attrs={'class':'form-control'}))
+    tags = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+
+    class Meta:
+        model = Post
+        fields = ('title', 'header', 'body', 'status', 'tags',)
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField()
