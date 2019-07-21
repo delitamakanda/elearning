@@ -6,6 +6,10 @@ from students.models import (
 )
 
 class EventForm(forms.ModelForm):
+    name = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    description = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control'}))
+    date = forms.DateField(label=_('Event date'), widget=forms.SelectDateWidget(attrs={'class': 'date'}))
+    location = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
 
     class Meta:
         model = Event
@@ -62,10 +66,10 @@ class UpdateGuestForm(forms.ModelForm):
 
 
 class EmailPostForm(forms.Form):
-    name = forms.CharField(max_length=25)
-    email = forms.EmailField()
-    to = forms.EmailField()
-    comments = forms.CharField(required=False, widget=forms.Textarea)
+    name = forms.CharField(max_length=25, widget=forms.TextInput(attrs={'class':'form-control'}))
+    email = forms.EmailField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    to = forms.EmailField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    comments = forms.CharField(required=False, widget=forms.Textarea(attrs={'class':'form-control'}))
 
 
 class CommentForm(forms.ModelForm):
@@ -88,7 +92,3 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ('title', 'header', 'body', 'status', 'tags',)
-
-
-class SearchForm(forms.Form):
-    query = forms.CharField()

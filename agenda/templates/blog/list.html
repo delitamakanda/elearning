@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load blog_tags %}
+{% load humanize %}
+{% load i18n %}
+{% block title %}
+    {% trans 'Blog / All posts' %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% if tag %}
+            <h2>{% trans 'Posts tagged with' %} {{ tag.name }}</h2>
+        {% endif %}
+        <div class="row">
+            <div class="col-sm-8">
+                {% for post in posts %}
+                <div class="blog-post">
+                    <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+                    <p class="blog-meta">{{ post.publish|naturaltime }}</p>
+                </div>
+                {% endfor %}
+                {% include 'partial/pagination.html' with page=posts %}
+            </div>
+            <div class="col-sm-3 col-sm-offset-1">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block domready %}
+{% endblock %}

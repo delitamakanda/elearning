@@ -9,8 +9,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>{% trans 'elearning' %} - {% block title %} {% endblock %}</title>
-    <link href="{% static 'styles/vendors/jquery-ui.min.css' %}" rel="stylesheet">
-    <link href="{% static 'styles/vendors/jquery-ui.structure.min.css' %}" rel="stylesheet">
     <link href="{% static 'styles/styles.css' %}" rel="stylesheet">
     <link rel="manifest" href="{% static 'manifest.json' %}">
 </head>
@@ -113,13 +111,13 @@
                         <li><a href="{{ page.url }}">{{ page.title }}</a></li>
                     {% endfor %}
                     <li><a href="{% url 'contact_us' %}">{% trans 'Contact Us' %}</a></li>
+                    <li><a href="{% url 'post_list' %}">{% trans 'Blog' %}</a></li>
                 </ul>
             </nav>
         </footer>
     </div>
 
     <script src="{% static 'scripts/libs/jquery.min.js' %}"></script>
-    <script src="{% static 'scripts/libs/jquery-ui.min.js' %}"></script>
     <script src="{% static 'scripts/main.min.js' %}"></script>
     <script>
     $(document).ready(function() {

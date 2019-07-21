@@ -17,5 +17,9 @@ admin.site.register(UserInfo)
 admin.site.register(Contact)
 admin.site.register(Invitation)
 
-admin.site.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['title',]
+    prepopulated_fields = {'slug': ('title',)}
+
+admin.site.register(Post, PostAdmin)
 admin.site.register(Comment)

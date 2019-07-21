@@ -20,5 +20,12 @@ urlpatterns = [
     url(r'^invitation/$', views.InvitationCreateView.as_view(), name='create_invitation'),
     url(r'^participation/(?P<pk>\d+)/$', views.UpdateGuestView.as_view(), name='participation_form'),
     url(r'^circle/create/', views.CircleCreateView.as_view(), name='create_circle'),
-    url(r'^.*$', TemplateView.as_view(template_name='calendar/index.html'), name='calendar'),
+    url(r'^$', TemplateView.as_view(template_name='calendar/index.html'), name='calendar'),
+
+    url(r'^post/$', views.post_list, name='post_list'),
+    url(r'^post/tag/(?P<tag_slug>[-\w]+)/$', views.post_list, name='post_list_by_tag'),
+    url(r'^post/(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})/'\
+        r'(?P<post>[-\w]+)/$', views.post_detail, name='post_detail'),
+    url(r'^post/(?P<post_id>\d+)/share/$', views.post_share, name='post_share'),
+    url(r'^post/like/$', views.post_like, name='post_like'),
 ]
