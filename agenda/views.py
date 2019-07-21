@@ -358,6 +358,8 @@ def post_detail(request, year, month, day, post):
             new_comment = comment_form.save(commit=False)
             new_comment.post = post
             new_comment.save()
+            messages.success(request, _('Comment added.'))
+            return HttpResponseRedirect(post.get_absolute_url())
     else:
         comment_form = CommentForm()
 

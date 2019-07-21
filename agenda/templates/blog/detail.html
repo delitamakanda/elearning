@@ -48,7 +48,7 @@
                 <h3 class="center-align">{% trans 'Your comment has been added' %}.</h3>
             {% else %}
                  <h3>Add a new comment</h3>
-                 <form action="." method="post" class="hide-form">
+                 <form action="" method="post">
                    {{ comment_form.as_p }}
                    {% csrf_token %}
                    <p><input type="submit" class="btn btn-lg btn-primary btn-block" value="Add comment"></p>

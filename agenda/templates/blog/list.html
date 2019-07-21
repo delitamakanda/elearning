@@ -22,6 +22,12 @@
                 {% include 'partial/pagination.html' with page=posts %}
             </div>
             <div class="col-sm-3 col-sm-offset-1">
+                <div class="sidebar-module sidebar-module-inset">
+                    <h4>{% trans 'About' %}</h4>
+                </div>
+                <div class="sidebar-module">
+                    <p>{% total_posts %} {% trans 'posts' %}</p>
+                </div>
             </div>
         </div>
     </div>
