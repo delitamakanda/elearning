@@ -235,7 +235,7 @@ class InvitationCreateView(CreateView):
         except Invitation.DoesNotExist:
             pass
         obj.save()
-        messages.success(request, _('created an invitation.'))
+        messages.success(self.request, _('created an invitation.'))
         return send_invitation(obj)
 
 
