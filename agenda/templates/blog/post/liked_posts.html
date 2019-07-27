@@ -1,0 +1,7 @@
+<ul>
+{% for post in liked_posts %}
+    <li>
+        <a href="{{ post.get_absolute_url }}"> {{ post.title }}</a>
+    </li>
+{% endfor %}
+</ul>
