@@ -15,7 +15,7 @@ from braces.views import LoginRequiredMixin, PermissionRequiredMixin, CsrfExempt
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.views.generic.list import ListView
 from .models import Course, Module, Content, Subject, Review, Cluster
-from .forms import ModuleFormSet, ReviewForm
+from .forms import ModuleFormSet, ReviewForm, CourseCreateForm
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from students.forms import CourseEnrollForm
@@ -236,12 +236,13 @@ class OwnerEditMixin(object):
 
 class OwnerCourseMixin(OwnerMixin, LoginRequiredMixin):
     model = Course
-    fields = ['subject', 'title', 'overview',]
+    # fields = ['subject', 'title', 'overview',]
     success_url = reverse_lazy('manage_course_list')
 
 
 class OwnerCourseEditMixin(OwnerCourseMixin, OwnerEditMixin):
-    fields = ['subject', 'title', 'overview', ]
+    # fields = ['subject', 'title', 'overview', ]
+    form_class = CourseCreateForm
     success_url = reverse_lazy('manage_course_list')
     template_name = 'courses/manage/course/form.html'
 
