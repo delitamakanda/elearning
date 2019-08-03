@@ -1,5 +1,5 @@
 <template>
-    <v-app>
+    <v-app class="container-fluid">
     <CalendarEvent />
     </v-app>
 </template>
