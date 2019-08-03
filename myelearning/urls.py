@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from students.views import students, classroom, teachers
+from agenda import views as blog_views
 
 from django.views.generic import TemplateView
 
@@ -41,6 +42,14 @@ urlpatterns = [
     url(r'^calendar/', include('agenda.urls')),
     url(r'^api/', include('courses.api.urls', namespace='api')),
     url(r'^api/event/', include('agenda.api.urls', namespace='api_events')),
+
+    url(r'^blog/post/$', blog_views.post_list, name='post_list'),
+    url(r'^blog/post/tag/(?P<tag_slug>[-\w]+)/$', blog_views.post_list, name='post_list_by_tag'),
+    url(r'^blog/post/(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})/'\
+        r'(?P<post>[-\w]+)/$', blog_views.post_detail, name='post_detail'),
+    url(r'^blog/post/(?P<post_id>\d+)/share/$', blog_views.post_share, name='post_share'),
+    url(r'^blog/post/like/$', blog_views.post_like, name='post_like'),
+
     url(r'^sw.js', (TemplateView.as_view(template_name="sw.js", content_type='application/javascript', )), name='sw.js'),
 ]
 
