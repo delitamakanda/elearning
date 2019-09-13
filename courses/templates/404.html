@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% load i18n %}
 {% block title %}
 {% trans '404 - Page Not Found' %}
@@ -7,5 +8,6 @@
 {% block content %}
 <div class="container">
 <h2>{% trans '404 - Page Not Found' %}</h2>
+<img src="{% static 'images/404-error.jpg' %}" alt="404 Resource Not Found"/>
 </div>
  {% endblock %}
