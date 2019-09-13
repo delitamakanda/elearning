@@ -26,7 +26,7 @@ EMAIL_TIMEOUT = 500
 
 ALLOWED_HOSTS = ['*',]
 
-STATICFILES_STORAGE = 'whitenoise.django.CompressedStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Configure for SSL
 
