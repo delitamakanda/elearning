@@ -38,7 +38,7 @@ self.addEventListener('activate', function(e) {
                 cacheNames.map(function(cacheName) {
                     if (expectedCacheNames.indexOf(cacheName) === -1) {
 
-                        console.log('[ServiceWorker] Removing Cached Files from Cache - ', thisCacheName);
+                        console.log('[ServiceWorker] Removing Cached Files from Cache - ', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
