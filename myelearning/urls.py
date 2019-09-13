@@ -50,7 +50,8 @@ urlpatterns = [
     url(r'^blog/post/(?P<post_id>\d+)/share/$', blog_views.post_share, name='post_share'),
     url(r'^blog/post/like/$', blog_views.post_like, name='post_like'),
 
-    url(r'^sw.js', (TemplateView.as_view(template_name="sw.js", content_type='application/javascript', )), name='sw.js'),
+    url(r'^sw.js', (TemplateView.as_view(template_name="service-worker.js", content_type='application/javascript', )), name='sw.js'),
+    url(r'^offline.html', (TemplateView.as_view(template_name="offline.html")), name='offline.html'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
