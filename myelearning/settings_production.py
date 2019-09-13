@@ -26,7 +26,7 @@ EMAIL_TIMEOUT = 500
 
 ALLOWED_HOSTS = ['*',]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Configure for SSL
 
