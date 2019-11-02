@@ -14,7 +14,7 @@
 </head>
 <body>
     <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
+      <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -78,7 +78,7 @@
     <div id="content" class="main">
 
         {% if messages %}
-            <div class="container">
+            <div class="container-fluid">
                 {% for message in messages %}
                 <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible" {% endif %} role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -102,7 +102,7 @@
 
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
         <footer id="footer" class="footer">
             <nav class="navbar">
                 {% get_flatpages as flatpages %}

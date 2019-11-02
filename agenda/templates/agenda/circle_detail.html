@@ -4,7 +4,7 @@
     {% trans 'Circle' %}
 {% endblock %}
 {% block content %}
-   <div class="container">
+   <div class="container-fluid">
        {% include "partial/tabevents.html" %}
        <h1>Contacts dans le cercle {{object.name }}</h1>
         {% for user in object.contacts %}

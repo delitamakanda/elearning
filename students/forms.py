@@ -27,6 +27,13 @@ class TeacherSignupForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
 
+    def clean(self):
+        email = self.cleaned_data['email']
+        username = self.cleaned_data['username']
+        if User.objects.filter(email=email).exists() or User.objects.filter(username=username).exists():
+            raise forms.ValidationError("Email or Username exists")
+        return self.cleaned_data
+
     def save(self, commit=True):
         user = super().save(commit=False)
         user.is_teacher = True
@@ -49,6 +56,13 @@ class StudentSignupForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
+
+    def clean(self):
+        email = self.cleaned_data['email']
+        username = self.cleaned_data['username']
+        if User.objects.filter(email=email).exists() or User.objects.filter(username=username).exists():
+            raise forms.ValidationError("Email or Username exists")
+        return self.cleaned_data
 
     @transaction.atomic
     def save(self, commit=True):

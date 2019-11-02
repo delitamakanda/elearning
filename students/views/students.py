@@ -1,6 +1,6 @@
 import datetime
 
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, FieldDoesNotExist, FieldError
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db import transaction
@@ -190,6 +190,8 @@ def student_recommendation_list(request):
 
     try:
         user_cluster_name = User.objects.get(username=request.user.username).cluster_set.first().name
+    except FieldDoesNotExist or FieldError:
+        messages.error(self.request, 'There are no recommendations courses for you. Sorry ;-)')
     except:
         update_clusters()
         user_cluster_name = User.objects.get(username=request.user.username).cluster_set.first().name
