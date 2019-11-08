@@ -190,7 +190,7 @@ def student_recommendation_list(request):
 
     try:
         user_cluster_name = User.objects.get(username=request.user.username).cluster_set.first().name
-    except FieldDoesNotExist or FieldError:
+    except FieldDoesNotExist or FieldError or NameError or ValueError or ObjectDoesNotExist:
         messages.error(self.request, 'There are no recommendations courses for you. Sorry ;-)')
     except:
         update_clusters()
