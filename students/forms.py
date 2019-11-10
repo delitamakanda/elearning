@@ -86,6 +86,7 @@ class StudentInterestsForm(forms.ModelForm):
 
 
 class QuestionForm(forms.ModelForm):
+    # text = forms.CharField(label="Question", widget=forms.TextInput(attrs={'class':'form-control'}))
 
     class Meta:
         model = Question

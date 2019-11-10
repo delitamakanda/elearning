@@ -23,7 +23,9 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{% url 'course_list' %}">{% trans 'E-learning' %}</a>
+          <a class="navbar-brand" href="{% url 'course_list' %}">
+              <img alt="Brand" width="30" title="{% trans 'E-learning' %}" src="{% static 'images/pwa/icon-72x72.png' %}">
+          </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -46,6 +48,7 @@
             </div>
           </form>
           <ul class="nav navbar-nav navbar-right">
+            <li><a href="{% url 'post_list' %}">{% trans 'Blog' %}</a></li>
             <li><a href="{% url 'course_list' %}">{% trans 'Learn' %}</a></li>
             {% if user.is_authenticated and request.user.is_student %}
                 <li><a href="{% url 'student_quiz_list' %}">{% trans 'My Quizzes' %}</a></li>
@@ -67,8 +70,8 @@
               </ul>
             </li>
             {% else %}
-                <li><a href="{% url 'login' %}">{% trans 'Log in' %}</a></li>
-                <li><a href="{% url 'signup' %}">{% trans 'Sign up' %}</a></li>
+                <li class="btn-cta"><a href="{% url 'login' %}">{% trans 'Log in' %}</a></li>
+                <li class="btn-cta"><a href="{% url 'signup' %}">{% trans 'Sign up' %}</a></li>
             {% endif %}
           </ul>
         </div><!-- /.navbar-collapse -->
@@ -103,17 +106,21 @@
     </div>
 
     <div class="container-fluid">
-        <footer id="footer" class="footer">
-            <nav class="navbar">
-                {% get_flatpages as flatpages %}
-                <ul class="list-inline">
-                    {% for page in flatpages %}
-                        <li><a href="{{ page.url }}">{{ page.title }}</a></li>
-                    {% endfor %}
-                    <li><a href="{% url 'contact_us' %}">{% trans 'Contact Us' %}</a></li>
-                    <li><a href="{% url 'post_list' %}">{% trans 'Blog' %}</a></li>
-                </ul>
-            </nav>
+        <footer id="footer" class="footer row">
+            <div class="col-xs-12 col-md-6 text-center">
+                <nav class="navbar">
+                    {% get_flatpages as flatpages %}
+                    <ul class="list-inline">
+                        {% for page in flatpages %}
+                            <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+                        {% endfor %}
+                        <li><a href="{% url 'contact_us' %}">{% trans 'Contact Us' %}</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-xs-12 col-md-6 text-center">
+                {% trans '&copy; elearning 2017 -' %} <span id="copyright"></span>
+            </div>
         </footer>
     </div>
 
@@ -132,6 +139,10 @@
             console.log("sw failed" + error);
         });
     }
+
+    var copyrightDate = new Date().getFullYear();
+    var footerDiv = document.getElementById("copyright");
+    footerDiv.innerHTML = copyrightDate;
     </script>
 </body>
 </html>

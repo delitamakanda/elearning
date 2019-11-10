@@ -114,6 +114,12 @@ $admin-nav-width: 250px;
     &:nth-child(n+2) {
         margin-top: 1rem;
     }
+
+    img {
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+    }
 }
 
 .menu {

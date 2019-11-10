@@ -114,14 +114,6 @@ body {
     font-family: 'Lato Regular', Arial, sans-serif;
     overflow-x: hidden;
     padding-top: 70px;
-    background-color: #f8f8f8;
-}
-
-.container {
-    width: 90%;
-    margin: 0 auto;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
 }
 
 .avatar {
@@ -129,16 +121,6 @@ body {
    height: 26px;
    width: 26px;
    float: left;
-}
-
-.navbar-default {
-    background-color: #ffffff;
-}
-
-img {
-    max-width: 100%;
-    width: 100%;
-    height: auto;
 }
 
 #footer {
@@ -227,4 +209,10 @@ img {
 .sidebar-module {
     padding: 15px;
     margin: 0 -15px 15px;
+}
+
+.panel {
+    border: 1px solid #eff2f6;
+    border-radius: 20px 20px 20px 0px;
+    transition-duration: 800ms;
 }

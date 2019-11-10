@@ -40,7 +40,7 @@
                         <div>{{ form.is_correct }}</div>
                         <div>
                             {% if form.instance.pk %}
-                                {{ form.DELETE }}
+                                {{ form.DELETE }} {% trans 'delete anwser' %}
                             {% endif %}
                         </div>
                     {% endfor %}

@@ -17,10 +17,17 @@ ModuleFormSet = inlineformset_factory(Course, Module, form=ModuleForm, fields=['
 
 
 class UserEditForm(forms.ModelForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={'readonly': True}))
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email',)
+        fields = ('username', 'first_name', 'last_name', 'email',)
+
+    def clean(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Email already exist")
+        return self.cleaned_data
 
 
 class ReviewForm(forms.ModelForm):

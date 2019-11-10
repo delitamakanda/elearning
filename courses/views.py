@@ -1,6 +1,7 @@
 import requests
 import datetime
 
+from django import forms
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render, redirect, get_object_or_404
@@ -35,7 +36,7 @@ def edit(request):
             user_form.save()
             messages.success(request, _('Profile updated successfully'))
         else:
-            messages.error(request, _('Error updating your profile'))
+            messages.info(request, _('Error updating your profile'))
     else:
         user_form = UserEditForm(instance=request.user)
     return render(request, 'registration/edit.html', {'user_form': user_form})
@@ -149,7 +150,7 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
         return None
 
     def get_form(self, model, *args, **kwargs):
-        Form = modelform_factory(model, exclude=['owner', 'order', 'created', 'updated'])
+        Form = modelform_factory(model, exclude=['owner', 'order', 'created', 'updated'], widgets={'title': forms.TextInput(attrs={'class':'form-control'}), 'content': forms.Textarea(attrs={'class':'form-control', 'cols': 40, 'rows': 8}), 'url': forms.TextInput(attrs={'class':'form-control'})})
 
         return Form(*args, **kwargs)
 

@@ -3,15 +3,20 @@
 {% block title %}{% trans 'Sign up' %}{% endblock %}
 {% block content %}
 <div class="container-fluid">
-    <div class="jumbotron">
-    <h1>{% trans 'Sign up for a free account' %}</h1>
+    <div class="row jumbotron">
+        <div class="col-md-8 col-md-offset-2 text-center">
+            <div class="intro">
+                <h1>{% trans 'Sign up for a free account' %}</h1>
 
-    <p>{% trans 'Sign up as a student for increase your knowledge <br/> or become a teacher and provide useful tech courses.' %}</p>
+                <p>{% trans 'Sign up as a student for increase your knowledge <br/> or become a teacher and provide useful tech courses.' %}</p>
 
-    <div class="module">
-        <a href="{% url 'student_registration' %}" class="btn btn-primary" role="button"> {% trans 'I\'m a student' %}</a>
-        <a href="{% url 'teacher_registration' %}" class="btn btn-primary" role="button"> {% trans 'I\'m a teacher' %}</a>
-    </div>
+                <p class="module">
+                    <a href="{% url 'student_registration' %}" class="btn btn-primary btn-outline btn-md" role="button"> {% trans 'I\'m a student' %}</a>
+                    <a href="{% url 'teacher_registration' %}" class="btn btn-primary btn-outline btn-md" role="button"> {% trans 'I\'m a teacher' %}</a>
+                </p>
+            </div>
+        </div>
+
     </div>
 </div>
 {% endblock %}
