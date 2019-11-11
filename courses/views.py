@@ -35,8 +35,6 @@ def edit(request):
         if user_form.is_valid():
             user_form.save()
             messages.success(request, _('Profile updated successfully'))
-        else:
-            messages.info(request, _('Error updating your profile'))
     else:
         user_form = UserEditForm(instance=request.user)
     return render(request, 'registration/edit.html', {'user_form': user_form})
