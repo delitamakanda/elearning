@@ -45,6 +45,10 @@ class TeacherRegistrationView(CreateView):
         login(self.request, user)
         return result
 
+    def form_invalid(self, form):
+        result = super(TeacherRegistrationView, self).form_invalid(form)
+        return result
+
 
 @method_decorator([login_required, teacher_required], name='dispatch')
 class TeacherQuizListView(ListView):

@@ -19,8 +19,8 @@ class CourseEnrollForm(forms.Form):
 
 
 class TeacherSignupForm(UserCreationForm):
-    username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    email = forms.EmailField(label=_('E-mail'), widget=forms.TextInput(attrs={'class':'form-control'}))
+    username = forms.CharField(widget = forms.TextInput(attrs={'class':'form-control'}))
+    email = forms.EmailField(required = True,label=_('E-mail'), widget=forms.TextInput(attrs={'class':'form-control'}))
     password1 = forms.CharField(label=_('Password'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
     password2 = forms.CharField(label=_('Password verification'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
 
@@ -28,8 +28,8 @@ class TeacherSignupForm(UserCreationForm):
         model = User
 
     def clean(self):
-        email = self.cleaned_data['email']
-        username = self.cleaned_data['username']
+        email = self.cleaned_data.get('email')
+        username = self.cleaned_data.get('username')
         if User.objects.filter(email=email).exists() or User.objects.filter(username=username).exists():
             raise forms.ValidationError("Email or Username exists")
         return self.cleaned_data
@@ -45,7 +45,7 @@ class TeacherSignupForm(UserCreationForm):
 
 class StudentSignupForm(UserCreationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    email = forms.EmailField(label=_('E-mail'), widget=forms.TextInput(attrs={'class':'form-control'}))
+    email = forms.EmailField(required = True,label=_('E-mail'), widget=forms.TextInput(attrs={'class':'form-control'}))
     password1 = forms.CharField(label=_('Password'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
     password2 = forms.CharField(label=_('Password verification'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
     interests = forms.ModelMultipleChoiceField(
@@ -58,8 +58,8 @@ class StudentSignupForm(UserCreationForm):
         model = User
 
     def clean(self):
-        email = self.cleaned_data['email']
-        username = self.cleaned_data['username']
+        email = self.cleaned_data.get('email')
+        username = self.cleaned_data.get('username')
         if User.objects.filter(email=email).exists() or User.objects.filter(username=username).exists():
             raise forms.ValidationError("Email or Username exists")
         return self.cleaned_data

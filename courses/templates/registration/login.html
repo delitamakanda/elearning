@@ -33,6 +33,7 @@
             <input type="submit" class="btn btn-lg btn-primary btn-block" value="{% trans 'Log In' %}" />
         </form>
     </div>
+    <p>{% trans 'Don\'t have an account yet?' %} <a href="{% url 'signup' %}">{% trans 'Create it !' %}</a></p>
 </div>
 </div>
 {% endblock %}
