@@ -83,7 +83,7 @@ $buttonLike.on('click', function(e) {
     var xhr = new XMLHttpRequest();
 
     if ($buttonLike.hasClass('blog-like')) {
-        url = '/calendar/post/like/?post_id=' + id;
+        url = '/blog/post/like/?post_id=' + id;
     }
 
     xhr.open('GET', url);
