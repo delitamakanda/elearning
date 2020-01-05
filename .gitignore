@@ -166,3 +166,4 @@ typings/
 .next
 frontend/images/
 frontend/icons/
+.vscode/
