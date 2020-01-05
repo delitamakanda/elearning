@@ -9,6 +9,7 @@ from django.db.models import Count, F, Sum, FloatField, Avg
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.base import TemplateResponseMixin, View
 from django.forms.models import modelform_factory
 from django.apps import apps
@@ -70,6 +71,8 @@ class CourseListView(TemplateResponseMixin, View):
             subjects = Subject.objects.annotate(total_courses=Count('courses'))
             cache.set('all_subjects', subjects)
         all_courses = Course.objects.annotate(total_modules=Count('modules', distinct=True)).annotate(total_reviews=Count('reviews', distinct=True)).annotate(average_rating=Avg(F('reviews__rating'), distinct=True))
+        page = request.GET.get('page', 1)
+
         # subjects = Course.objects.annotate(total_modules=Count('courses'))
         # courses = Course.objects.annotate(total_modules=Count('modules'))
 
@@ -80,11 +83,21 @@ class CourseListView(TemplateResponseMixin, View):
             if not courses:
                 courses = all_courses.filter(subject=subject)
                 cache.set(key, courses)
+            paginator = Paginator(courses, 10)
         else:
             courses = cache.get('all_courses')
             if not courses:
                 courses = all_courses
                 cache.set('all_courses', courses)
+            paginator = Paginator(courses, 10)
+
+        try:
+            courses = paginator.page(page)
+        except PageNotAnInteger:
+            courses = paginator.page(1)
+        except EmptyPage:
+            courses = paginator.page(paginator.num_pages)
+        
         return self.render_to_response({'subjects': subjects, 'subject': subject, 'courses': courses})
 
 class CourseDetailView(DetailView):
