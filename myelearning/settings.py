@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.admindocs',
     'students',
     'agenda',
+    'blog',
     'embed_video',
     'rest_framework',
     'storages',

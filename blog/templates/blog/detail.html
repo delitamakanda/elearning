@@ -44,15 +44,17 @@
                  <div class="no-comment">{% trans 'There are no comments yet' %}.</div>
             {% endfor %}
 
-            {% if new_comment %}
-                <h3 class="center-align">{% trans 'Your comment has been added' %}.</h3>
-            {% else %}
-                 <h3>Add a new comment</h3>
-                 <form action="" method="post">
-                   {{ comment_form.as_p }}
-                   {% csrf_token %}
-                   <p><input type="submit" class="btn btn-lg btn-primary btn-block" value="Add comment"></p>
-               </form>
+            {% if user.is_authenticated %}
+                {% if new_comment %}
+                    <h3 class="center-align">{% trans 'Your comment has been added' %}.</h3>
+                {% else %}
+                    <h3>Add a new comment</h3>
+                    <form action="" method="post">
+                    {{ comment_form.as_p }}
+                    {% csrf_token %}
+                    <p><input type="submit" class="btn btn-lg btn-primary btn-block" value="Add comment"></p>
+                </form>
+                {% endif %}
             {% endif %}
 
             <h3 class="left-align">{% trans 'You might also enjoy' %}</h3>
