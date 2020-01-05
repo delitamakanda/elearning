@@ -18,7 +18,7 @@ class Command(BaseCommand):
     date_joined = datetime.date.today() - datetime.timedelta(days=options['days'])
     users = User.objects.annotate(course_count=Count('courses_joined')).filter(course_count=0, date_joined__lte=date_joined)
     for user in users:
-      message = 'Dear {}, \n\nWe noticed that you didn\'t enroll in any courses yet. What are you waiting for ?'.format(user.first_name)
+      message = 'Dear %s, \n\nWe noticed that you didn\'t enroll in any courses yet. What are you waiting for ?' % user.username
       emails.append((subject, message, settings.DEFAULT_FROM_EMAIL, [user.email]))
       send_mass_mail(emails)
-      self.stdout.write('Sent {} reminders' % len(emails))
+      self.stdout.write('Sent %s reminders' % len(emails))
