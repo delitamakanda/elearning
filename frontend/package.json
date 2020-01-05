@@ -16,6 +16,11 @@
     "django",
     "elearning"
   ],
+  "browserslist": [
+    "last 1 version",
+    "> 1%",
+    "IE 10"
+  ],
   "author": "Délita Makanda",
   "license": "ISC",
   "devDependencies": {

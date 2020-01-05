@@ -59,7 +59,7 @@ gulp.task('sass', function () {
     //.pipe(prefix(
         //'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'
     //))
-    .pipe(postcss([autoprefixer({ browsers: ['safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4']}), cssnano()]))
+    .pipe(postcss([autoprefixer(), cssnano()]))
     .pipe(sourcemaps.write())
     .pipe(plumber({
         errorHandler: onError
