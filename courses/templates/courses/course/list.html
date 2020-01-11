@@ -42,7 +42,10 @@
                        <div class="panel-heading">
                            <a href="{% url 'course_detail' course.slug %}"> <h4>{{ course.title }}</h4> </a>
                            <p>
-                               <span class="glyphicon glyphicon-user"></span> {% trans 'Instructor' %}: {{ course.owner.username }}
+                               <span class="glyphicon glyphicon-user"></span> {% trans 'Instructor' %}: 
+                               <a href="{% url 'user_detail' course.owner.username %}">
+                                    {{ course.owner.username }}
+                                </a>
                            </p>
                       </div>
                       <div class="panel-body">

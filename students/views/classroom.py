@@ -2,10 +2,11 @@ import re
 
 from decouple import config
 from django.db.models import Q
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView
 from courses.models import Course
 from students.forms import ContactForm
+from students.models import User
 from django.core.mail import EmailMessage, send_mail, mail_admins
 from django.template import Context, loader
 from django.contrib import messages
@@ -92,3 +93,15 @@ def contact_us_view(request):
         else:
             messages.info(request, _('Oops ! Message not send...'))
     return render(request, 'students/contact/contact_form.html', { 'form': form_class })
+
+
+def notifications_list(request):
+    return render(request, 'students/notifications/list.html', {})
+
+
+def messages_list(request):
+    return render(request, 'students/messages/list.html', {})
+
+def user_detail(request, username):
+    user = get_object_or_404(User, username=username, is_active=True)
+    return render(request, 'students/user/detail.html', {'user': user})

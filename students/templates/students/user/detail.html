@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load gravatar %}
+{% load i18n %}
+{% block title %}
+<h3>{{ user.get_full_name }}</h3>
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="page-title">
+        <h3>{{ user.get_full_name }}</h3>
+    </div>
+    <div class="page-content">
+        <div class="profile-info">
+            <img class="avatar" src="{{ user|gravatar }}" alt="{{ user.username }}" /> 
+        </div>
+    </div>
+</div>
+ {% endblock %}

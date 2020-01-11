@@ -37,7 +37,8 @@
             {% trans 'Reviews' %}
            {% for review in course.reviews.all %}
            <div>
-               <h6>{% trans 'rated' %} {{ review.rating }} {% trans 'of 5 by' %} {{ review.user_name }}</h6>
+               <h6>{% trans 'rated' %} {{ review.rating }} {% trans 'of 5 by' %} <a href="{% url 'user_detail' review.user_name %}">
+               {{ review.user_name }}</a></h6>
                <p>{{ review.comment }}</p>
            </div>
            {% endfor %}
