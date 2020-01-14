@@ -62,7 +62,7 @@
             <li><a href="{% url 'notifications_list' %}"><i class="glyphicon glyphicon-bell"></i> <span class="badge">0</span></a></li>
             <li><a href="{% url 'messages_list' %}"><i class="glyphicon glyphicon-comment"></i> <span class="badge">0</span></a></li>
             <li class="dropdown">
-              <button type="button" class="btn btn-default dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="avatar" src="{{ user|gravatar }}" alt="{{ user.username }}"> <span class="caret"></span>
+              <button type="button" class="btn btn-default dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="avatar" src="{{ request.user|gravatar }}" alt="{{ request.user.username }}"> <span class="caret"></span>
               <span class="sr-only">Toggle Dropdown</span>
               </button>
               <ul class="dropdown-menu">
