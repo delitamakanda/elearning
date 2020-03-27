@@ -48,19 +48,19 @@
             </div>
           </form>
           <ul class="nav navbar-nav navbar-right">
-            {% if user.is_authenticated and request.user.is_student %}
+            {% if request.user.is_authenticated and request.user.is_student %}
                 <li><a href="{% url 'student_quiz_list' %}">{% trans 'My Quizzes' %}</a></li>
                 <li><a href="{% url 'student_course_list' %}">{% trans 'My Courses' %}</a></li>
             {% endif %}
-            {% if user.is_authenticated and request.user.is_teacher or request.user.is_staff %}
+            {% if request.user.is_authenticated and request.user.is_teacher or request.user.is_staff %}
                 <li><a href="{% url 'manage_course_list' %}">{% trans 'Manage courses' %}</a></li>
                 <li><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'Manage quizzes' %}</a></li>
             {% endif %}
-            {% if user.is_authenticated %}
+            {% if request.user.is_authenticated %}
             <li><a href="{% url 'notifications_list' %}"><i class="glyphicon glyphicon-bell"></i> <span class="badge">0</span></a></li>
             <li><a href="{% url 'messages_list' %}"><i class="glyphicon glyphicon-comment"></i> <span class="badge">0</span></a></li>
             <li class="dropdown">
-              <button type="button" class="btn btn-default dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="avatar" src="{{ user|gravatar }}" alt="{{ user.username }}"> <span class="caret"></span>
+              <button type="button" class="btn btn-default dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="avatar" src="{{ request.user|gravatar }}" alt="{{ request.user.username }}"> <span class="caret"></span>
               <span class="sr-only">Toggle Dropdown</span>
               </button>
               <ul class="dropdown-menu">
