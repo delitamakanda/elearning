@@ -35,11 +35,9 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><strong>{% trans "Browse" %}</strong> <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="{% url 'course_list' %}">{% trans 'Learn' %}</a></li>
-                <li><a href="{% url 'post_list' %}">{% trans 'Blog' %}</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="{% url 'videos_list' %}"><i class="glyphicon glyphicon-facetime-video
 "></i>{% trans 'Videos' %}</a></li>
-                <li><a href="{% url 'calendar' %}"><i class="glyphicon glyphicon-calendar"></i> {% trans 'Calendar' %}</a></li>
               </ul>
             </li>
           </ul>
@@ -67,7 +65,6 @@
               </button>
               <ul class="dropdown-menu">
                   <li><a href="{% url 'student_recommendation_list' %}">{% trans 'My recommended courses' %}</a></li>
-                  <li><a href="{% url 'listes_events' %}">{% trans 'My events' %}</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="{% url 'edit' %}">{% trans 'My account' %}</a></li>
                 <li><a href="{% url 'logout' %}">{% trans 'Logout' %}</a></li>
