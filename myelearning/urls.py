@@ -20,7 +20,6 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from students.views import students, classroom, teachers
-from agenda import views as blog_views
 
 from django.views.generic import TemplateView
 
@@ -42,11 +41,8 @@ urlpatterns = [
     
     url(r'^course/', include('courses.urls')),
     url(r'^students/', include('students.urls')),
-    url(r'^calendar/', include('agenda.urls')),
-    url(r'^blog/', include('blog.urls')),
 
     url(r'^api/', include('courses.api.urls', namespace='api')),
-    url(r'^api/event/', include('agenda.api.urls', namespace='api_events')),
 
     url(r'^sw.js', (TemplateView.as_view(template_name="service-worker.js", content_type='application/javascript', )), name='sw.js'),
     url(r'^offline.html', (TemplateView.as_view(template_name="offline.html")), name='offline.html'),

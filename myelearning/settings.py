@@ -16,9 +16,6 @@ from django.core.urlresolvers import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEMPLATES_DIR = os.path.join(BASE_DIR,'templates/calendar')
-FRONTEND_DIR = os.path.join(BASE_DIR, 'vuejs')
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -47,13 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.admindocs',
     'students',
-    'agenda',
-    'blog',
     'embed_video',
     'rest_framework',
     'storages',
     'widget_tweaks',
-    'webpack_loader',
     'corsheaders',
     'taggit',
     'taggit_serializer',
@@ -84,7 +78,7 @@ ROOT_URLCONF = 'myelearning.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -154,29 +148,9 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-if not DEBUG:
-    STATICFILES_DIRS = (
-        os.path.join(FRONTEND_DIR, 'dist'),
-        os.path.join(BASE_DIR, 'static'),
-    )
-else:
-    STATICFILES_DIRS = (
-        os.path.join(BASE_DIR, 'static'),
-    )
-
-WEBPACK_LOADER = {
-    'DEFAULT' : {
-        'CACHE': DEBUG,
-        'BUNDLE_DIR_NAME': '/bundles/',
-        'STATS_FILE': os.path.join(FRONTEND_DIR, 'webpack-stats.json')
-    }
-}
-
-if not DEBUG:
-    WEBPACK_LOADER['DEFAULT'].update({
-        'BUNDLE_DIR_NAME': '/dist/',
-        'STATS_FILE': os.path.join(FRONTEND_DIR, 'webpack-stats.json')
-    })
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 # Custom auth
 

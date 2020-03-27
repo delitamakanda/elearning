@@ -3,7 +3,6 @@ from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.signals import post_save
 from django.utils.html import escape, mark_safe
-from agenda.models import Invitation, Contact
 
 
 class User(AbstractUser):
@@ -84,16 +83,3 @@ class StudentAnswer(models.Model):
     def __str__(self):
         return '{} {}'.format(self.student, self.answer)
 
-
-def create_contact_on_user_create(sender, instance, created, **kwargs):
-    if created == True:
-        try:
-            invitations = Invitation.objects.filter(email=instance.email)
-            for invitation in invitations:
-                contact = Contact(owner=invitation.sender, user=instance, invitation_send=True, invitation_accepted=True)
-                contact.save()
-                invitation.delete()
-        except Invitation.DoesNotExist:
-            pass
-
-post_save.connect(create_contact_on_user_create, sender=User)
