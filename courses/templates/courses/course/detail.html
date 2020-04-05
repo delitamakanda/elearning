@@ -18,7 +18,7 @@
                     src="{{ course.owner|gravatar }}"
                     alt="">
                 <span class="block text-lg font-bold">
-                    {{ course.owner.username }}
+                    {% trans 'Instructor' %} : {{ course.owner.username }}
                 </span>
                 </a>
             </div>
@@ -28,6 +28,13 @@
             <p class=" text-xs p-3">
                 {{ course.modules.count }} {% trans 'module(s)' %} 
             </p>
+            {% if course.modules.count > 0 %}
+            <ul>
+            {% for module in course.modules.all %}
+            <li>- {{ module.title }}</li>
+            {% endfor %}
+            </ul>
+            {% endif %}
             {% if request.user.is_authenticated and course.modules.count > 0%}
             <form action="{% url 'student_enroll_course' %}" method="post">
                 {{ enroll_form }}

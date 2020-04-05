@@ -13,17 +13,6 @@ html {
     display: block !important;
   }
 
-.avatar {
-   border-radius: 50% 50%;
-   height: 26px;
-   width: 26px;
-   float: left;
-}
-
-#footer {
-    padding: 5rem 0;
-}
-
 .list-videos-content {
     overflow-y: scroll;
     height: 450px;
@@ -43,38 +32,25 @@ html {
         pointer-events: auto;
         opacity: 1;
     }
-}
 
-.is-offline form {
-    position: relative;
-    opacity: .65;
-    cursor: not-allowed;
-    pointer-events: none;
-
-    &::after {
-        content: "Offline";
-        display: block;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: "white";
-        background-color: #2d2d2d;
-        padding: 1rem 2rem;
+    form {
+        position: relative;
+        opacity: .65;
+        cursor: not-allowed;
+        pointer-events: none;
+    
+        &::after {
+            content: "Offline";
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: "white";
+            background-color: #2d2d2d;
+            padding: 1rem 2rem;
+        }
     }
-}
-
-.form-signin {
-    max-width: 330px;
-    padding: 15px;
-    margin: 0 auto;
-}
-
-.footer {
-    padding-top: 40px;
-    padding-bottom: 40px;
-    margin-top: 40px;
-    border-top: 1px solid #eee;
 }
 
 .row-striped:nth-of-type(odd){

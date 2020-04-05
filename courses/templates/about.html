@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load widget_tweaks %}
+{% load staticfiles %}
+{% block title %}
+{% trans 'About us' %}
+{% endblock %}
+
+{% block content %}
+<div class="w-full px-4">
+    <div class="about-us">
+        <h1 class="text-xl my-2">{% trans 'About us' %}</h1>
+
+    </div>
+</div>
+{% endblock %}

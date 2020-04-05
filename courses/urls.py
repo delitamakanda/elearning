@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.views.generic import TemplateView
 from . import views
 
 urlpatterns = [
@@ -19,4 +20,5 @@ urlpatterns = [
     url(r'^(?P<subject>[\w-]+)/add_review/$', views.add_review, name='add_review'),
     url(r'^videos$', views.list_videos, name='videos_list'),
     url(r'^edit$', views.edit, name='edit'),
+    url(r'^about-company$', TemplateView.as_view(template_name='about.html'), name='about_company'),
 ]
