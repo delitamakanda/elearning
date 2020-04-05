@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base2.html" %}
 {% load staticfiles %}
 {% load i18n %}
 {% block title %}
@@ -6,8 +6,12 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-<h2>{% trans '404 - Page Not Found' %}</h2>
+<div class="h-screen w-screen bg-white flex justify-center content-center flex-wrap">
+<h2 class-"font-sans text-teal-600">{% trans '404 - Page Not Found' %}</h2>
 <img src="{% static 'images/404-error.jpg' %}" alt="404 Resource Not Found"/>
+</div>
+<div class="absolute w-screen bottom-0 mb-6 text-white text-center font-sans text-xl">
+	<span class="opacity-50">{% trans 'Take me back to' %}</span>
+ 	<a class="border-b" href="{% url 'course_list' %}"> {% trans 'awesome courses' %}!</a>
 </div>
  {% endblock %}

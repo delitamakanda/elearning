@@ -12,79 +12,100 @@
     <link href="{% static 'styles/styles.css' %}" rel="stylesheet">
     <link rel="manifest" href="{% static 'manifest.json' %}">
 </head>
-<body>
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="{% url 'course_list' %}">
-              <img alt="Brand" width="30" title="{% trans 'E-learning' %}" src="{% static 'images/pwa/icon-72x72.png' %}">
+<body class="flex flex-col min-h-screen">
+  <nav class="flex items-center justify-between flex-wrap bg-teal-500 p-6">
+    <div class="flex items-center flex-shrink-0 text-white mr-6">
+      <img alt="{% trans 'ele@rning' %}" width="30" title="{% trans 'ele@rning' %}" src="{% static 'images/pwa/icon-72x72.png' %}">
+      <span class="font-semibold text-xl tracking-tight">{% trans 'ele@rning' %}</span>
+    </div>
+    <div class="block lg:hidden">
+      <button class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
+        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+      </button>
+    </div>
+    <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+      <div class="text-sm lg:flex-grow">
+        <a href="{% url 'course_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+          {% trans 'Learn' %}
+        </a>
+        <a href="{% url 'videos_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+          {% trans 'Videos' %}
+        </a>
+        {% if request.user.is_authenticated and request.user.is_student %}
+          <a href="{% url 'student_quiz_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+            {% trans 'My Quizzes' %}
           </a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><strong>{% trans "Browse" %}</strong> <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="{% url 'course_list' %}">{% trans 'Learn' %}</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="{% url 'videos_list' %}"><i class="glyphicon glyphicon-facetime-video
-"></i>{% trans 'Videos' %}</a></li>
-              </ul>
-            </li>
-          </ul>
-          <form class="navbar-form navbar-left" action="{% url 'search' %}" method="get" accept-charset="utf-8" role="search">
-            <div class="form-group">
-              <input type="search" class="form-control search-bar" name="q" placeholder="{% trans 'Search for a topic ' %}">
-              <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-            </div>
-          </form>
-          <ul class="nav navbar-nav navbar-right">
-            {% if request.user.is_authenticated and request.user.is_student %}
-                <li><a href="{% url 'student_quiz_list' %}">{% trans 'My Quizzes' %}</a></li>
-                <li><a href="{% url 'student_course_list' %}">{% trans 'My Courses' %}</a></li>
-            {% endif %}
-            {% if request.user.is_authenticated and request.user.is_teacher or request.user.is_staff %}
-                <li><a href="{% url 'manage_course_list' %}">{% trans 'Manage courses' %}</a></li>
-                <li><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'Manage quizzes' %}</a></li>
-            {% endif %}
-            {% if request.user.is_authenticated %}
-            <li><a href="{% url 'notifications_list' %}"><i class="glyphicon glyphicon-bell"></i> <span class="badge">0</span></a></li>
-            <li><a href="{% url 'messages_list' %}"><i class="glyphicon glyphicon-comment"></i> <span class="badge">0</span></a></li>
-            <li class="dropdown">
-              <button type="button" class="btn btn-default dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="avatar" src="{{ request.user|gravatar }}" alt="{{ request.user.username }}"> <span class="caret"></span>
-              <span class="sr-only">Toggle Dropdown</span>
-              </button>
-              <ul class="dropdown-menu">
-                  <li><a href="{% url 'student_recommendation_list' %}">{% trans 'My recommended courses' %}</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="{% url 'edit' %}">{% trans 'My account' %}</a></li>
-                <li><a href="{% url 'logout' %}">{% trans 'Logout' %}</a></li>
-              </ul>
-            </li>
-            {% else %}
-                <li class="btn-cta"><a href="{% url 'login' %}">{% trans 'Log in' %}</a></li>
-                <li class="btn-cta"><a href="{% url 'signup' %}">{% trans 'Sign up' %}</a></li>
-            {% endif %}
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
-    </nav>
-
-    <div id="content" class="main">
+          <a href="{% url 'student_course_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+            {% trans 'My Courses' %}
+          </a>
+        {% endif %}
+        {% if request.user.is_authenticated and request.user.is_teacher or request.user.is_staff %}
+          <a href="{% url 'manage_course_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+            {% trans 'Manage courses' %}
+          </a>
+          <a href="{% url 'teacher_quiz_change_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+            {% trans 'Manage quizzes' %}
+          </a>
+        {% endif %}
+      </div>
+      <div>
+        {% if request.user.is_authenticated %}
+          <div class="relative group mx-1 px-1 group inline-block">
+            <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+              {% trans 'My account' %}
+              <svg class="ml-2 h-6 w-6 text-white inline-block" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M15.3 9.3a1 1 0 0 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.4l3.3 3.29 3.3-3.3z" />
+              </svg>
+            </a>
+            <ul class="absolute right-0 top-0 mt-8 p-2 rounded-lg shadow-lg bg-white z-10 hidden group-hover:block">
+              <svg class="block fill-current text-white w-4 h-4 absolute right-0 top-0 mr-6 -mt-3 z-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path></svg>
+              <li class="p-1">
+                <div class="flex items-center px-6 py-4">
+                  <img class="h-10 w-10 rounded-full flex-no-shrink" src="{{ request.user|gravatar }}" alt="{{ request.user.username }}" />
+                  <div class="ml-4">
+                    <p class="font-semibold text-gray-900 leading-none">{{ request.user.username }}</p>
+                    <p><a href="{% url 'user_detail' request.user.username %}" class="text-sm text-gray-600 leading-none hover:underline">{% trans 'View Profile' %}</a></p>
+                  </div>
+                </div>
+              </li>
+              <li class="p-1 whitespace-no-wrap rounded-full text-sm md:text-base text-gray-600 hover:text-gray-800 hover:bg-gray-100">
+                  <a class="px-2 py-1" href="{% url 'notifications_list' %}">
+                      <span class="">{% trans 'Notifications' %}</span>
+                  </a>
+              </li>
+              <li class="p-1 whitespace-no-wrap rounded-full text-sm md:text-base text-gray-600 hover:text-gray-800 hover:bg-gray-100">
+                  <a class="px-2 py-1" href="{% url 'messages_list' %}">
+                      <span class="">{% trans 'Messages' %}</span>
+                  </a>
+              </li>
+              <li class="p-1 whitespace-no-wrap rounded-full text-sm md:text-base text-gray-600 hover:text-gray-800 hover:bg-gray-100">
+                  <a class="px-2 py-1" href="{% url 'student_recommendation_list' %}">
+                      <span class="">{% trans 'My recommended courses' %}</span>
+                  </a>
+              </li>
+              <li class="p-1 whitespace-no-wrap rounded-full text-sm md:text-base text-gray-600 hover:text-gray-800 hover:bg-gray-100">
+                  <a class="px-2 py-1" href="{% url 'edit' %}">
+                      <span class="">{% trans 'Edit account' %}</span>
+                  </a>
+              </li>
+            </ul>
+          </div>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'logout' %}" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">{% trans 'Logout' %}</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">{% trans 'Login' %}</a>
+          <a href="{% url 'signup' %}" class="inline-block text-sm px-4 ml-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">{% trans 'Register' %}</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+    <main id="content" class="flex-grow">
 
         {% if messages %}
-            <div class="container-fluid">
+            <div>
                 {% for message in messages %}
-                <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible" {% endif %} role="alert">
+                <div {% if message.tags %} class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative alert alert-{{ message.tags }} alert-dismissible" {% endif %} role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     {{ message }}
                 </div>
@@ -95,35 +116,80 @@
         {% block content %}
         {% endblock %}
 
-        <!-- Notif offline -->
-        <div
-            class="notification"
-            id="notification"
-            aria-live="assertive"
-            aria-relevant="text"
-            hidden
-        ></div>
+      <!-- Notif offline -->
+      <div
+        class="notification"
+        id="notification"
+        aria-live="assertive"
+        aria-relevant="text"
+        hidden>
+      </div>
+    </main>
 
-    </div>
-
-    <div class="container-fluid">
-        <footer id="footer" class="footer">
-            <div class="text-center">
-                <nav class="navbar">
+    <footer class="bg-white py-8 w-full">
+      <div class="container mx-auto px-8">
+          <div class="table w-full">
+              <div class="block text-center sm:table-cell">
+                  <p class="uppercase text-grey text-sm sm:mb-6">{% trans 'Links' %}</p>
+                  <ul class="list-reset text-xs mb-6">
+                      <li class="mt-2 inline-block mr-2 sm:block sm:mr-0">
+                          <a href="#" class="text-grey hover:text-grey-dark">{% trans 'FAQ' %}</a>
+                      </li>
+                      <li class="mt-2 inline-block mr-2 sm:block sm:mr-0">
+                          <a href="#" class="text-grey hover:text-grey-dark">{% trans 'Help' %}</a>
+                      </li>
+                      <li class="mt-2 inline-block mr-2 sm:block sm:mr-0">
+                          <a href="#" class="text-grey hover:text-grey-dark">{% trans 'Support' %}</a>
+                      </li>
+                  </ul>
+              </div>
+              <div class="block text-center sm:table-cell">
+                  <p class="uppercase text-grey text-sm sm:mb-6">{% trans 'Legal' %}</p>
+                  <ul class="list-reset text-xs mb-6">
                     {% get_flatpages as flatpages %}
-                    <ul class="list-inline">
-                        {% for page in flatpages %}
-                            <li><a href="{{ page.url }}">{{ page.title }}</a></li>
-                        {% endfor %}
-                        <li><a href="{% url 'contact_us' %}">{% trans 'Contact Us' %}</a></li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="text-center">
-                {% trans '&copy; elearning 2017 -' %} <span id="copyright"></span>
-            </div>
-        </footer>
-    </div>
+                    {% for page in flatpages %}
+                      <li class="mt-2 inline-block mr-2 sm:block sm:mr-0">
+                          <a href="{{ page.url }}" class="text-grey hover:text-grey-dark">{{ page.title }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+              </div>
+              <div class="block text-center sm:table-cell">
+                  <p class="uppercase text-grey text-sm sm:mb-6">{% trans 'Social' %}</p>
+                  <ul class="list-reset text-xs mb-6">
+                      <li class="mt-2 inline-block mr-2 sm:block sm:mr-0">
+                          <a href="https://www.linkedin.com/in/delitamakanda/" target="_blank" class="text-grey hover:text-grey-dark">{% trans 'Linkedin' %}</a>
+                      </li>
+                      <li class="mt-2 inline-block mr-2 sm:block sm:mr-0">
+                          <a href="https://twitter.com/delitamakanda" target="_blank"  class="text-grey hover:text-grey-dark">{% trans 'Twitter' %}</a>
+                      </li>
+                  </ul>
+              </div>
+              <div class="block text-center sm:table-cell">
+                  <p class="uppercase text-grey text-sm sm:mb-6">{% trans 'Company' %}</p>
+                  <ul class="list-reset text-xs mb-6">
+                      <li class="mt-2 inline-block mr-2 sm:block sm:mr-0">
+                          <a href="https://blog-myelearning.netlify.com" target="_blank" class="text-grey hover:text-grey-dark">{% trans 'Official Blog' %}</a>
+                      </li>
+                      <li class="mt-2 inline-block mr-2 sm:block sm:mr-0">
+                          <a href="#" class="text-grey hover:text-grey-dark">{% trans 'About Us' %}</a>
+                      </li>
+                      <li class="mt-2 inline-block mr-2 sm:block sm:mr-0">
+                          <a href="{% url 'contact_us' %}" class="text-grey hover:text-grey-dark">{% trans 'Contact' %}</a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+    </footer>
+
+    <section id="footer">
+      <div class="flex justify-center border-t-2 py-2">
+        <div class="text-center">
+        {% trans '&copy; elearning 2017 -' %} <span id="copyright"></span>
+        </div>
+      </div>
+    </section>
 
     <script src="{% static 'scripts/libs/jquery.min.js' %}"></script>
     <script src="{% static 'scripts/main.min.js' %}"></script>

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load staticfiles %}
 {% block title %}
 {% if subject %}
    {{ subject.title }} {% trans 'courses' %}
@@ -9,94 +10,111 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-    <h2>
-        {% if subject %}
-            {{ subject.title }} {% trans 'courses' %}
+<div class="bg-white font-sans">
+    <nav class="py-2 shadow">
+        <div class="container mx-auto flex items-center">
+            <div class="w-1/5"></div>
+            <div class="w-3/5">
+                <div class="relative">
+                    <form action="{% url 'search' %}" method="get" accept-charset="utf-8" role="search">
+                        <input type="text" class="h-8 p-4 text-sm w-full border" name="q" placeholder="{% trans 'Search for a topic and press enter' %}">
+                        <button type="submit" class="opacity-0 flex items-center bg-gray-400 hover:bg-gray-600 absolute pin-r pin-y border px-8">{% trans 'Go' %}</button>
+                    </form>
+                </div>
+            </div>
+            <div class="w-1/5"></div>
+        </div>
+    </nav>
+    <div class="container mx-auto flex">
+        <div class="w-3/4 mx-16 py-6">
+            <div class="border-b">
+                <h3 class="py-6 text-base font-medium">
+                    {% if subject %}
+                        <span class="uppercase ml-3 text-gray-600">{{ subject.title }} {% trans 'courses' %}</span>
+                    {% else %}
+                        <span class="uppercase ml-3 text-gray-600">{% trans "All courses" %}</span>
+                    {% endif %}
+                </h3>
+                <div class="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 mb-4 relative">
+                    <div class="absolute w-10 h-10 rounded-full bg-white text-gray-800 text-center -mr-3 pin-r mt-8 shadow-md">
+                        <i class="fa fa-chevron-right mt-3" aria-hidden="true"></i>
+                    </div>
+                    {% for course in courses %}
+                    {% with subject=course.subject %}
+                    <div class="mr-1">
+                        <div>
+                            <a href="{% url 'course_detail' course.slug %}">
+                            <img src="{% static 'images/404-error.jpg' %}" alt="">
+                            </a>
+                        </div>
+                        <div class="mb-4">
+                            <a href="{% url 'course_detail' course.slug %}">
+                                <h4 class="text-sm font-medium">{{ course.title }}</h4>
+                            </a>
+                            <a class="hidden" href="{% url 'course_list_subject' subject.slug %}">
+                            {{ subject }} 
+                            </a>
+                            <p class="mt-2 font-hairline text-sm text-gray-800">
+                                {{ course.total_modules }} {% trans 'modules' %}
+                            </p>
+                            <p class="mt-1 font-hairline text-xs text-gray-800">
+                                {% if course.average_rating %}
+                                {{ course.average_rating|floatformat:0  }} {% trans 'star(s)' %}
+                                {% endif %} &middot; {{ course.created | date:"M d" }}
+                            </p>
+                            <a href="{% url 'course_detail' course.slug %}">
+                            <p class="inline-block p-1 text-gray-800 bg-gray-400 font-hairline text-2xs">
+                                {{ course.total_reviews }} {% trans 'reviews' %}
+                            </p>
+                            </a>
+                        </div>
+                    </div>
+                    {% endwith %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="w-1/4 py-6">
+            <div class="border-b">
+                <p class="text-gray-800 uppercase text-sm mb-6">{% trans 'Subjects' %}</p>
+                <ul>
+                    <li class="mb-6 {% if not subject %}active{% endif %}">
+                        <a href="{% url 'course_list' %}">{% trans 'All' %}</a>
+                    </li>
+                    {% for s in subjects %}
+                    <li class="mb-6 {% if subject == s %}active{% endif %}">
+                        <span class="flex items-center mb-2">
+                        <a href="{% url 'course_list_subject' s.slug %}">{{ s.title }}</a>
+                        <span class="ml-2 p-1 text-gray-800 bg-gray-400 w-6 h-6 rounded-full leading-none text-center">{{ s.total_courses }}</span>
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% if courses.has_other_pages %}
+    <div class="container mx-16 flex">
+    <ul class="flex pl-0 list-none rounded my-2">
+        {% if courses.has_previous %}
+        <li class="relative block py-2 px-3 leading-tight bg-white border border-gray-300 text-blue-700 border-r-0 ml-0 rounded-l hover:bg-gray-200"><a href="?page={{ courses.previous_page_number }}">&laquo;</a></li>
         {% else %}
-            {% trans "All courses" %}
+        <li class="relative block py-2 px-3 leading-tight bg-white border border-gray-300 text-blue-700 border-r-0 hover:bg-gray-200 disabled"><span>&laquo;</span></li>
         {% endif %}
-    </h2>
-
-    {% include "partial/tabs.html" %}
-
-   <div class="subjects">
-       <ul id="modules" class="nav nav-pills" role="tablist">
-           <li role="presentation" class="{% if not subject %}active{% endif %}">
-               <a href="{% url 'course_list' %}">{% trans 'All' %}</a>
-           </li>
-           {% for s in subjects %}
-               <li role="presentation" class="{% if subject == s %}active{% endif %}">
-                   <a href="{% url 'course_list_subject' s.slug %}">
-{{ s.title }} <span class="badge">{{ s.total_courses }}</span>
-                   </a>
-               </li>
-           {% endfor %}
-</ul> </div>
-
-       <div class="courses row">
-           {% for course in courses %}
-               {% with subject=course.subject %}
-                   <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                   <div class="panel">
-                       <div class="panel-heading">
-                           <a href="{% url 'course_detail' course.slug %}"> <h4>{{ course.title }}</h4> </a>
-                           <p>
-                               <span class="glyphicon glyphicon-user"></span> {% trans 'Instructor' %}: 
-                               <a href="{% url 'user_detail' course.owner.username %}">
-                                    {{ course.owner.username }}
-                                </a>
-                           </p>
-                      </div>
-                      <div class="panel-body">
-                       <p>
-                           <a href="{% url 'course_list_subject' subject.slug %}" class="link">{{ subject }} </a> - {{ course.total_modules }} {% trans 'modules' %}
-                       </p>
-                       </div>
-                       <div class="panel-heading">
-                           <hr/>
-                           <div class="row">
-                               <div class="col-xs-4 col-md-4">
-                                   <span class="glyphicon glyphicon-comment"></span> {{ course.total_reviews }} {% trans 'reviews' %}
-                               </div>
-                               <div class="col-xs-4 col-md-4">
-                                   <span class="glyphicon glyphicon-time"></span> {{ course.created | date:"M d" }}
-                               </div>
-                               <div class="col-xs-4 col-md-4">
-                                   {% if course.average_rating %}
-                                    <span class="glyphicon glyphicon-star"></span> {{ course.average_rating|floatformat:1  }} {% trans 'stars' %}
-                                   {% endif %}
-                               </div>
-                           </div>
-                       </div>
-                   </div>
-                   </div>
-               {% endwith %}
-           {% endfor %}
-       </div>
-       <div class="footer__courses">
-           {% trans 'Courses owned by teachers.'%}
-       </div>
-       {% if courses.has_other_pages %}
-        <ul class="pagination">
-            {% if courses.has_previous %}
-            <li><a href="?page={{ courses.previous_page_number }}">&laquo;</a></li>
-            {% else %}
-            <li class="disabled"><span>&laquo;</span></li>
-            {% endif %}
-            {% for i in courses.paginator.page_range %}
-            {% if courses.number == i %}
-                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-            {% else %}
-                <li><a href="?page={{ i }}">{{ i }}</a></li>
-            {% endif %}
-            {% endfor %}
-            {% if courses.has_next %}
-            <li><a href="?page={{ courses.next_page_number }}">&raquo;</a></li>
-            {% else %}
-            <li class="disabled"><span>&raquo;</span></li>
-            {% endif %}
-        </ul>
+        {% for i in courses.paginator.page_range %}
+        {% if courses.number == i %}
+            <li class="relative block py-2 px-3 leading-tight bg-white border border-gray-300 text-blue-700 border-r-0 hover:bg-gray-200 active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% else %}
+            <li class="relative block py-2 px-3 leading-tight bg-white border border-gray-300 text-blue-700 border-r-0 hover:bg-gray-200"><a href="?page={{ i }}">{{ i }}</a></li>
         {% endif %}
+        {% endfor %}
+        {% if courses.has_next %}
+        <li class="relative block py-2 px-3 leading-tight bg-white border border-gray-300 text-blue-700 rounded-r hover:bg-gray-200"><a href="?page={{ courses.next_page_number }}">&raquo;</a></li>
+        {% else %}
+        <li class="relative block py-2 px-3 leading-tight bg-white border border-gray-300 text-blue-700 border-r-0 hover:bg-gray-200 disabled"><span>&raquo;</span></li>
+        {% endif %}
+    </ul>
+    </div>
+    {% endif %}
 </div>
  {% endblock %}

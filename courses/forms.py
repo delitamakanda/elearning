@@ -31,12 +31,11 @@ class UserEditForm(forms.ModelForm):
 
 
 class ReviewForm(forms.ModelForm):
-
     class Meta:
         model = Review
         fields = ('rating', 'comment',)
         widgets = {
-            'comment': forms.Textarea(attrs={'cols': 40, 'rows': 15, 'class':'form-control'})
+            'comment': forms.Textarea(attrs={'cols': 40, 'rows': 15, 'class':'no-resize appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 h-48 resize-none'})
         }
 
 

@@ -1,22 +1,44 @@
-{% extends "base.html" %}
+{% extends "base2.html" %}
+{% load widget_tweaks %}
+{% load staticfiles %}
 {% load i18n %}
-   {% block title %}
-       {% trans 'Sign up as' %} {{ user_type }}
-   {% endblock %}
-   {% block content %}
-   <div class="container-fluid">
+{% block title %}
+    {% trans 'Sign up as' %} {{ user_type }}
+{% endblock %}
 
-       <div class="signup">
-           <form class="form-signin" id="user_form" accept-charset="utf-8" action="" method="post" novalidate>
-               <h2>{% trans 'Sign up ' %}</h2>
-               <p>{% trans "Enter your details to create an account as" %} {{ user_type }}</p>
-
-               {{ form.as_p }}
-               {% csrf_token %}
-
-                <input type="submit" class="btn btn-lg btn-primary btn-block" value="{% trans 'Create an account' %}">
-           </form>
-            <p>{% trans "Already an account ?" %} <a href="{% url 'login' %}">{% trans 'Log in' %}</a>.</p>
-       </div>
-   </div>
-   {% endblock %}
+{% block content %}
+<div class="h-screen w-screen">
+    <div class="flex flex-col items-center flex-1 h-full justify-center px-4 sm:px-0">
+        <div class="flex rounded-lg shadow-lg w-full sm:w-3/4 lg:w-1/2 bg-white sm:mx-0">
+            <div class="flex flex-col w-full md:w-1/2 p-4">
+                <div class="flex flex-col flex-1 justify-center mb-8">
+                    <h2 class="text-4xl text-center font-thin">{% trans 'Sign up ' %}</h2>
+                    <p class="text-base text-center font-thin">{% trans "Enter your details to create an account as" %} {{ user_type }}</p>
+                    <div class="w-full mt-4">
+                        <form class="form-signin form-horizontal w-3/4 mx-auto" id="user_form" accept-charset="utf-8" action="" method="post" novalidate>
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            
+                            <div class="flex flex-col mt-8">
+                                <button type="submit" class="bg-teal-500 hover:bg-teal-700 text-white text-sm font-semibold py-2 px-4 rounded">
+                                    {% trans 'Create an account' %}
+                                </button>
+                            </div>
+                        </form>
+                        <div class="text-center mt-4">
+                            <p class="text-xs">
+                                {% trans 'By signing up, you agree to the Terms of Service and Privacy Policy' %}
+                        </div>
+                        <div class="text-center mt-4">
+                            <p class="text-xs">
+                                {% trans 'Already an account ?' %} <a class="no-underline hover:underline text-blue-700 text-xs" href="{% url 'login' %}">{% trans 'Login' %} !</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hidden md:block md:w-1/2 rounded-r-lg" style="background: url('{% static 'images/signup-page.jpeg' %}'); background-size: cover; background-position: center center;"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

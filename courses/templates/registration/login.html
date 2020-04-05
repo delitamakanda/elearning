@@ -1,39 +1,58 @@
-{% extends "base.html" %}
+{% extends "base2.html" %}
 {% load i18n %}
 {% load widget_tweaks %}
+{% load staticfiles %}
 {% block title %}{% trans 'Log In' %}{% endblock %}
 {% block content %}
-<div class="container-fluid">
+<div class="h-screen w-screen">
+    <div class="flex flex-col items-center flex-1 h-full justify-center px-4 sm:px-0">
+        <div class="flex rounded-lg shadow-lg w-full sm:w-3/4 lg:w-1/2 bg-white sm:mx-0" style="height: 500px">
+            <div class="flex flex-col w-full md:w-1/2 p-4">
+                <div class="flex flex-col flex-1 justify-center mb-8">
+                    <h1 class="text-4xl text-center font-thin">{% trans 'Welcome Back' %}</h1>
+                    <div class="w-full mt-4">
+                        <form class="form-horizontal w-3/4 mx-auto" method="POST" novalidate>
+                        {% if form.errors %}
+                            <p>{% trans 'Your username and password didn\'t match. Please try again.' %}</p>
+                        {% endif %}
 
-<div class="login">
-    <div class="login-form">
-        <form method="post" novalidate class="form-signin">
-            <h2>Log in</h2>
-            {% if form.errors %}
-                <p>{% trans 'Your username and password didn\'t match. Please try again.' %}</p>
-            {% else %}
-                <p>{% trans 'Please, use the following form to log-in:' %}</p>
-            {% endif %}
-            <input type="hidden" name="next" value="{{ next }}">
-            {% csrf_token %}
-            {% for field in form %}
-              <div class="form-group">
-                {{ field.label_tag }}
+                        <input type="hidden" name="next" value="{{ next }}">
 
-                {% render_field field class="form-control" %}
+                        {% csrf_token %}
 
-                {% if field.help_text %}
-                  <small class="form-text text-muted">
-                    {{ field.help_text }}
-                  </small>
-                {% endif %}
-              </div>
-            {% endfor %}
-            <p><a href="{% url 'password_reset' %}">{% trans 'Forgot password ?' %}</a></p>
-            <input type="submit" class="btn btn-lg btn-primary btn-block" value="{% trans 'Log In' %}" />
-        </form>
+                         {% for field in form %}
+                         <div class="flex flex-col mt-4">
+
+                            {% render_field field class="flex-grow h-8 px-2 rounded border border-gray-400" placeholder=field.label %}
+
+                            {% if field.help_text %}
+                              <small class="form-text text-muted">
+                                {{ field.help_text }}
+                              </small>
+                            {% endif %}
+                          </div>
+                        {% endfor %}
+
+                        <div class="flex flex-col mt-8">
+                            <button type="submit" class="bg-teal-500 hover:bg-teal-700 text-white text-sm font-semibold py-2 px-4 rounded">
+                                {% trans 'Login' %}
+                            </button>
+                        </div>
+
+                        </form>
+                        <div class="text-center mt-4">
+                            <a class="no-underline hover:underline text-blue-700 text-xs" href="{% url 'password_reset' %}">
+                                {% trans 'Forgot Your Password?' %}
+                            </a>
+                        </div>
+                        <div class="text-center mt-4">
+                          <p class="text-xs">{% trans 'Don\'t have an account yet?' %} <a class="no-underline hover:underline text-blue-700 text-xs" href="{% url 'signup' %}">{% trans 'Create it !' %}</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hidden md:block md:w-1/2 rounded-r-lg" style="background: url('{% static 'images/login-page.jpeg' %}'); background-size: cover; background-position: center center;"></div>
+        </div>
     </div>
-    <p>{% trans 'Don\'t have an account yet?' %} <a href="{% url 'signup' %}">{% trans 'Create it !' %}</a></p>
-</div>
 </div>
 {% endblock %}
