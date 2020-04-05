@@ -12,7 +12,7 @@
     <form class="" action="" method="post" novalidate>
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" name="button" class="btn btn-lg btn-primary btn-block">{% trans 'Send message' %}</button>
+        <button type="submit" name="button" class="btn btn-lg bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full btn-block">{% trans 'Send message' %}</button>
     </form>
 </div>
  {% endblock %}

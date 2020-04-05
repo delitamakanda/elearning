@@ -25,7 +25,7 @@
                             <td>{{ quiz.name }}</td>
                             <td>{{ quiz.tag.get_html_badge }}</td>
                             <td>{{ quiz.questions_count }}</td>
-                            <td><a href="{% url 'take_quiz' quiz.pk %}" class="btn btn-primary">{% trans 'Start quiz' %}</a></td>
+                            <td><a href="{% url 'take_quiz' quiz.pk %}" class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full">{% trans 'Start quiz' %}</a></td>
                         </tr>
                     {% empty %}
                         <tr>

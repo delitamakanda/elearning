@@ -9,7 +9,7 @@
                 {% if course.modules.count > 0 %}
                <div>
                    <h3>{{ course.title }}</h3>
-                   <p><a href="{% url 'student_course_detail' course.id %}" class="btn btn-primary">{% trans 'Access contents' %}</a></p>
+                   <p><a href="{% url 'student_course_detail' course.id %}" class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full">{% trans 'Access contents' %}</a></p>
                </div>
                {% endif %}
            {% empty %}

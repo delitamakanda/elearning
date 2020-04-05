@@ -22,7 +22,7 @@
         <form method="post" novalidate>
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">{% trans 'Save' %}</button>
+            <button type="submit" class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full">{% trans 'Save' %}</button>
             <a href="{% url 'teacher_quiz_change_list' %}" class="btn btn-secondary" role="button">{% trans 'Go back' %}</a>
             <a href="{% url 'teacher_delete_quiz' quiz.pk %}" class="btn btn-secondary"><i class="icon icon-bin-2"></i> {% trans 'Delete' %}</a>
         </form>

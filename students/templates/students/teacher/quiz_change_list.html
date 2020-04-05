@@ -35,7 +35,7 @@
                             <td>{{ quiz.questions_count }}</td>
                             <td>{{ quiz.taken_count }}</td>
                             <td class="text-right">
-                              <a href="{% url 'teacher_quiz_results' quiz.pk %}" class="btn btn-primary">{% trans 'View results' %}</a>
+                              <a href="{% url 'teacher_quiz_results' quiz.pk %}" class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full">{% trans 'View results' %}</a>
                             </td>
                         </tr>
                     {% empty %}

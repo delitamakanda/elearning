@@ -19,10 +19,10 @@ class CourseEnrollForm(forms.Form):
 
 
 class TeacherSignupForm(UserCreationForm):
-    username = forms.CharField(widget = forms.TextInput(attrs={'class':'form-control'}))
-    email = forms.EmailField(required = True,label=_('E-mail'), widget=forms.TextInput(attrs={'class':'form-control'}))
-    password1 = forms.CharField(label=_('Password'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
-    password2 = forms.CharField(label=_('Password verification'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    username = forms.CharField(label='', widget = forms.TextInput(attrs={'class':'flex-grow h-8 mt-4 px-2 rounded border border-gray-400', 'placeholder':'Username'}))
+    email = forms.EmailField(required = True,label='', widget=forms.TextInput(attrs={'class':'flex-grow mt-4 h-8 px-2 rounded border border-gray-400', 'placeholder': 'E-mail'}))
+    password1 = forms.CharField(label='', widget=forms.PasswordInput(attrs={'class':'flex-grow h-8 mt-4  px-2 rounded border border-gray-400', 'placeholder': 'Password'}))
+    password2 = forms.CharField(label='', widget=forms.PasswordInput(attrs={'class':'flex-grow h-8 mt-4 px-2 rounded border border-gray-400', 'placeholder': 'Password verification'}))
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -44,13 +44,14 @@ class TeacherSignupForm(UserCreationForm):
 
 
 class StudentSignupForm(UserCreationForm):
-    username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    email = forms.EmailField(required = True,label=_('E-mail'), widget=forms.TextInput(attrs={'class':'form-control'}))
-    password1 = forms.CharField(label=_('Password'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
-    password2 = forms.CharField(label=_('Password verification'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    username = forms.CharField(label='', widget=forms.TextInput(attrs={'class':'flex-grow h-8  mt-4  px-2 rounded border border-gray-400', 'placeholder': 'Username'}))
+    email = forms.EmailField(required = True,label='', widget=forms.TextInput(attrs={'class':'flex-grow h-8  mt-4  px-2 rounded border border-gray-400','placeholder': 'E-mail'}))
+    password1 = forms.CharField(label='', widget=forms.PasswordInput(attrs={'class':'flex-grow h-8 mt-4  px-2 rounded border border-gray-400', 'placeholder': 'Password'}))
+    password2 = forms.CharField(label='', widget=forms.PasswordInput(attrs={'class':'flex-grow h-8 mt-4  px-2 rounded border border-gray-400', 'placeholder': 'Password verification'}))
     interests = forms.ModelMultipleChoiceField(
+        label='',
         queryset=Tag.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.CheckboxSelectMultiple(attrs={'class':'mt-4 form-control'}),
         required=True
     )
 

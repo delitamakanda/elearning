@@ -47,7 +47,7 @@
                 </div>
             </div>
             <p>{% trans 'Your question must have at least 2 answers and maximum 10 answers. Select at least one correct answer.' %}</p>
-            <button class="btn btn-primary" type="submit">{% trans 'Save' %}</button>
+            <button class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full" type="submit">{% trans 'Save' %}</button>
             <a href="{% url 'teacher_update_quiz' quiz.pk %}" class="btn btn-secondary" role="button">{% trans 'Go back' %}</a>
             <a href="{% url 'teacher_delete_question' quiz.pk question.pk %}" class="btn btn-delete" role="button"><i class="icon icon-bin-2"></i>{% trans 'Delete' %}</a>
         </form>
