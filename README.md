@@ -5,6 +5,6 @@ e-learning django app (django, python3)
 * Nice layout
 * Login via Google
 * ~~API~~
-* Celery worker
+* ~~Celery worker~~
 * ~~Reset Password~~
 * ~~Search Form~~
