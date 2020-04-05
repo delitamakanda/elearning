@@ -1,6 +1,6 @@
-@import "_bootstrap.scss";
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @import "fonts.scss";
 @import "main.scss";
 @import "admin.scss";
-@import "mobile.scss";

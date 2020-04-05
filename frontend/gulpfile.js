@@ -13,7 +13,8 @@ var gulp            = require('gulp'),
     consolidate     = require('gulp-consolidate'),
     postcss         = require("gulp-postcss"),
     cssnano         = require("cssnano"),
-    rename          = require('gulp-rename');
+    rename          = require('gulp-rename'),
+    tailwindcss     = require('tailwindcss'),
     sass            = require('gulp-sass');
 
 function onError(err) {
@@ -59,7 +60,11 @@ gulp.task('sass', function () {
     //.pipe(prefix(
         //'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'
     //))
-    .pipe(postcss([autoprefixer(), cssnano()]))
+    .pipe(postcss([
+        tailwindcss('tailwind.config.js'),
+        autoprefixer(), 
+        cssnano()
+    ]))
     .pipe(sourcemaps.write())
     .pipe(plumber({
         errorHandler: onError
