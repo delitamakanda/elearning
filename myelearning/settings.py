@@ -67,6 +67,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'django.contrib.admindocs.middleware.XViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 # if DEBUG == False:
