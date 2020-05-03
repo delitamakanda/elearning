@@ -5,10 +5,10 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid">
+<div class="w-full px-4">
     <div class="recommended-courses">
 
-        <h2>{% trans 'Recommendations for' %} {{ student }}</h2>
+        <h2 class="text-left text-xl my-2">{% trans 'Recommendations for' %} {{ student }}</h2>
 
         <div>
          {% for course in course_list %}
