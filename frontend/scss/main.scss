@@ -89,3 +89,10 @@ html {
     border-radius: 20px 20px 20px 0px;
     transition-duration: 800ms;
 }
+
+.is-hidden { display: none!important; }
+.is-active { display: block!important; }
+
+.aspect-16x9 {
+    padding-bottom: 56.25%; // (9 / 16 = 0.5625)
+}
