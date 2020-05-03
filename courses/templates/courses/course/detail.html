@@ -29,7 +29,7 @@
                 {{ course.modules.count }} {% trans 'module(s)' %} 
             </p>
             {% if course.modules.count > 0 %}
-            <ul>
+            <ul class="p-3">
             {% for module in course.modules.all %}
             <li>- {{ module.title }}</li>
             {% endfor %}
@@ -39,7 +39,7 @@
             <form action="{% url 'student_enroll_course' %}" method="post">
                 {{ enroll_form }}
                 {% csrf_token %}
-                <input type="submit" class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full" value="{% trans 'Enroll now' %}">
+                <input type="submit" class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2 border rounded-full" value="{% trans 'Enroll now' %}">
             </form>
             {% elif request.user.is_authenticated and course.modules.count == 0 %}
                 <p class=" text-xs p-3">{% trans "In progress" %}...</p>
@@ -51,7 +51,7 @@
         </div>
         {% if course.reviews.all %}
         {% for review in course.reviews.all %}
-        <div class="flex items-start">
+        <div class="flex items-start m-6">
         <div class="flex-shrink-0">
             <div class="inline-block relative">
             <div class="relative w-16 h-16 rounded-full overflow-hidden">

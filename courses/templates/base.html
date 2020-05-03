@@ -19,11 +19,11 @@
       <span class="font-semibold text-xl tracking-tight">{% trans 'ele@rning' %}</span>
     </div>
     <div class="block lg:hidden">
-      <button class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
+      <button class="navbar-burger flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
         <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
       </button>
     </div>
-    <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+    <div id="sidebar" class="w-full lg:block hidden sm:hidden md:hidden flex-grow lg:flex lg:items-center lg:w-auto">
       <div class="text-sm lg:flex-grow">
         <a href="{% url 'course_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
           {% trans 'Learn' %}
@@ -88,6 +88,11 @@
                       <span class="">{% trans 'Edit account' %}</span>
                   </a>
               </li>
+              <li class="p-1 whitespace-no-wrap rounded-full text-sm md:text-base text-gray-600 hover:text-gray-800 hover:bg-gray-100">
+                  <a class="px-2 py-1" href="{% url 'password_change' %}">
+                      <span class="">{% trans 'Change Password' %}</span>
+                  </a>
+              </li>
             </ul>
           </div>
         {% endif %}
@@ -105,7 +110,7 @@
         {% if messages %}
             <div>
                 {% for message in messages %}
-                <div {% if message.tags %} class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative alert alert-{{ message.tags }} alert-dismissible" {% endif %} role="alert">
+                <div {% if message.tags %} class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative alert alert-{{ message.tags }} alert-dismissible" {% endif %} role="alert" data-is-auto-close="true">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     {{ message }}
                 </div>

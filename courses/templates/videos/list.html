@@ -5,73 +5,114 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="page-header">
-        <h2>{% trans 'Search for a video' %} {% if q %}<small>{% trans 'Results for' %} : {{ q }}</small>{% endif %}</h2> <button class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full" type="button" data-toggle="collapse" data-target="#filtersVideos" aria-expanded="false" aria-controls="filtersVideos">{% trans 'Filters' %}</button>
-    </div>
-    <div class="collapse" id="filtersVideos">
-        <form method="get" novalidate>
-                  {% trans 'Number of results ' %}
+    <div class="container mx-auto lg:flex">
+      <div class="sm:block lg:hidden mx-4 py-6">
+            <div class="border-b">
+                <h2 class="mt-2 font-hairline text-sm text-gray-700">{% trans 'Search for a video' %}</h2>
+                <p class="text-gray-700 uppercase text-sm mb-6">{% if q %}<small>{% trans 'Results for' %} : {{ q }}</small>{% endif %}</p>
 
+                <form method="get" novalidate>
                   <select name="results" id="results">
                       {% for max_length in max_lengths %}
                       <option value="{{ max_length }}">{{ max_length }}</option>
                       {% endfor %}
                   </select>
-                {% for subject in subjects %}
-                <div class="input-group">
-                    <input type="radio" checked="checked" name="q" id="q" value="{{ subject }}" /> {{ subject }}
-                </div>
-                {% endfor %}
-                  <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit">{% trans 'Go!' %}</button>
-                  </span>
-          </form>
-    </div>
-  {% if videos %}
-      <div class="row">
-          <div class="col-md-4 col-xs-12 list-videos-content list-group">
-          {% for item in videos.items %}
-            <div class="media list-group-item">
-                {% if item.id.kind == 'youtube#video' %}
-              <span class="badge">{% trans 'video' %}</span>
-                  {% elif item.id.kind == 'youtube#channel' %}
-              <span class="badge">{% trans 'channel' %}</span>
-                  {% elif item.id.kind == 'youtube#playlist' %}
-              <span class="badge">{% trans 'playlist' %}</span>
+                  {% trans 'number of results' %}
+                  {% for subject in subjects %}
+                  <div class="input-group">
+                      <input type="radio" checked="checked" name="q" id="q" value="{{ subject }}" /> {{ subject }}
+                  </div>
+                  {% endfor %}
+                  <button class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2 border rounded-full mb-4" type="submit">{% trans 'Search' %}</button>
+                </form>
+            </div>
+        </div>
+        <div class="w-full lg:w-3/4 mx-4 lg:mx-16 py-6">
+            <div class="border-b">
+                <div class="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 mb-4 relative">
+                  {% if videos %}
+                  {% for item in videos.items %}
+                    <div class="mr-1">
+                        <div>
+                        {% if item.id.kind == 'youtube#video' %}
+                          <a href="#" class="video" data-video-src="https://www.youtube.com/embed/{{ item.id.videoId }}">
+                              {% elif item.id.kind == 'youtube#channel' %}
+                          <a href="https://www.youtube.com/channel/{{ item.id.channelId }}" target="_blank">
+                              {% elif item.id.kind == 'youtube#playlist' %}
+                          <a href="https://www.youtube.com/playlist?list={{ item.id.playlistId }}" target="_blank">
+                          {% endif %}
+                            <img class="media-object" src="{{ item.snippet.thumbnails.default.url }}" width="{{ item.snippet.thumbnails.default.width }}" height="{{ item.snippet.thumbnails.default.height }}" alt="{{ item.snippet.title }}">
+                          </a>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium">{{ item.snippet.title }}</h4>
+                            <p class="mt-2 font-hairline text-sm text-gray-700 whitespace-normal">
+                                {{ item.snippet.description }}
+                            </p>
+                            <p class="inline block p-1 text-gray-700 bg-gray-300 font-hairline text-2xs">
+                                {% if item.id.kind == 'youtube#video' %}
+                                <span class="badge">{% trans 'video' %}</span>
+                                {% elif item.id.kind == 'youtube#channel' %}
+                                <span class="badge">{% trans 'channel' %}</span>
+                                {% elif item.id.kind == 'youtube#playlist' %}
+                                <span class="badge">{% trans 'playlist' %}</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
                   {% endif %}
-
-                <div class="media-left pull-left">
-                    {% if item.id.kind == 'youtube#video' %}
-                  <a href="#" class="video" data-video-src="https://www.youtube.com/embed/{{ item.id.videoId }}">
-                      {% elif item.id.kind == 'youtube#channel' %}
-                  <a href="https://www.youtube.com/channel/{{ item.id.channelId }}" target="_blank">
-                      {% elif item.id.kind == 'youtube#playlist' %}
-                  <a href="https://www.youtube.com/playlist?list={{ item.id.playlistId }}" target="_blank">
-                      {% endif %}
-                    <img class="media-object" src="{{ item.snippet.thumbnails.default.url }}" width="{{ item.snippet.thumbnails.default.width }}" height="{{ item.snippet.thumbnails.default.height }}" alt="{{ item.snippet.title }}">
-                  </a>
-                </div>
-                <div class="media-body">
-                  <h4 class="media-heading">{{ item.snippet.title }}</h4>
-                  {{ item.snippet.description }}
                 </div>
             </div>
-          {% endfor %}
-          </div>
-          <div class="col-md-8 col-xs-12 offset-md-2">
-              <div class="embed-responsive embed-responsive-16by9">
-                  <!-- https://www.youtube.com/watch?v={{ item.id.videoId }} -->
-                   <iframe id="video-iframe" class="embed-responsive-item hidden" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+        <div class="hidden lg:block lg:w-1/4 py-6">
+            <div class="border-b">
+                <h2 class="mt-2 font-hairline text-sm text-gray-700">{% trans 'Search for a video' %}</h2>
+                <p class="text-gray-700 uppercase text-sm mb-6">{% if q %}<small>{% trans 'Results for' %} : {{ q }}</small>{% endif %}</p>
 
-               </div>
+                <form method="get" novalidate>
+                  <select name="results" id="results">
+                      {% for max_length in max_lengths %}
+                      <option value="{{ max_length }}">{{ max_length }}</option>
+                      {% endfor %}
+                  </select>
+                  {% trans 'number of results' %}
+                  {% for subject in subjects %}
+                  <div class="input-group">
+                      <input type="radio" checked="checked" name="q" id="q" value="{{ subject }}" /> {{ subject }}
+                  </div>
+                  {% endfor %}
+                  <button class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2 border rounded-full mb-4" type="submit">{% trans 'Search' %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="lecteur-video" class="is-hidden">
+      <div class="absolute top-0 left-0 right-0 z-10 bg-white">
+        <p><a href="#" id="closeVideo">{% trans 'Close Video' %}</a></p>
+        <div class="relative aspect-16x9">
+            <!-- https://www.youtube.com/watch?v={{ item.id.videoId }} -->
+              <iframe id="video-iframe" class="absolute pin h-screen w-screen" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
           </div>
       </div>
-  {% endif %}
-</div>
+    </div>
  {% endblock %}
 
 {% block domready %}
+$('.video').on('click', function(evt) {
+  evt.preventDefault();
+
+  $('body #lecteur-video').removeClass('is-hidden');
+});
+
+$('#closeVideo').on('click', function(evt) {
+  evt.preventDefault();
+
+  $('body #lecteur-video').addClass('is-hidden');
+  $('#video-iframe').attr('src', '');
+});
+
 $('.video').on('click', function(evt) {
     evt.preventDefault();
 
