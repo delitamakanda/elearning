@@ -25,7 +25,25 @@
             <div class="w-1/5"></div>
         </div>
     </nav>
-    <div class="container mx-auto flex">
+    <div class="container mx-auto lg:flex">
+        <div class="sm:block lg:hidden mx-4 py-6">
+            <div class="border-b">
+                <p class="text-gray-800 uppercase text-sm mb-6">{% trans 'Subjects' %}</p>
+                <ul>
+                    <li class="mb-6 {% if not subject %}active{% endif %}">
+                        <a href="{% url 'course_list' %}">{% trans 'All' %}</a>
+                    </li>
+                    {% for s in subjects %}
+                    <li class="mb-6 {% if subject == s %}active{% endif %}">
+                        <span class="flex items-center mb-2">
+                        <a href="{% url 'course_list_subject' s.slug %}">{{ s.title }}</a>
+                        <span class="ml-2 p-1 text-gray-800 bg-gray-400 w-6 h-6 rounded-full leading-none text-center">{{ s.total_courses }}</span>
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
         <div class="w-3/4 mx-16 py-6">
             <div class="border-b">
                 <h3 class="py-6 text-base font-medium">
@@ -74,7 +92,7 @@
                 </div>
             </div>
         </div>
-        <div class="w-1/4 py-6">
+        <div class="hidden lg:block lg:w-1/4 py-6">
             <div class="border-b">
                 <p class="text-gray-800 uppercase text-sm mb-6">{% trans 'Subjects' %}</p>
                 <ul>
