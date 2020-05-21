@@ -1,19 +1,14 @@
-Inspirations
-![Screenshot](konned-my_courses.gif)
 
+* https://tailwindui.com/components
 
+* https://vimeo.com/393580241/82c6d7c5f6
 
-load csv
+* https://tailwindui.com/page-examples/detail-view-01
 
-```bash
-python3 load_reviews.py data/review.csv
-```
+* https://tailwindui.com/page-examples/landing-page-01
 
-https://tailwindui.com/components
+* https://florian-dahlitz.de/blog/build-a-markdown-to-html-conversion-pipeline-using-python
 
-https://vimeo.com/393580241/82c6d7c5f6
+* https://dohliam.github.io/dropin-minimal-css/
 
-https://tailwindui.com/page-examples/detail-view-01
-
-https://tailwindui.com/page-examples/landing-page-01
-
+* https://github.com/xz/new.css#Customizing
