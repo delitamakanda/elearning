@@ -8,3 +8,9 @@ e-learning django app (django, python3)
 * ~~Celery worker~~
 * ~~Reset Password~~
 * ~~Search Form~~
+
+load csv
+
+```bash
+python3 load_reviews.py data/review.csv
+```
