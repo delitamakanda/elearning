@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container mx-auto lg:flex">
+    <div id="tsr" class="container mx-auto lg:flex">
       <div class="sm:block lg:hidden mx-4 py-6">
             <div class="border-b">
                 <h2 class="mt-2 font-hairline text-sm text-gray-700">{% trans 'Search for a video' %}</h2>
@@ -35,7 +35,7 @@
                     <div class="mr-1">
                         <div>
                         {% if item.id.kind == 'youtube#video' %}
-                          <a href="#" class="video" data-video-src="https://www.youtube.com/embed/{{ item.id.videoId }}">
+                          <a href="#tsr" class="video" data-video-src="https://www.youtube.com/embed/{{ item.id.videoId }}">
                               {% elif item.id.kind == 'youtube#channel' %}
                           <a href="https://www.youtube.com/channel/{{ item.id.channelId }}" target="_blank">
                               {% elif item.id.kind == 'youtube#playlist' %}
@@ -89,7 +89,7 @@
     </div>
     <div id="lecteur-video" class="is-hidden">
       <div class="absolute top-0 left-0 right-0 z-10 bg-white">
-        <p><a href="#" id="closeVideo">{% trans 'Close Video' %}</a></p>
+        <p><a href="#tsr" id="closeVideo">{% trans 'Close Video' %}</a></p>
         <div class="relative aspect-16x9">
             <!-- https://www.youtube.com/watch?v={{ item.id.videoId }} -->
               <iframe id="video-iframe" class="absolute pin h-screen w-screen" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -104,6 +104,9 @@ $('.video').on('click', function(evt) {
   evt.preventDefault();
 
   $('body #lecteur-video').removeClass('is-hidden');
+  
+  $('html, body').animate({ scrollTop: 0 }, "slow");
+  return false;
 });
 
 $('#closeVideo').on('click', function(evt) {
