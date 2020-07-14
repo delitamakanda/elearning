@@ -1,0 +1,18 @@
+{% if query %}
+	<p>Recherche: <strong>{{ query }}</strong></p>
+	<p>{{ title }}</p>
+
+	{% if items %}
+
+    	{% for item in items %}
+        <dl>
+            <dt>
+				<a href="{% url 'course_detail' item.slug %}">
+					{{ item.title }}
+				</a>
+			</dt>
+        </dl>
+    	{% endfor %}
+
+	{% endif %}
+{% endif %}

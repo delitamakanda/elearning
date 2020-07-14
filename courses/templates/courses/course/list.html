@@ -16,9 +16,20 @@
             <div class="w-1/5"></div>
             <div class="w-3/5">
                 <div class="relative">
-                    <form action="{% url 'search' %}" method="get" accept-charset="utf-8" role="search">
-                        <input type="text" class="h-8 p-4 text-sm w-full border" name="q" placeholder="{% trans 'Search for a topic and press enter' %}">
-                        <button type="submit" class="opacity-0 flex items-center bg-gray-400 hover:bg-gray-600 absolute pin-r pin-y border px-8">{% trans 'Go' %}</button>
+                    <form action="{% url 'search' %}" method="POST" id="form" role="form">
+                        {% csrf_token %}
+                        <input type="search" 
+                            class="h-8 p-4 text-sm w-full border"
+                            name="q"
+                            id="q"
+                            ic-post-to="{% url 'search-ajax-submit' %}"
+                            ic-trigger-on="keyup changed"
+                            ic-trigger-delay="300ms"
+                            ic-target="#search-result-container"
+                            required pattern="\S+.*"
+                            placeholder="{% trans 'Search for a topic and press enter' %}"
+                        >
+                        <!--<button type="submit" class="opacity-0 flex items-center bg-gray-400 hover:bg-gray-600 absolute pin-r pin-y border px-8">{% trans 'Go' %}</button>-->
                     </form>
                 </div>
             </div>
@@ -53,6 +64,7 @@
                         <span class="uppercase ml-3 text-gray-600">{% trans "All courses" %}</span>
                     {% endif %}
                 </h3>
+                <div id="search-result-container"></div>
                 <div class="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 mb-4 relative">
                     <div class="absolute w-10 h-10 rounded-full bg-white text-gray-800 text-center -mr-3 pin-r mt-8 shadow-md">
                         <i class="fa fa-chevron-right mt-3" aria-hidden="true"></i>

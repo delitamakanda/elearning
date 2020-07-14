@@ -204,8 +204,8 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = (
     'https://myelearning.herokuapp.com',
     'http://localhost:8080',
-    'http://127.0.0.1:8080',
     'http://localhost:8100',
+    'http://localhost:8000',
     'https://pwa-myelearning.netlify.app',
 )
 

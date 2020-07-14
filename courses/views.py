@@ -2,7 +2,7 @@ import requests
 import datetime
 
 from django import forms
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Count, F, Sum, FloatField, Avg
@@ -10,15 +10,18 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic.base import TemplateResponseMixin, View
+from django.views.generic.base import TemplateResponseMixin
 from django.forms.models import modelform_factory
 from django.apps import apps
+from django.template import loader
+from django.template.loader import get_template
 from braces.views import LoginRequiredMixin, PermissionRequiredMixin, CsrfExemptMixin, JsonRequestResponseMixin
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.views.generic.list import ListView
 from .models import Course, Module, Content, Subject, Review, Cluster
 from .forms import ModuleFormSet, ReviewForm, CourseCreateForm
 from django.views.generic.detail import DetailView
+from django.views.generic import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from students.forms import CourseEnrollForm
 from django.utils.decorators import method_decorator
@@ -285,3 +288,22 @@ class CourseDeleteView(OwnerCourseMixin, DeleteView):
     template_name = 'courses/manage/course/delete.html'
     success_url = reverse_lazy('manage_course_list')
     permission_required = 'courses.delete_course'
+
+
+class SearchSubmitView(View):
+    template = 'search/search_submit.html'
+    response_message = 'Search'
+
+    def post(self, request):
+        template = loader.get_template(self.template)
+        query = request.POST.get('q', '')
+        words = Course.objects.all().order_by('title')
+        items = Course.objects.filter(title__icontains=query, overview__icontains=query)
+        context = {'title': self.response_message, 'query': query, 'items': items, 'words': words}
+        rendered_template = template.render(context, request)
+        return HttpResponse(rendered_template, content_type='text/html')
+
+
+class SearchAjaxSubmitView(SearchSubmitView):
+    template = 'search/search_results.html'
+    response_message = ''

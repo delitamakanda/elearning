@@ -4,10 +4,7 @@ from django.views.decorators.cache import cache_page
 
 urlpatterns = [
     url(r'^classroom/$', classroom.index, name='classroom'),
-    url(r'^search/$', classroom.search, name='search'),
     url(r'^contact/$', classroom.contact_us_view, name='contact_us'),
-    url(r'^notifications/$', classroom.notifications_list, name='notifications_list'),
-    url(r'^messages/$', classroom.messages_list, name='messages_list'),
     url(r'^users/(?P<username>.+)/$', classroom.user_detail, name='user_detail'),
 
     url(r'^register/student/$', students.StudentRegistrationView.as_view(), name='student_registration'),

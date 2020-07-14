@@ -69,16 +69,6 @@
                 </div>
               </li>
               <li class="p-1 whitespace-no-wrap rounded-full text-sm md:text-base text-gray-600 hover:text-gray-800 hover:bg-gray-100">
-                  <a class="px-2 py-1" href="{% url 'notifications_list' %}">
-                      <span class="">{% trans 'Notifications' %}</span>
-                  </a>
-              </li>
-              <li class="p-1 whitespace-no-wrap rounded-full text-sm md:text-base text-gray-600 hover:text-gray-800 hover:bg-gray-100">
-                  <a class="px-2 py-1" href="{% url 'messages_list' %}">
-                      <span class="">{% trans 'Messages' %}</span>
-                  </a>
-              </li>
-              <li class="p-1 whitespace-no-wrap rounded-full text-sm md:text-base text-gray-600 hover:text-gray-800 hover:bg-gray-100">
                   <a class="px-2 py-1" href="{% url 'student_recommendation_list' %}">
                       <span class="">{% trans 'My recommended courses' %}</span>
                   </a>
@@ -188,6 +178,7 @@
     </section>
 
     <script src="{% static 'scripts/libs/jquery.min.js' %}"></script>
+    <script src="{% static 'scripts/libs/intercooler-1.1.1.min.js' %}"></script>
     <script src="{% static 'scripts/main.min.js' %}"></script>
     <script>
     $(document).ready(function() {

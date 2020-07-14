@@ -21,4 +21,6 @@ urlpatterns = [
     url(r'^videos$', views.list_videos, name='videos_list'),
     url(r'^edit$', views.edit, name='edit'),
     url(r'^about-company$', TemplateView.as_view(template_name='about.html'), name='about_company'),
+    url(r'^search$', views.SearchSubmitView.as_view(), name='search'),
+    url(r'^search-ajax-submit$', views.SearchAjaxSubmitView.as_view(), name='search-ajax-submit'),
 ]
