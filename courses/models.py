@@ -7,6 +7,7 @@ from courses.fields import OrderField
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.utils.text import slugify
+from autoslug import AutoSlugField
 
 import numpy as np
 
@@ -24,7 +25,8 @@ class Course(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='courses_created')
     subject = models.ForeignKey(Subject, related_name='courses')
     title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, unique=True)
+    # slug = models.SlugField(max_length=200, unique=True)
+    slug = AutoSlugField(populate_from='title', unique_with='created__month')
     overview = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     students = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='courses_joined', blank=True)
@@ -33,10 +35,10 @@ class Course(models.Model):
         ordering = ('-created',)
 
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
-        super(Course, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+        # if not self.slug:
+            # self.slug = slugify(self.title)
+        # super(Course, self).save(*args, **kwargs)
 
     def average_rating(self):
         # all_ratings = map(lambda x: x.rating, self.reviews.all())
