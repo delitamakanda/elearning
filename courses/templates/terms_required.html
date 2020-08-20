@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load widget_tweaks %}
+{% load staticfiles %}
+{% block title %}
+{% trans 'Terms and Conditions Acceptance Required' %}
+{% endblock %}
+
+{% block content %}
+<div class="w-full px-4">
+    <section title="Welcome" data-role="content">
+        <h1>Terms and Conditions Acceptance Required</h1>
+
+        <p>
+            You should have had to accept the terms and conditions before seeing this page.
+        </p>
+    </section>
+</div>
+{% endblock %}

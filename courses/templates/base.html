@@ -12,7 +12,7 @@
     <link href="{% static 'styles/styles.css' %}" rel="stylesheet">
     <link rel="manifest" href="{% static 'manifest.json' %}">
 </head>
-<body class="flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen overflow-x-hidden">
   <nav class="flex items-center justify-between flex-wrap bg-teal-500 p-6">
     <div class="flex items-center flex-shrink-0 text-white mr-6">
       <img alt="{% trans 'ele@rning' %}" width="30" title="{% trans 'ele@rning' %}" src="{% static 'images/pwa/icon-72x72.png' %}">
@@ -95,7 +95,7 @@
       </div>
     </div>
   </nav>
-    <main id="content" class="flex-grow">
+    <main id="content" class="flex-grow" data-role="content">
 
         {% if messages %}
             <div>
@@ -130,6 +130,9 @@
                       <li class="mt-2 inline-block mr-2 sm:block sm:mr-0">
                           <a href="https://pwa-myelearning.netlify.app" target="_blank" class="text-grey hover:text-grey-dark">{% trans 'PWA' %}</a>
                       </li>
+                       <li class="mt-2 inline-block mr-2 sm:block sm:mr-0">
+                          <a href="https://blog-myelearning.netlify.com" target="_blank" class="text-grey hover:text-grey-dark">{% trans 'Blog' %}</a>
+                      </li>
                   </ul>
               </div>
               <div class="block text-center sm:table-cell">
@@ -144,19 +147,8 @@
                   </ul>
               </div>
               <div class="block text-center sm:table-cell">
-                  <p class="uppercase text-grey text-sm sm:mb-6">{% trans 'Social' %}</p>
-                  <ul class="list-reset text-xs mb-6">
-                      <li class="mt-2 inline-block mr-2 sm:block sm:mr-0">
-                          <a href="https://www.linkedin.com/in/delitamakanda/" target="_blank" class="text-grey hover:text-grey-dark">{% trans 'Linkedin' %}</a>
-                      </li>
-                  </ul>
-              </div>
-              <div class="block text-center sm:table-cell">
                   <p class="uppercase text-grey text-sm sm:mb-6">{% trans 'Company' %}</p>
                   <ul class="list-reset text-xs mb-6">
-                      <li class="mt-2 inline-block mr-2 sm:block sm:mr-0">
-                          <a href="https://blog-myelearning.netlify.com" target="_blank" class="text-grey hover:text-grey-dark">{% trans 'Official Blog' %}</a>
-                      </li>
                       <li class="mt-2 inline-block mr-2 sm:block sm:mr-0">
                           <a href="{% url 'about_company' %}" class="text-grey hover:text-grey-dark">{% trans 'About Us' %}</a>
                       </li>
@@ -164,7 +156,7 @@
                           <a href="{% url 'contact_us' %}" class="text-grey hover:text-grey-dark">{% trans 'Contact' %}</a>
                       </li>
                   </ul>
-              </div>
+              </>
           </div>
       </div>
     </footer>
