@@ -8,6 +8,7 @@ from courses.models import Course
 from courses.models import Module
 from courses.models import Review
 from courses.models import Cluster
+from courses.models import BadgeAward
 from django.utils.translation import gettext_lazy as _
 
 def export_to_csv(modeladmin, request, queryset):
@@ -63,3 +64,6 @@ class ReviewAdmin(admin.ModelAdmin):
 @admin.register(Cluster)
 class ClusterAdmin(admin.ModelAdmin):
     list_display = ['name', 'get_members']
+
+
+admin.site.register(BadgeAward)

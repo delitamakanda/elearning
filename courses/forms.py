@@ -2,7 +2,7 @@ from django import forms
 from django.forms.models import inlineformset_factory
 from courses.models import Course, Module, Review, Subject, Content
 from students.models import (
-    User
+    User, Profile
 )
 
 class ModuleForm(forms.ModelForm):
@@ -21,19 +21,26 @@ class UserEditForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email',)
+        fields = ['username', 'first_name', 'last_name',]
 
-    def clean(self):
-        email = self.cleaned_data.get('email')
-        if User.objects.filter(email=email).exists():
-            raise forms.ValidationError("Email already exist")
-        return self.cleaned_data
+    # def clean(self):
+    #     email = self.cleaned_data.get('email')
+    #     if User.objects.filter(email=email).exists():
+    #         raise forms.ValidationError("Email already exist")
+    #     return self.cleaned_data
+
+
+class ProfileEditForm(forms.ModelForm):
+
+    class Meta:
+        model = Profile
+        fields = ['location', 'birthdate']
 
 
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ('rating', 'comment',)
+        fields = ['rating', 'comment']
         widgets = {
             'comment': forms.Textarea(attrs={'cols': 40, 'rows': 15, 'class':'no-resize appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 h-48 resize-none'})
         }

@@ -13,20 +13,32 @@
         <p>{% trans 'You can edit your account using the following form' %} :</p>
 
         <form action="{% url 'edit' %}" method="POST" enctype="multipart/form-data" novalidate>
-            {% csrf_token %}
-            {% for field in user_form %}
-              <div class="mb-4">
+          {% csrf_token %}
+          {% for field in user_form %}
+            <div class="mb-4">
 
-                {% render_field field class="flex-grow h-8 px-2 rounded border border-gray-400" placeholder=field.label %}
+              {% render_field field class="flex-grow h-8 px-2 rounded border border-gray-400" placeholder=field.label %}
 
-                {% if field.help_text %}
-                  <small class="form-text text-muted">
-                    {{ field.help_text }}
-                  </small>
-                {% endif %}
-              </div>
-            {% endfor %}
-            <input type="submit" class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full" value="{% trans 'Save changes' %}" />
+              {% if field.help_text %}
+                <small class="form-text text-muted">
+                  {{ field.help_text }}
+                </small>
+              {% endif %}
+            </div>
+          {% endfor %}
+          {% for field in profile_form %}
+            <div class="mb-4">
+
+              {% render_field field class="flex-grow h-8 px-2 rounded border border-gray-400" placeholder=field.label %}
+
+              {% if field.help_text %}
+                <small class="form-text text-muted">
+                  {{ field.help_text }}
+                </small>
+              {% endif %}
+            </div>
+          {% endfor %}
+          <input type="submit" class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full" value="{% trans 'Save changes' %}" />
         </form>
 
     </div>

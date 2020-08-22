@@ -7,6 +7,7 @@ from courses.fields import OrderField
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.utils.text import slugify
+from django.utils import timezone
 from autoslug import AutoSlugField
 
 import numpy as np
@@ -33,7 +34,6 @@ class Course(models.Model):
 
     class Meta:
         ordering = ('-created',)
-
 
     # def save(self, *args, **kwargs):
         # if not self.slug:
@@ -121,3 +121,13 @@ class Cluster(models.Model):
 
     def get_members(self):
         return '\n'.join([u.username for u in self.users.all()])
+
+# https://github.com/pinax/pinax-badges
+class BadgeAward(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="badges_earned", on_delete=models.CASCADE)
+    awarded_at = models.DateTimeField(default=timezone.now)
+    slug = models.CharField(max_length=255)
+    level = models.IntegerField()
+
+    def __str__(self):
+        return "{} : {} points - level {}".format(self.user.username, self.user.profile.award_points, self.level)

@@ -27,21 +27,32 @@ from students.forms import CourseEnrollForm
 from django.utils.decorators import method_decorator
 from students.decorators import teacher_required
 from django.core.cache import cache
-from courses.forms import UserEditForm
+from courses.forms import UserEditForm, ProfileEditForm
+
+from courses.badges import possibly_award_badge
 
 from courses.search import youtube_search
 from courses.suggestions import update_clusters
 
 @login_required
 def edit(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         user_form = UserEditForm(instance=request.user, data=request.POST)
-        if user_form.is_valid():
-            user_form.save()
+        profile_form = ProfileEditForm(instance=request.user.profile, data=request.POST, files=request.FILES)
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save(commit=False)
+            profile = profile_form.save(commit=False)
+            request.user.profile.get_award_points(5)
+            possibly_award_badge("edit_profile", user=request.user)
+            user.save()
+            profile.save()
             messages.success(request, _('Profile updated successfully'))
+        else:
+            messages.error(request, _('Error updating profile'))
     else:
         user_form = UserEditForm(instance=request.user)
-    return render(request, 'registration/edit.html', {'user_form': user_form})
+        profile_form = ProfileEditForm(instance=request.user.profile)
+    return render(request, 'registration/edit.html', {'user_form': user_form, 'profile_form': profile_form})
 
 @login_required
 def list_videos(request):
@@ -53,6 +64,8 @@ def list_videos(request):
     if 'q' and 'results' in request.GET:
         q = request.GET['q']
         results = request.GET['results']
+        request.user.profile.get_award_points(5)
+        possibly_award_badge("list_videos", user=request.user)
         videos =  youtube_search(q, results)
     return render(request,'videos/list.html', {'videos': videos, 'q': q, 'results': results, 'subjects': subjects, 'max_lengths': max_lengths})
 
@@ -128,6 +141,8 @@ def add_review(request, subject):
         review.comment = comment
         review.pub_date = datetime.datetime.now()
         review.save()
+        request.user.profile.get_award_points(15)
+        possibly_award_badge("reviews_course", user=request.user)
         update_clusters()
         messages.success(request, 'Review added.')
         return HttpResponseRedirect(reverse('course_detail', args=(subject.slug,)))
