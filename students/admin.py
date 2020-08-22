@@ -30,7 +30,7 @@ class ProfileInline(admin.StackedInline):
 class CustomUserAdmin(admin.ModelAdmin):
     inlines = (ProfileInline,)
     model = User
-    list_display = ['username', 'first_name', 'last_name']
+    list_display = ['username', 'email']
     list_filter = ['is_teacher', 'is_student', 'is_staff']
 
     def get_inline_instances(self, request, obj=None):

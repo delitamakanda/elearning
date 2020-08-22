@@ -164,6 +164,12 @@ LOGOOUT_URL = reverse_lazy('logout')
 LOGOUT_REDIRECT_URL = reverse_lazy('course_list')
 
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'students.authentication.EmailAuthBackend',
+]
+
+
 # Cache
 CACHES = {
     'default': {
