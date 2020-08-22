@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% load gravatar %}
+{% load badges_tags %}
 {% load i18n %}
 {% block title %}
 {{ ouser.username }}
@@ -11,5 +12,8 @@
     <div class="inline-block mb-6 rounded-full bg-gray-300 pr-6  leading-normal h-10 text-2xl">
     	<img class="rounded-full float-left h-full" src="{{ ouser|gravatar }}"> <span class="ml-3">{{ ouser.username }}</span>
 	</div>
+	<div>{{ ouser.profile.award_points }} {% trans 'award points' %}</div>
+	<div>{{ ouser|badge_level_user }}</div>
+	<div>{{ ouser.profile.location }}</div>
 </div>
  {% endblock %}

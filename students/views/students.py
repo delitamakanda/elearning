@@ -29,6 +29,7 @@ from django.contrib import messages
 from students.decorators import student_required
 
 from courses.suggestions import update_clusters
+from courses.badges import possibly_award_badge
 
 class StudentCourseListView(LoginRequiredMixin, ListView):
     model = Course
@@ -73,7 +74,9 @@ class StudentRegistrationView(CreateView):
         result = super(StudentRegistrationView, self).form_valid(form)
         cd = form.cleaned_data
         user = authenticate(username=cd['username'], password=cd['password1'])
-        mail_admins("A new student user is sign up", "check email on myelearning")
+        user.profile.get_award_points(3)
+        possibly_award_badge("student_signup", user=user)
+        mail_admins("{} is sign up".format(user.username), "check email on myelearning")
         login(self.request, user)
         return result
 
@@ -85,6 +88,8 @@ class StudentEnrollCourseView(FormView):
     def form_valid(self, form):
         self.course = form.cleaned_data['course']
         self.course.students.add(self.request.user)
+        self.request.user.profile.get_award_points(3)
+        possibly_award_badge("enroll_course", user=self.request.user)
         return super(StudentEnrollCourseView, self).form_valid(form)
 
     def get_success_url(self):
@@ -160,6 +165,8 @@ def take_quiz(request, pk):
             with transaction.atomic():
                 student_answer = form.save(commit=False)
                 student_answer.student = student
+                request.user.profile.get_award_points(10)
+                possibly_award_badge("take_quiz", user=request.user)
                 student_answer.save()
                 if student.get_unanswered_questions(quiz).exists():
                     return redirect('take_quiz', pk)

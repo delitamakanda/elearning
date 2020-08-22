@@ -26,6 +26,7 @@ from students.models import Question
 from students.models import Quiz
 from students.models import User
 
+from courses.badges import possibly_award_badge
 
 class TeacherRegistrationView(CreateView):
     model = User
@@ -41,7 +42,9 @@ class TeacherRegistrationView(CreateView):
         result = super(TeacherRegistrationView, self).form_valid(form)
         cd = form.cleaned_data
         user = authenticate(username=cd['username'], password=cd['password1'])
-        mail_admins("A new teacher user is sign up ", "check your admin on myelearning")
+        user.profile.get_award_points(3)
+        possibly_award_badge("teacher_signup", user=user)
+        mail_admins("{} is sign up ".format(user.username), "check your admin on myelearning")
         login(self.request, user)
         return result
 
