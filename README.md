@@ -14,3 +14,9 @@ load csv
 ```bash
 python3 load_reviews.py data/review.csv
 ```
+
+start celery
+
+```bash
+celery -A myelearning  worker -l info -B
+```
