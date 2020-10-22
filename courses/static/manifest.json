@@ -6,7 +6,7 @@
   "orientation": "portrait",
   "background_color": "#FFFFFF",
   "theme_color": "#222222",
-  "start_url": "",
+  "start_url": ".",
   "icons": [
     {
       "src": "images/pwa/icon-72x72.png",
