@@ -215,7 +215,7 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:8100',
     'http://localhost:8000',
     'https://pwa-myelearning.netlify.app',
-    'http://localhost/',
+    'http://localhost',
 )
 
 CORS_ALLOW_METHODS = (
