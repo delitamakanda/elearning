@@ -12,3 +12,7 @@
 * https://dohliam.github.io/dropin-minimal-css/
 
 * https://github.com/xz/new.css#Customizing
+
+* https://www.mattlayman.com/blog/2020/tailwind-django-heroku/
+
+* https://tailblocks.cc/

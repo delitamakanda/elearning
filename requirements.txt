@@ -6,7 +6,7 @@ django-embed-video
 djangorestframework==3.9.1
 idna
 olefile
-Pillow
+Pillow==8.0.1
 python3-memcached
 pytz
 whitenoise==3.3.1
@@ -19,10 +19,10 @@ django-storages
 boto3
 django-widget-tweaks==1.4.3
 google-api-python-client==1.7.4
-numpy==1.16.1
-pandas==0.24.1
-scikit-learn==0.20.3
-scipy==1.2.1
+numpy==1.19.5
+pandas==1.2.1
+scikit-learn==0.24.1
+scipy==1.6.0
 sklearn==0.0
 django-webpack-loader==0.6.0
 django-cors-headers==3.0.2
