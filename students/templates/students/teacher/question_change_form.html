@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load crispy_forms_tags %}
 {% block title %}
 {% trans 'Add question' %}
 {% endblock %}
@@ -17,34 +18,48 @@
 
         <h2>{{ question.text }}</h2>
 
-        <form method="post" novalidate>
+        <form method="post" novalidate>    
             {% csrf_token %}
             {{ formset.management_form }}
-            {{ form.as_p }}
-            <div class="{% if formset.errors %} danger{% endif %}">
-                <div>{% trans 'Answers' %}</div>
-                <div>{% trans 'Correct ?' %}</div>
-                <div>{% trans 'Delete ?' %}</div>
-                {% for error in formset.non_form_errors %}
-                    <div class="text-danger">{{ error }}</div>
-                {% endfor %}
-                <div class="question">
-                    {% for form in formset %}
-                        <div>
-                            {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
-                            {{ form.text }}
-                            {% if form.instance.pk and form.text.value != form.instance.text %}
-                                <p><strong>{% trans 'Old answer:' %}</strong> {{ form.instance.text }}</p>
-                            {% endif %}
-                        </div>
-                        <div>{{ form.is_correct }}</div>
-                        <div>
-                            {% if form.instance.pk %}
-                                {{ form.DELETE }} {% trans 'delete anwser' %}
-                            {% endif %}
-                        </div>
-                    {% endfor %}
+            {{ form|crispy }}
+            <div class="card mb-3{% if formset.errors %} border-danger{% endif %}">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-8">
+                    <strong>{% trans 'Answers' %}</strong>
+                  </div>
+                  <div class="col-2">
+                    <strong>{% trans 'Correct ?' %}</strong>
+                  </div>
+                  <div class="col-2">
+                    <strong>{% trans 'Delete ?' %}</strong>
+                  </div>
                 </div>
+              </div>
+              {% for error in formset.non_form_errors %}
+                <div class="card-body bg-danger border-danger text-white py-2">{{ error }}</div>
+              {% endfor %}
+              <div class="list-group list-group-flush list-group-formset">
+                {% for form in formset %}
+                  <div class="list-group-item">
+                    <div class="row">
+                      <div class="col-8">
+                        {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+                        {{ form.text|as_crispy_field }}
+                        {% if form.instance.pk and form.text.value != form.instance.text %}<p class="mb-0 mt-1"><small class="text-muted font-italic"><strong>Old answer:</strong> {{ form.instance.text }}</small></p>{% endif %}
+                      </div>
+                      <div class="col-2">
+                        {{ form.is_correct }}
+                      </div>
+                      <div class="col-2">
+                        {% if form.instance.pk %}
+                          {{ form.DELETE }}
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
             </div>
             <p>{% trans 'Your question must have at least 2 answers and maximum 10 answers. Select at least one correct answer.' %}</p>
             <button class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full" type="submit">{% trans 'Save' %}</button>
@@ -53,4 +68,4 @@
         </form>
     </div>
 </div>
- {% endblock %}
+{% endblock %}

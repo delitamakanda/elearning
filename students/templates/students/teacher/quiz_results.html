@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load crispy_forms_tags humanize %}
 {% block title %}
 {% trans 'Results' %}
 {% endblock %}
@@ -17,11 +18,12 @@
 
         <h2>{{ quiz.name }} {% trans 'results' %}</h2>
 
-        <div class="quiz">
-            <div>
-                {% trans 'Taken Quizzes' %} <span class="badge">{% trans 'Average score' %}{{ quiz_score.average_score|default_if_none:0.0}} %</span>
+        <div class="card">
+            <div class="card-header">
+              <strong>{% trans 'Taken Quizzes' %}</strong>
+              <span class="badge badge-pill badge-primary float-right">{% trans 'Average score' %}{{ quiz_score.average_score|default_if_none:0.0}} %</span>
             </div>
-            <table>
+            <table class="table mb-0">
                 <thead>
                     <tr>
                         <th>{% trans 'Student' %}</th>
@@ -33,16 +35,17 @@
                     {% for taken_quiz in taken_quizzes %}
                         <tr>
                             <td>{{ taken_quiz.student.user.username }}</td>
-                            <td>{{ taken_quiz.date }}</td>
+                            <td>{{ taken_quiz.date|naturaltime }}</td>
                             <td>{{ taken_quiz.score }} %</td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <div>
-                {% trans 'Total respondents:' %} <strong>{{ total_taken_quizzes }}</strong>
+
+            <div class="card-footer text-muted">
+              {% trans 'Total respondents:' %} <strong>{{ total_taken_quizzes }}</strong>
             </div>
         </div>
     </div>
 </div>
- {% endblock %}
+{% endblock %}

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django.contrib.admindocs',
+    'crispy_forms',
     'students',
     'embed_video',
     'rest_framework',
@@ -241,3 +242,5 @@ TERMS_EXCLUDE_USERS_WITH_PERM = "auth.can_skip_t&c"
 TERMS_IP_HEADER_NAME = "REMOTE_ADDR"
 TERMS_STORE_IP_ADDRESS = True
 TERMS_BASE_TEMPLATE = 'base.html'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

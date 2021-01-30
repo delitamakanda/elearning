@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% load i18n %}
 {% block title %}
 {% trans 'Add Quiz' %}
@@ -18,7 +19,7 @@
 
         <form method="post" novalidate>
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ form|crispy }}
             <button class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full" type="submit">{% trans 'Save' %}</button>
             <a href="{% url 'teacher_quiz_change_list' %}" class="btn btn-secondary" role="button">{% trans 'Go back' %}</a>
         </form>
