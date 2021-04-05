@@ -58,3 +58,8 @@ AWS_S3_OBJECT_PARAMETERS = {
 }
 
 DEFAULT_FILE_STORAGE = 'myelearning.storage_backends.MediaStorage'
+
+# Task async
+CELERY_BROKER_URL = config('HEROKU_REDIS_AQUA_URL')
+CELERY_RESULT_BACKEND = config('HEROKU_REDIS_AQUA_URL')
+
