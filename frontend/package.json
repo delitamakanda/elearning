@@ -42,7 +42,7 @@
     "gulp-sass": "^4.0.1",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.1",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "path": "^0.12.7",
     "tailwindcss": "^1.2.0"
   },
