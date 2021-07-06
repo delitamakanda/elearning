@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load crispy_forms_tags %}
 {% block title %}
 {{ quiz.name }}
 {% endblock %}
@@ -8,10 +9,10 @@
 <div class="container-fluid">
     <div class="quiz">
         <h2>{{ quiz.name }}</h2>
-        <p>{{ question.text }}</p>
+        <p class="lead">{{ question.text }}</p>
         <form method="post" novalidate>
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ form|crispy }}
             <button class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full" type="submit">{% trans 'Next' %}</button>
         </form>
     </div>

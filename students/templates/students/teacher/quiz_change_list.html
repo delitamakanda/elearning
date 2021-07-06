@@ -14,10 +14,10 @@
         </nav>
 
         <h2>{% trans 'My Quizzes' %}</h2>
-        <a href="{% url 'teacher_add_quiz' %}" class="link" role="button">{% trans 'Add Quiz' %}</a>
+        <a href="{% url 'teacher_add_quiz' %}" class="btn btn-primary mb-3" role="button">{% trans 'Add Quiz' %}</a>
 
         <div class="quiz">
-            <table>
+            <table class="table mb-0">
                 <thead>
                     <tr>
                         <th>{% trans 'Quiz' %}</th>
@@ -48,4 +48,5 @@
         </div>
     </div>
 </div>
+
  {% endblock %}

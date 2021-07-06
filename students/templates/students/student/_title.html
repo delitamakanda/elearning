@@ -5,11 +5,11 @@
     <a href="{% url 'student_interests' %}">(update interests)</a>
 </p>
 
-<ul>
-    <li>
-        <a class="{% if active == 'new' %} active{% endif %}" href="{% url 'student_quiz_list' %}">{% trans 'New' %}</a>
-    </li>
-    <li>
-        <a class="{% if active == 'taken' %} active{% endif %}" href="{% url 'taken_quiz_list' %}">{% trans 'Taken quiz' %}</a>
-    </li>
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link{% if active == 'new' %} active{% endif %}" href="{% url 'student_quiz_list' %}">{% trans 'New' %}</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link{% if active == 'taken' %} active{% endif %}" href="{% url 'taken_quiz_list' %}">{% trans 'Taken quiz' %}</a>
+  </li>
 </ul>
