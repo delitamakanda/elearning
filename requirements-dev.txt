@@ -12,7 +12,7 @@ python3-memcached
 pytz==2017.2
 requests==2.20.0
 six==1.11.0
-urllib3==1.24.2
+urllib3==1.26.5
 whitenoise==3.3.1
 python-decouple==3.1
 django-widget-tweaks==1.4.3
