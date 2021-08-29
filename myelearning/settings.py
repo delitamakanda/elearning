@@ -21,10 +21,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY', 'dummy_secret_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', cast=bool)
+DEBUG = config('DEBUG', 'True', cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -196,7 +196,7 @@ REST_FRAMEWORK = {
 }
 
 # Mailer
-DEFAULT_FROM_EMAIL = config('ADMIN_EMAIL')
+DEFAULT_FROM_EMAIL = config('ADMIN_EMAIL', 'no-reply@myelearnig.com')
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -204,7 +204,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SESSION_EXPIRE_SECONDS = 18000  # 5 hours
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 
-DEVELOPER_KEY = config('DEVELOPER_API_KEY')
+DEVELOPER_KEY = config('DEVELOPER_API_KEY', 'developer_key_here')
 
 # corsheaders
 CORS_ORIGIN_ALLOW_ALL = False
@@ -228,8 +228,8 @@ CORS_ALLOW_METHODS = (
 )
 
 # Task async
-CELERY_BROKER_URL = config('REDIS_URL')
-CELERY_RESULT_BACKEND = config('REDIS_URL')
+CELERY_BROKER_URL = config('REDIS_URL', 'redis://localhost:6379/0', cast=str)
+CELERY_RESULT_BACKEND = config('REDIS_URL', 'redis://localhost:6379/0', cast=str)
 
 # Terms & Conditions settings
 
