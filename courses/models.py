@@ -115,13 +115,6 @@ class Review(models.Model):
     rating = models.IntegerField(choices=RATING_CHOICES)
 
 
-class Cluster(models.Model):
-    name = models.CharField(max_length=100)
-    users = models.ManyToManyField(settings.AUTH_USER_MODEL)
-
-    def get_members(self):
-        return '\n'.join([u.username for u in self.users.all()])
-
 # https://github.com/pinax/pinax-badges
 class BadgeAward(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="badges_earned", on_delete=models.CASCADE)

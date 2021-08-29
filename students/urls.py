@@ -16,7 +16,6 @@ urlpatterns = [
     url(r'^interests/$', students.StudentInterestsView.as_view(), name='student_interests'),
     url(r'^taken/$', students.TakenQuizListView.as_view(), name='taken_quiz_list'),
     url(r'^student/quiz/(?P<pk>\d+)/$', students.take_quiz, name='take_quiz'),
-    url(r'^student/recommended-courses/', students.student_recommendation_list, name='student_recommendation_list'),
 
     url(r'^register/teacher/$', teachers.TeacherRegistrationView.as_view(), name='teacher_registration'),
     url(r'^quiz/$', teachers.TeacherQuizListView.as_view(), name='teacher_quiz_change_list'),
