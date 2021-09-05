@@ -1,21 +1,20 @@
-var gulp            = require('gulp'),
-    gulpif          = require('gulp-if'),
-    prefix          = require('gulp-autoprefixer'),
-    autoprefixer    = require('autoprefixer'),
-    browserSync     = require('browser-sync'),
-    sourcemaps      = require('gulp-sourcemaps'),
-    imagemin        = require('gulp-imagemin'),
-    plumber         = require('gulp-plumber'),
-    uglify          = require('gulp-uglify'),
-    concatJs        = require('gulp-concat'),
-    path            = require('path'),
-    iconfont        = require('gulp-iconfont'),
-    consolidate     = require('gulp-consolidate'),
-    postcss         = require("gulp-postcss"),
-    cssnano         = require("cssnano"),
-    rename          = require('gulp-rename'),
-    tailwindcss     = require('tailwindcss'),
-    sass            = require('gulp-sass');
+var gulp = require('gulp'),
+    gulpif = require('gulp-if'),
+    path = require('path'),
+    prefix = require('gulp-autoprefixer'),
+    autoprefixer = require('autoprefixer'),
+    browserSync = require('browser-sync'),
+    sourcemaps = require('gulp-sourcemaps'),
+    imagemin = require('gulp-imagemin'),
+    plumber = require('gulp-plumber'),
+    uglify = require('gulp-uglify'),
+    concatJs = require('gulp-concat'),
+    path = require('path'),
+    iconfont = require('gulp-iconfont'),
+    consolidate = require('gulp-consolidate'),
+    rename = require('gulp-rename'),
+    postcss = require('gulp-postcss'),
+    sass = require('gulp-sass');
 
 function onError(err) {
     console.log(err);
@@ -34,10 +33,10 @@ var paths = {
         opts: {}
     },
     images: {
-        imgSrc: './images/',
+        imgSrc: './img/',
         imgDir: '../courses/static/images/',
     },
-    js: {
+    js: {
         jsCoreSrc: './scripts/',
         jsDir: '../courses/static/scripts/',
     },
@@ -50,77 +49,72 @@ var paths = {
 
 // ---------------------------------------------- Gulp Tasks
 gulp.task('sass', function () {
-  return gulp.src(paths.sass.src)
-    .pipe(sourcemaps.init())
-    .pipe(sass({
-        outputStyle: 'compressed',
-        sourceComments: 'normal',
-        errLogToConsole: true
-    }).on('error', sass.logError))
-    //.pipe(prefix(
-        //'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'
-    //))
-    .pipe(postcss([
-        tailwindcss('tailwind.config.js'),
-        autoprefixer(), 
-        cssnano()
-    ]))
-    .pipe(sourcemaps.write())
-    .pipe(plumber({
-        errorHandler: onError
-    }))
-    .pipe(gulp.dest(paths.sass.dest))
-    .pipe(browserSync.stream())
+    return gulp.src(paths.sass.src)
+        .pipe(sourcemaps.init())
+        .pipe(sass({
+            outputStyle: 'compressed',
+            sourceComments: 'normal',
+            errLogToConsole: true
+        }).on('error', sass.logError))
+        .pipe(postcss([autoprefixer({
+            browsers: ["last 2 versions"]
+        })]))
+        .pipe(sourcemaps.write())
+        .pipe(plumber({
+            errorHandler: onError
+        }))
+        .pipe(gulp.dest(paths.sass.dest))
+        .pipe(browserSync.stream())
 });
 
 // Compile JS
 gulp.task('compressCoreJs', function () {
-   return gulp.src(paths.js.jsCoreSrc + '*.js')
-    .pipe(concatJs('main.js'))
-    .pipe(gulp.dest(paths.js.jsDir))
-    .pipe(rename('main.min.js'))
-    //.pipe(uglify())
-    .pipe(gulp.dest(paths.js.jsDir))
-    .pipe(browserSync.stream())
+    return gulp.src(paths.js.jsCoreSrc + '*.js')
+        .pipe(concatJs('main.js'))
+        .pipe(gulp.dest(paths.js.jsDir))
+        .pipe(rename('main.min.js'))
+        //.pipe(uglify())
+        .pipe(gulp.dest(paths.js.jsDir))
+        .pipe(browserSync.stream())
 });
 
 // Compile Lib JS
 gulp.task('compressLibJs', function () {
-   return gulp.src(paths.vendors.jsLibSrc+'/**/*.min.js')
-    .pipe(uglify())
-    .pipe(gulp.dest(paths.vendors.jsLibDir))
-    .pipe(browserSync.stream())
+    return gulp.src(paths.vendors.jsLibSrc + '/**/*.min.js')
+        .pipe(uglify())
+        .pipe(gulp.dest(paths.vendors.jsLibDir))
+        .pipe(browserSync.stream())
 });
 
 // Generate IMG
-gulp.task('images', function() {
-   return gulp.src(paths.images.imgSrc)
-    .pipe(imagemin())
-    .pipe(gulpif('*.png', gulp.dest(paths.images.imgDir)))
-    .pipe(gulpif('*.svg', gulp.dest(paths.images.imgDir)))
-    .pipe(gulpif('*.jpg', gulp.dest(paths.images.imgDir)))
-    .pipe(gulpif('*.gif', gulp.dest(paths.images.imgDir)))
+gulp.task('images', function () {
+    return gulp.src(paths.images.imgSrc)
+        .pipe(imagemin())
+        .pipe(gulpif('*.png', gulp.dest(paths.images.imgDir)))
+        .pipe(gulpif('*.svg', gulp.dest(paths.images.imgDir)))
+        .pipe(gulpif('*.jpg', gulp.dest(paths.images.imgDir)))
+        .pipe(gulpif('*.gif', gulp.dest(paths.images.imgDir)))
 });
 
 gulp.task('iconfont', function () {
     return gulp.src('icons/**/*.svg')
-    .pipe(iconfont({
-        fontName: 'custom',
-        centerHorizontally: true,
-        normalize: true,
-        prependUnicode: true,
-        fontHeight: 1001
-    })).on('glyphs', function (glyphs) {
-    gulp.src('scss/templates/_icons.scss')
-        .pipe(consolidate('lodash', {
-            glyphs: glyphs,
+        .pipe(iconfont({
             fontName: 'custom',
-            fontPath: '../fonts/custom/',
-            className: 'icon'
-        }))
-        .pipe(gulp.dest('scss'));
-    })
-    .pipe(gulp.dest('../courses/static/fonts/custom'));
+            centerHorizontally: true,
+            normalize: true,
+            prependUnicode: true,
+            fontHeight: 1001
+        })).on('glyphs', function (glyphs) {
+            gulp.src('scss/templates/_icons.scss')
+                .pipe(consolidate('lodash', {
+                    glyphs: glyphs,
+                    fontName: 'custom',
+                    fontPath: '../fonts/custom/',
+                    className: 'icon'
+                }))
+                .pipe(gulp.dest('scss'));
+        })
+        .pipe(gulp.dest('../courses/static/fonts/custom'));
 });
 
 gulp.task('serve', function () {
@@ -133,27 +127,27 @@ gulp.task('serve', function () {
 
 // ---------------------------------------------- Gulp Watch
 gulp.task('watch:styles', function () {
-  gulp.watch('./scss/' + '*.scss', gulp.series('sass'));
+    gulp.watch('./scss/' + '*.scss', gulp.series('sass'));
 });
 
 gulp.task('watch:scripts', function () {
-  gulp.watch('./scripts/' + '**/*.js', gulp.series('compressCoreJs'));
+    gulp.watch('./scripts/' + '**/*.js', gulp.series('compressCoreJs'));
 });
 
 gulp.task('watch:libs', function () {
-  gulp.watch('./scripts/libs/' + '*.js', gulp.series('compressLibJs'));
+    gulp.watch('./scripts/libs/' + '*.js', gulp.series('compressLibJs'));
 });
 
 gulp.task('watch:images', function () {
-    gulp.watch(paths.images.imgSrc +'**/*.{gif,jpeg,jpg,png}', gulp.series('images'));
+    gulp.watch(paths.images.imgSrc + '**/*.{gif,jpeg,jpg,png}', gulp.series('images'));
 })
 
 gulp.task('watch:templates', function () {
-    gulp.watch(paths.tplSrc+'**/*.html').on('change', reload);
+    gulp.watch(paths.tplSrc + '**/*.html').on('change', reload);
 })
 
 gulp.task('watch', gulp.series('sass', 'compressCoreJs', 'compressLibJs', 'images',
-  gulp.parallel('watch:styles', 'watch:scripts', 'watch:libs', 'watch:images','watch:templates')
+    gulp.parallel('watch:styles', 'watch:scripts', 'watch:libs', 'watch:images', 'watch:templates')
 ));
 
 

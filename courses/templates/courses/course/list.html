@@ -3,148 +3,134 @@
 {% load staticfiles %}
 {% block title %}
 {% if subject %}
-   {{ subject.title }} {% trans 'courses' %}
+{{ subject.title }} {% trans 'courses' %}
 {% else %}
-    {% trans 'All courses' %}
+{% trans 'All courses' %}
 {% endif %}
 {% endblock %}
 
 {% block content %}
-<div class="bg-white font-sans">
-    <nav class="py-2 shadow">
-        <div class="container mx-auto flex items-center">
-            <div class="w-1/5"></div>
-            <div class="w-3/5">
-                <div class="relative">
-                    <form action="{% url 'search' %}" method="POST" id="form" role="form">
-                        {% csrf_token %}
-                        <input type="search" 
-                            class="h-8 p-4 text-sm w-full border"
-                            name="q"
-                            id="q"
-                            ic-post-to="{% url 'search-ajax-submit' %}"
-                            ic-trigger-on="keyup changed"
-                            ic-trigger-delay="300ms"
-                            ic-target="#search-result-container"
-                            required pattern="\S+.*"
-                            placeholder="{% trans 'Search for a topic and press enter' %}"
-                        >
-                        <!--<button type="submit" class="opacity-0 flex items-center bg-gray-400 hover:bg-gray-600 absolute pin-r pin-y border px-8">{% trans 'Go' %}</button>-->
-                    </form>
-                </div>
+<div id="courses-list">
+    <section class="py-7">
+        <div class="row justify-space-between py-2">
+            <div class="col-lg-4 mx-auto">
+                <form action="{% url 'search' %}" method="POST" id="form" role="form">
+                    {% csrf_token %}
+                    <input type="search" class="form-control" name="q" id="q" autocomplete="off"
+                        ic-post-to="{% url 'search-ajax-submit' %}" ic-trigger-on="keyup changed"
+                        ic-trigger-delay="300ms" ic-target="#search-result-container" required pattern="\S+.*"
+                        placeholder="{% trans 'Search for a topic and press enter' %}">
+                </form>
             </div>
-            <div class="w-1/5"></div>
         </div>
-    </nav>
-    <div class="container mx-auto lg:flex">
-        <div class="sm:block lg:hidden mx-4 py-6">
-            <div class="border-b">
-                <p class="text-gray-800 uppercase text-sm mb-6">{% trans 'Subjects' %}</p>
-                <ul>
-                    <li class="mb-6 {% if not subject %}active{% endif %}">
-                        <a href="{% url 'course_list' %}">{% trans 'All' %}</a>
-                    </li>
+        <div id="search-result-container"></div>
+    </section>
+    <div class="row">
+        <div class="col-12">
+            <div class="dropdown">
+                <button class="btn bg-gradient-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    {% trans 'Subjects' %}
+                </button>
+                <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
+                    <li class="{% if not subject %}active{% endif %}"><a class="dropdown-item border-radius-md"
+                            href="{% url 'course_list' %}">{% trans 'All' %}</a></li>
                     {% for s in subjects %}
-                    <li class="mb-6 {% if subject == s %}active{% endif %}">
-                        <span class="flex items-center mb-2">
-                        <a href="{% url 'course_list_subject' s.slug %}">{{ s.title }}</a>
-                        <span class="ml-2 p-1 text-gray-800 bg-gray-400 w-6 h-6 rounded-full leading-none text-center">{{ s.total_courses }}</span>
-                        </span>
+                    <li class="{% if subject == s %}active{% endif %}">
+                        <a href="{% url 'course_list_subject' s.slug %}" class="dropdown-item border-radius-md">
+                            {{ s.title }} <span class="badge rounded-pill bg-light text-dark">{{ s.total_courses }}</span>
+                        </a>
                     </li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
-        <div class="w-3/4 mx-16 py-6">
-            <div class="border-b">
-                <h3 class="py-6 text-base font-medium">
-                    {% if subject %}
-                        <span class="uppercase ml-3 text-gray-600">{{ subject.title }} {% trans 'courses' %}</span>
-                    {% else %}
-                        <span class="uppercase ml-3 text-gray-600">{% trans "All courses" %}</span>
-                    {% endif %}
-                </h3>
-                <div id="search-result-container"></div>
-                <div class="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 mb-4 relative">
-                    <div class="absolute w-10 h-10 rounded-full bg-white text-gray-800 text-center -mr-3 pin-r mt-8 shadow-md">
-                        <i class="fa fa-chevron-right mt-3" aria-hidden="true"></i>
+        <div class="col-12">
+            <section class="py-3">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h3 class="mb-5">
+                            {% if subject %}
+                            {{ subject.title }} {% trans 'courses' %}
+                            {% else %}
+                            {% trans "All courses" %}
+                            {% endif %}
+                        </h3>
                     </div>
+                </div>
+                <div class="row">
                     {% for course in courses %}
                     {% with subject=course.subject %}
-                    <div class="mr-1">
-                        <div>
-                            <a href="{% url 'course_detail' course.slug %}">
-                            <img src="{% static 'images/404-error.jpg' %}" alt="">
-                            </a>
-                        </div>
-                        <div class="mb-4">
-                            <a href="{% url 'course_detail' course.slug %}">
-                                <h4 class="text-sm font-medium">{{ course.title }}</h4>
-                            </a>
-                            <a class="hidden" href="{% url 'course_list_subject' subject.slug %}">
-                            {{ subject }} 
-                            </a>
-                            <p class="mt-2 font-hairline text-sm text-gray-800">
-                                {{ course.total_modules }} {% trans 'modules' %}
-                            </p>
-                            <p class="mt-1 font-hairline text-xs text-gray-800">
-                                {% if course.average_rating %}
-                                {{ course.average_rating|floatformat:0  }} {% trans 'star(s)' %}
-                                {% endif %} &middot; {{ course.created | date:"M d" }}
-                            </p>
-                            <a href="{% url 'course_detail' course.slug %}">
-                            <p class="inline-block p-1 text-gray-800 bg-gray-400 font-hairline text-2xs">
-                                {{ course.total_reviews }} {% trans 'reviews' %}
-                            </p>
-                            </a>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card card-plain card-blog">
+                            <div class="card-image border-radius-lg position-relative">
+                                <a href="{% url 'course_detail' course.slug %}">
+                                    <img class="w-100 border-radius-lg move-on-hover shadow"
+                                        src="{% static 'images/404-error.jpg' %}" alt="{{ course.title }}">
+                                </a>
+                            </div>
+                            <div class="card-body px-0">
+                                <h5>
+                                    <a href="{% url 'course_detail' course.slug %}" class="text-dark font-weight-bold">{{ course.title }}</a>
+                                </h5>
+                                <p>
+                                    <a class="hidden" href="{% url 'course_list_subject' subject.slug %}">
+                                        {{ subject }}
+                                    </a>
+                                    {{ course.total_modules }} {% trans 'modules' %}<br />
+                                    {% if course.average_rating %}
+                                        {{ course.average_rating|floatformat:0 }} {% trans 'star(s)' %}
+                                    {% endif %} &middot; {{ course.created | date:"M d" }}<br />
+                                    <a href="{% url 'course_detail' course.slug %}">
+                                        {{ course.total_reviews }} {% trans 'reviews' %}
+                                    </a>
+                                </p>
+                                <a href="{% url 'course_detail' course.slug %}" class="text-info icon-move-right">
+                                    {% trans 'Join Course' %}
+                                    <i class="fas fa-arrow-right text-sm"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                     {% endwith %}
                     {% endfor %}
                 </div>
-            </div>
-        </div>
-        <div class="hidden lg:block lg:w-1/4 py-6">
-            <div class="border-b">
-                <p class="text-gray-800 uppercase text-sm mb-6">{% trans 'Subjects' %}</p>
-                <ul>
-                    <li class="mb-6 {% if not subject %}active{% endif %}">
-                        <a href="{% url 'course_list' %}">{% trans 'All' %}</a>
-                    </li>
-                    {% for s in subjects %}
-                    <li class="mb-6 {% if subject == s %}active{% endif %}">
-                        <span class="flex items-center mb-2">
-                        <a href="{% url 'course_list_subject' s.slug %}">{{ s.title }}</a>
-                        <span class="ml-2 p-1 text-gray-800 bg-gray-400 w-6 h-6 rounded-full leading-none text-center">{{ s.total_courses }}</span>
-                        </span>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
+            </section>
         </div>
     </div>
-    {% if courses.has_other_pages %}
-    <div class="container mx-16 flex">
-    <ul class="flex pl-0 list-none rounded my-2">
-        {% if courses.has_previous %}
-        <li class="relative block py-2 px-3 leading-tight bg-white border border-gray-300 text-blue-700 border-r-0 ml-0 rounded-l hover:bg-gray-200"><a href="?page={{ courses.previous_page_number }}">&laquo;</a></li>
-        {% else %}
-        <li class="relative block py-2 px-3 leading-tight bg-white border border-gray-300 text-blue-700 border-r-0 hover:bg-gray-200 disabled"><span>&laquo;</span></li>
-        {% endif %}
-        {% for i in courses.paginator.page_range %}
-        {% if courses.number == i %}
-            <li class="relative block py-2 px-3 leading-tight bg-white border border-gray-300 text-blue-700 border-r-0 hover:bg-gray-200 active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-        {% else %}
-            <li class="relative block py-2 px-3 leading-tight bg-white border border-gray-300 text-blue-700 border-r-0 hover:bg-gray-200"><a href="?page={{ i }}">{{ i }}</a></li>
-        {% endif %}
-        {% endfor %}
-        {% if courses.has_next %}
-        <li class="relative block py-2 px-3 leading-tight bg-white border border-gray-300 text-blue-700 rounded-r hover:bg-gray-200"><a href="?page={{ courses.next_page_number }}">&raquo;</a></li>
-        {% else %}
-        <li class="relative block py-2 px-3 leading-tight bg-white border border-gray-300 text-blue-700 border-r-0 hover:bg-gray-200 disabled"><span>&raquo;</span></li>
-        {% endif %}
-    </ul>
-    </div>
-    {% endif %}
+    <section class="py-7">
+        <div class="container">
+            <div class="row justify-space-between py-2">
+                <div class="col-lg-4 mx-auto">
+                    <ul class="pagination pagination-primary m-4">
+                        {% if courses.has_previous %}
+                        <li class="page-item"><a href="?page={{ courses.previous_page_number }}" class="page-link"
+                                aria-label="Previous"><span aria-hidden="true"><i class="fa fa-angle-double-left"
+                                        aria-hidden="true"></i></span></a></li>
+                        {% else %}
+                        <li class="page-item disabled"><span><span aria-hidden="true"><i class="fa fa-angle-double-left"
+                                        aria-hidden="true"></i></span></span></li>
+                        {% endif %}
+                        {% for i in courses.paginator.page_range %}
+                        {% if courses.number == i %}
+                        <li class="page-item active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                        {% else %}
+                        <li class="page-item"><a href="?page={{ i }}" class="page-link">{{ i }}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if courses.has_next %}
+                        <li class="page-item"><a href="?page={{ courses.next_page_number }}" class="page-link"
+                                aria-label="Next"><span aria-hidden="true"><i class="fa fa-angle-double-right"
+                                        aria-hidden="true"></a></li>
+                        {% else %}
+                        <li class="page-item disabled"><span aria-hidden="true"><i class="fa fa-angle-double-right"
+                                    aria-hidden="true"></i></span></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
- {% endblock %}
+</div>
+{% endblock %}
