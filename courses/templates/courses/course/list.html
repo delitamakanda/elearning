@@ -11,9 +11,9 @@
 
 {% block content %}
 <div id="courses-list">
-    <section class="py-7">
+    <section class="py-7 pb-0">
         <div class="row justify-space-between py-2">
-            <div class="col-lg-4 mx-auto">
+            <div class="col-lg-4">
                 <form action="{% url 'search' %}" method="POST" id="form" role="form">
                     {% csrf_token %}
                     <input type="search" class="form-control" name="q" id="q" autocomplete="off"

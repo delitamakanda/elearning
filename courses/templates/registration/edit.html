@@ -18,7 +18,7 @@
           {% for field in user_form %}
             <div class="mb-4">
 
-              {% render_field field class="flex-grow h-8 px-2 rounded border border-gray-400" placeholder=field.label %}
+              {% render_field field class="form-control" placeholder=field.label %}
 
               {% if field.help_text %}
                 <small class="form-text text-muted">
@@ -30,7 +30,7 @@
           {% for field in profile_form %}
             <div class="mb-4">
 
-              {% render_field field class="flex-grow h-8 px-2 rounded border border-gray-400" placeholder=field.label %}
+              {% render_field field class="form-control" placeholder=field.label %}
 
               {% if field.help_text %}
                 <small class="form-text text-muted">
@@ -39,7 +39,7 @@
               {% endif %}
             </div>
           {% endfor %}
-          <input type="submit" class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full" value="{% trans 'Save changes' %}" />
+          <input type="submit" class="btn btn-primary" value="{% trans 'Save changes' %}" />
         </form>
 
     </div>

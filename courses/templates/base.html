@@ -417,14 +417,14 @@
   </div>
   
   <section id="count-stats content" class="pt-3 pb-4" data-role="content">
-    <div class="container py-5">
+    <div class="container py-7">
       {% if messages %}
       <div class="row">
         {% for message in messages %}
         <div {% if message.tags %}
           class="alert alert-primary text-white font-weight-bold alert-{{ message.tags }} alert-dismissible"
           {% endif %} role="alert" data-is-auto-close="true">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+          <button type="button" class="btn bg-gradient-primary" data-dismiss="alert" aria-label="Close"><span
               aria-hidden="true">&times;</span></button>
           {{ message }}
         </div>
