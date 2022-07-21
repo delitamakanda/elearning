@@ -14,12 +14,13 @@ class TimeLimitedPaginator(Paginator):
         """
         set timeout to in a db transaction to prevent it from affecting other transactions.
         """
-        with transaction.atomic(), connection.cursor() as cursor:
-            # cursor.execute("SET LOCAL statement_timeout TO 200;")
-            try:
+        try:
+            with transaction.atomic(), connection.cursor() as cursor:
+                cursor.execute('SET LOCAL statement_timeout TO 200;')
                 return super().count
-            except OperationalError:
-                return 9999999999
+        except OperationalError:
+            return 9999999999
+            
 
 class DumbPaginator(Paginator):
     """

@@ -9,10 +9,15 @@ from students.models import TakenQuiz
 from students.models import Profile
 from students.models import StudentAnswer
 from students.models import Tag
-from common.paginator import DumbPaginator
+from common.paginator import DumbPaginator, TimeLimitedPaginator
 
 class TagAdmin(admin.ModelAdmin):
     model = Tag
+
+
+class StudentAnswerAdmin(admin.ModelAdmin):
+    paginator = TimeLimitedPaginator
+    model = StudentAnswer
 
 class AnswerInline(admin.StackedInline):
     model = Answer
@@ -29,7 +34,7 @@ class ProfileInline(admin.StackedInline):
 
 
 class CustomUserAdmin(admin.ModelAdmin):
-    paginator = DumbPaginator
+    paginator = TimeLimitedPaginator
     inlines = (ProfileInline,)
     model = User
     list_display = ['username', 'email']
@@ -45,6 +50,6 @@ admin.site.register(Quiz)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Student)
 admin.site.register(TakenQuiz)
-admin.site.register(StudentAnswer)
+admin.site.register(StudentAnswer, StudentAnswerAdmin)
 admin.site.register(Tag, TagAdmin)
 # admin.site.register(Profile)
