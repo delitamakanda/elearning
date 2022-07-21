@@ -159,10 +159,10 @@ STATICFILES_DIRS = (
 # Custom auth
 
 AUTH_USER_MODEL = 'students.User'
-LOGIN_REDIRECT_URL = reverse_lazy('classroom')
+LOGIN_REDIRECT_URL = reverse_lazy('students:classroom')
 LOGIN_URL = reverse_lazy('login')
 LOGOOUT_URL = reverse_lazy('logout')
-LOGOUT_REDIRECT_URL = reverse_lazy('course_list')
+LOGOUT_REDIRECT_URL = reverse_lazy('courses:course_list')
 
 
 AUTHENTICATION_BACKENDS = [

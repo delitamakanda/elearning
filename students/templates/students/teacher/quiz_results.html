@@ -10,8 +10,8 @@
     <div class="quizzes">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'My quizzes' %}</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'teacher_update_quiz' quiz.pk %}">{{ quiz.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'students:teacher_quiz_change_list' %}">{% trans 'My quizzes' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'students:teacher_update_quiz' quiz.pk %}">{{ quiz.name }}</a></li>
                 <li class="breadcrumb-item" aria-current="page">{% trans 'Results' %}</li>
             </ol>
         </nav>

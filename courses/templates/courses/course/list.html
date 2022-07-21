@@ -16,13 +16,13 @@
             <div class="w-1/5"></div>
             <div class="w-3/5">
                 <div class="relative">
-                    <form action="{% url 'search' %}" method="POST" id="form" role="form">
+                    <form action="{% url 'courses:search' %}" method="POST" id="form" role="form">
                         {% csrf_token %}
                         <input type="search" 
                             class="h-8 p-4 text-sm w-full border"
                             name="q"
                             id="q"
-                            ic-post-to="{% url 'search-ajax-submit' %}"
+                            ic-post-to="{% url 'courses:search-ajax-submit' %}"
                             ic-trigger-on="keyup changed"
                             ic-trigger-delay="300ms"
                             ic-target="#search-result-container"
@@ -42,12 +42,12 @@
                 <p class="text-gray-800 uppercase text-sm mb-6">{% trans 'Subjects' %}</p>
                 <ul>
                     <li class="mb-6 {% if not subject %}active{% endif %}">
-                        <a href="{% url 'course_list' %}">{% trans 'All' %}</a>
+                        <a href="{% url 'courses:course_list' %}">{% trans 'All' %}</a>
                     </li>
                     {% for s in subjects %}
                     <li class="mb-6 {% if subject == s %}active{% endif %}">
                         <span class="flex items-center mb-2">
-                        <a href="{% url 'course_list_subject' s.slug %}">{{ s.title }}</a>
+                        <a href="{% url 'courses:course_list_subject' s.slug %}">{{ s.title }}</a>
                         <span class="ml-2 p-1 text-gray-800 bg-gray-400 w-6 h-6 rounded-full leading-none text-center">{{ s.total_courses }}</span>
                         </span>
                     </li>
@@ -73,15 +73,15 @@
                     {% with subject=course.subject %}
                     <div class="mr-1">
                         <div>
-                            <a href="{% url 'course_detail' course.slug %}">
+                            <a href="{% url 'courses:course_detail' course.slug %}">
                             <img src="{% static 'images/404-error.jpg' %}" alt="">
                             </a>
                         </div>
                         <div class="mb-4">
-                            <a href="{% url 'course_detail' course.slug %}">
+                            <a href="{% url 'courses:course_detail' course.slug %}">
                                 <h4 class="text-sm font-medium">{{ course.title }}</h4>
                             </a>
-                            <a class="hidden" href="{% url 'course_list_subject' subject.slug %}">
+                            <a class="hidden" href="{% url 'courses:course_list_subject' subject.slug %}">
                             {{ subject }} 
                             </a>
                             <p class="mt-2 font-hairline text-sm text-gray-800">
@@ -92,7 +92,7 @@
                                 {{ course.average_rating|floatformat:0  }} {% trans 'star(s)' %}
                                 {% endif %} &middot; {{ course.created | date:"M d" }}
                             </p>
-                            <a href="{% url 'course_detail' course.slug %}">
+                            <a href="{% url 'courses:course_detail' course.slug %}">
                             <p class="inline-block p-1 text-gray-800 bg-gray-400 font-hairline text-2xs">
                                 {{ course.total_reviews }} {% trans 'reviews' %}
                             </p>
@@ -109,12 +109,12 @@
                 <p class="text-gray-800 uppercase text-sm mb-6">{% trans 'Subjects' %}</p>
                 <ul>
                     <li class="mb-6 {% if not subject %}active{% endif %}">
-                        <a href="{% url 'course_list' %}">{% trans 'All' %}</a>
+                        <a href="{% url 'courses:course_list' %}">{% trans 'All' %}</a>
                     </li>
                     {% for s in subjects %}
                     <li class="mb-6 {% if subject == s %}active{% endif %}">
                         <span class="flex items-center mb-2">
-                        <a href="{% url 'course_list_subject' s.slug %}">{{ s.title }}</a>
+                        <a href="{% url 'courses:course_list_subject' s.slug %}">{{ s.title }}</a>
                         <span class="ml-2 p-1 text-gray-800 bg-gray-400 w-6 h-6 rounded-full leading-none text-center">{{ s.total_courses }}</span>
                         </span>
                     </li>

@@ -7,7 +7,7 @@
     	{% for item in items %}
         <dl>
             <dt>
-				<a href="{% url 'course_detail' item.slug %}">
+				<a href="{% url 'courses:course_detail' item.slug %}">
 					{{ item.title }}
 				</a>
 			</dt>

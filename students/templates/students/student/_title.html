@@ -2,14 +2,14 @@
 <h3>{% trans 'Training' %}</h3>
 <p>
     {% trans 'Tags' %} : {% for tag in user.student.interests.all %} {{ tag.get_html_badge }} {% endfor %}
-    <a href="{% url 'student_interests' %}">(update interests)</a>
+    <a href="{% url 'students:student_interests' %}">(update interests)</a>
 </p>
 
 <ul class="nav nav-tabs mb-3">
   <li class="nav-item">
-    <a class="nav-link{% if active == 'new' %} active{% endif %}" href="{% url 'student_quiz_list' %}">{% trans 'New' %}</a>
+    <a class="nav-link{% if active == 'new' %} active{% endif %}" href="{% url 'students:student_quiz_list' %}">{% trans 'New' %}</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link{% if active == 'taken' %} active{% endif %}" href="{% url 'taken_quiz_list' %}">{% trans 'Taken quiz' %}</a>
+    <a class="nav-link{% if active == 'taken' %} active{% endif %}" href="{% url 'students:taken_quiz_list' %}">{% trans 'Taken quiz' %}</a>
   </li>
 </ul>

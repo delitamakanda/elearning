@@ -14,7 +14,7 @@
         </nav>
 
         <h2>{% trans 'My Quizzes' %}</h2>
-        <a href="{% url 'teacher_add_quiz' %}" class="btn btn-primary mb-3" role="button">{% trans 'Add Quiz' %}</a>
+        <a href="{% url 'students:teacher_add_quiz' %}" class="btn btn-primary mb-3" role="button">{% trans 'Add Quiz' %}</a>
 
         <div class="quiz">
             <table class="table mb-0">
@@ -30,12 +30,12 @@
                 <tbody>
                     {% for quiz in quizzes %}
                         <tr>
-                            <td><a href="{% url 'teacher_update_quiz' quiz.pk %}">{{ quiz.name }}</a></td>
+                            <td><a href="{% url 'students:teacher_update_quiz' quiz.pk %}">{{ quiz.name }}</a></td>
                             <td>{{ quiz.tags.get_html_badge }}</td>
                             <td>{{ quiz.questions_count }}</td>
                             <td>{{ quiz.taken_count }}</td>
                             <td class="text-right">
-                              <a href="{% url 'teacher_quiz_results' quiz.pk %}" class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full">{% trans 'View results' %}</a>
+                              <a href="{% url 'students:teacher_quiz_results' quiz.pk %}" class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full">{% trans 'View results' %}</a>
                             </td>
                         </tr>
                     {% empty %}

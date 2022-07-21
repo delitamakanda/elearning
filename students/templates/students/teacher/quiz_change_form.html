@@ -10,13 +10,13 @@
     <div class="quiz">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'My quizzes' %}</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'students:teacher_quiz_change_list' %}">{% trans 'My quizzes' %}</a></li>
               <li class="breadcrumb-item active" aria-current="page">{{ quiz.name }}</li>
             </ol>
         </nav>
         <h2>
             {{ quiz.name }}
-            <a href="{% url 'teacher_quiz_results' quiz.pk %}" class="btn btn-secondary">{% trans 'View results' %}</a>
+            <a href="{% url 'students:teacher_quiz_results' quiz.pk %}" class="btn btn-secondary">{% trans 'View results' %}</a>
         </h2>
         <div class="row mb-3">
             <div class="col-md-6 col-sm-8 col-12">
@@ -24,8 +24,8 @@
                     {% csrf_token %}
                     {{ form|crispy }}
                     <button type="submit" class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full">{% trans 'Save' %}</button>
-                    <a href="{% url 'teacher_quiz_change_list' %}" class="btn btn-secondary" role="button">{% trans 'Go back' %}</a>
-                    <a href="{% url 'teacher_delete_quiz' quiz.pk %}" class="btn btn-secondary"><i class="icon icon-bin-2"></i> {% trans 'Delete' %}</a>
+                    <a href="{% url 'students:teacher_quiz_change_list' %}" class="btn btn-secondary" role="button">{% trans 'Go back' %}</a>
+                    <a href="{% url 'students:teacher_delete_quiz' quiz.pk %}" class="btn btn-secondary"><i class="icon icon-bin-2"></i> {% trans 'Delete' %}</a>
                 </form>          
             </div>
         </div>
@@ -46,7 +46,7 @@
                 <div class="list-group-item">
                   <div class="row">
                     <div class="col-10">
-                      <a href="{% url 'teacher_change_question' quiz.pk question.pk %}" class="link">{{ question.text }}</a>
+                      <a href="{% url 'students:teacher_change_question' quiz.pk question.pk %}" class="link">{{ question.text }}</a>
                     </div>
                     <div class="col-2">
                       {{ question.answers_count }}
@@ -55,12 +55,12 @@
                 </div>
               {% empty %}
                 <div class="list-group-item text-center">
-                  <p>{% trans 'You haven\'t created any questions yet. Go ahead and' %} <a href="{% url 'teacher_add_question' quiz.pk %}"> {% trans 'add the first question' %}</a>.</p>
+                  <p>{% trans 'You haven\'t created any questions yet. Go ahead and' %} <a href="{% url 'students:teacher_add_question' quiz.pk %}"> {% trans 'add the first question' %}</a>.</p>
                 </div>
               {% endfor %}
             </div>
             <div class="card-footer">
-              <a href="{% url 'teacher_add_question' quiz.pk %}" class="btn btn-primary btn-sm">{% trans 'Add question' %}</a>
+              <a href="{% url 'students:teacher_add_question' quiz.pk %}" class="btn btn-primary btn-sm">{% trans 'Add question' %}</a>
             </div>
         </div>      
 

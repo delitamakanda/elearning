@@ -13,7 +13,7 @@
         </div>
         <div class="m-2 text-justify text-sm">
             <div class="flex flex-wrap items-center -mt-8 pb-3 ">
-                <a href="{% url 'user_detail' course.owner.username %}">
+                <a href="{% url 'students:user_detail' course.owner.username %}">
                 <img class="block h-8 w-8 rounded-full bg-white mt-1 mr-2 ml-3 border-2 border-white "
                     src="{{ course.owner|gravatar }}"
                     alt="">
@@ -22,7 +22,7 @@
                 </span>
                 </a>
             </div>
-            <p class=" text-right  text-xs"><a href="{% url 'course_list_subject' subject.slug %}">{{ subject.title }}</a> / {{ course.created | date:"d M Y" }} </p>
+            <p class=" text-right  text-xs"><a href="{% url 'courses:course_list_subject' subject.slug %}">{{ subject.title }}</a> / {{ course.created | date:"d M Y" }} </p>
             <h2 class=" font-bold h-2 mb-5 text-center"> {{ object.title }} </h2>
             <p class=" text-xs p-3"> {{ object.overview|linebreaks }}</p>
             <p class=" text-xs p-3">
@@ -36,7 +36,7 @@
             </ul>
             {% endif %}
             {% if request.user.is_authenticated and course.modules.count > 0%}
-            <form action="{% url 'student_enroll_course' %}" method="post">
+            <form action="{% url 'students:student_enroll_course' %}" method="post">
                 {{ enroll_form }}
                 {% csrf_token %}
                 <input type="submit" class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2 border rounded-full" value="{% trans 'Enroll now' %}">
@@ -44,7 +44,7 @@
             {% elif request.user.is_authenticated and course.modules.count == 0 %}
                 <p class=" text-xs p-3">{% trans "In progress" %}...</p>
             {% else %}
-                <a href="{% url 'student_registration' %}" class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full">
+                <a href="{% url 'students:student_registration' %}" class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full">
                     {% trans 'Register to enroll' %}
                 </a>
             {% endif %}
@@ -84,7 +84,7 @@
         {% endif %}
         {% if request.user.is_authenticated %}
         <div class="p-3">
-            <form action="{% url 'add_review' course.slug %}" method="post" novalidate>
+            <form action="{% url 'courses:add_review' course.slug %}" method="post" novalidate>
                 {% csrf_token %}
                 {{ review_form.as_p }}
                 <input type="submit" class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full" value="{% trans 'Add review'%}" />

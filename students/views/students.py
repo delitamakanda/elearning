@@ -62,7 +62,7 @@ class StudentRegistrationView(CreateView):
     model = User
     template_name = 'registration/signup_form.html'
     form_class = StudentSignupForm
-    success_url = reverse_lazy('student_course_list')
+    success_url = reverse_lazy('students:student_course_list')
 
     def get_context_data(self, **kwargs):
         kwargs['user_type'] = 'student'
@@ -91,7 +91,7 @@ class StudentEnrollCourseView(FormView):
         return super(StudentEnrollCourseView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('student_course_detail', args=[self.course.id])
+        return reverse_lazy('students:student_course_detail', args=[self.course.id])
 
 
 @method_decorator([login_required, student_required], name='dispatch')
@@ -99,7 +99,7 @@ class StudentInterestsView(UpdateView):
     model = Student
     form_class = StudentInterestsForm
     template_name = 'students/student/interests_form.html'
-    success_url = reverse_lazy('student_quiz_list')
+    success_url = reverse_lazy('students:student_quiz_list')
 
     def get_object(self):
         try:
@@ -167,7 +167,7 @@ def take_quiz(request, pk):
                 possibly_award_badge("take_quiz", user=request.user)
                 student_answer.save()
                 if student.get_unanswered_questions(quiz).exists():
-                    return redirect('take_quiz', pk)
+                    return redirect('students:take_quiz', pk)
                 else:
                     correct_answers = student.quiz_answers.filter(answer__question__quiz=quiz, answer__is_correct=True).count()
                     score = round((correct_answers / total_questions ) * 100.0, 2)
@@ -176,7 +176,7 @@ def take_quiz(request, pk):
                         messages.warning(request, 'Good luck for next time! Your score for this quiz %s was %s.' % (quiz.name, score))
                     else:
                         messages.success(request, 'Fantastic! You completed the quiz %s with success! Your scored %s points.' % (quiz.name, score))
-                    return redirect('student_quiz_list')
+                    return redirect('students:student_quiz_list')
     else:
         form = TakeQuizForm(question=question)
 

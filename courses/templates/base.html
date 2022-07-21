@@ -27,25 +27,25 @@
     </div>
     <div id="sidebar" class="w-full lg:block hidden sm:hidden md:hidden flex-grow lg:flex lg:items-center lg:w-auto">
       <div class="text-sm lg:flex-grow">
-        <a href="{% url 'course_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+        <a href="{% url 'courses:course_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
           {% trans 'Learn' %}
         </a>
-        <a href="{% url 'videos_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+        <a href="{% url 'courses:videos_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
           {% trans 'Videos' %}
         </a>
         {% if request.user.is_authenticated and request.user.is_student %}
-          <a href="{% url 'student_quiz_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+          <a href="{% url 'students:student_quiz_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
             {% trans 'My Quizzes' %}
           </a>
-          <a href="{% url 'student_course_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+          <a href="{% url 'students:student_course_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
             {% trans 'My Courses' %}
           </a>
         {% endif %}
         {% if request.user.is_authenticated and request.user.is_teacher or request.user.is_staff %}
-          <a href="{% url 'manage_course_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+          <a href="{% url 'courses:manage_course_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
             {% trans 'Manage courses' %}
           </a>
-          <a href="{% url 'teacher_quiz_change_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+          <a href="{% url 'students:teacher_quiz_change_list' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
             {% trans 'Manage quizzes' %}
           </a>
         {% endif %}
@@ -66,12 +66,12 @@
                   <img class="h-10 w-10 rounded-full flex-no-shrink" src="{{ request.user|gravatar }}" alt="{{ request.user.username }}" />
                   <div class="ml-4">
                     <p class="font-semibold text-gray-900 leading-none">{{ request.user.username }}</p>
-                    <p><a href="{% url 'user_detail' request.user.username %}" class="text-sm text-gray-600 leading-none hover:underline">{% trans 'View Profile' %}</a></p>
+                    <p><a href="{% url 'students:user_detail' request.user.username %}" class="text-sm text-gray-600 leading-none hover:underline">{% trans 'View Profile' %}</a></p>
                   </div>
                 </div>
               </li>
               <li class="p-1 whitespace-no-wrap rounded-full text-sm md:text-base text-gray-600 hover:text-gray-800 hover:bg-gray-100">
-                  <a class="px-2 py-1" href="{% url 'edit' %}">
+                  <a class="px-2 py-1" href="{% url 'courses:edit' %}">
                       <span class="">{% trans 'Edit account' %}</span>
                   </a>
               </li>
@@ -131,10 +131,10 @@
                 </li>
               {% endfor %}
                 <li>
-                  <a href="{% url 'about_company' %}" class="text-gray-600 hover:text-gray-800">{% trans 'About Us' %}</a>
+                  <a href="{% url 'courses:about_company' %}" class="text-gray-600 hover:text-gray-800">{% trans 'About Us' %}</a>
                 </li>
                 <li>
-                  <a href="{% url 'contact_us' %}"  class="text-gray-600 hover:text-gray-800">{% trans 'Contact' %}</a>
+                  <a href="{% url 'students:contact_us' %}"  class="text-gray-600 hover:text-gray-800">{% trans 'Contact' %}</a>
                 </li>
             </ul>
           </div>
@@ -155,7 +155,7 @@
       </div>
       <div class="bg-gray-100">
         <div class="container px-5 py-6 mx-auto flex items-center sm:flex-row flex-col">
-          <a href="{% url 'course_list' %}" class="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
+          <a href="{% url 'courses:course_list' %}" class="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
             <img alt="{% trans 'myele@rning' %}" title="{% trans 'myele@rning' %}" src="{% static 'images/pwa/icon-72x72.png' %}">
             <span class="ml-3 text-xl">{% trans 'myele@rning' %}</span>
           </a>

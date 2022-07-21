@@ -13,7 +13,7 @@
     <div class="page-content">
         <p>{% trans 'You can edit your account using the following form' %} :</p>
 
-        <form action="{% url 'edit' %}" method="POST" enctype="multipart/form-data" novalidate>
+        <form action="{% url 'courses:edit' %}" method="POST" enctype="multipart/form-data" novalidate>
           {% csrf_token %}
           {% for field in user_form %}
             <div class="mb-4">

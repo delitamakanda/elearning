@@ -32,7 +32,7 @@ class TeacherRegistrationView(CreateView):
     model = User
     template_name = 'registration/signup_form.html'
     form_class = TeacherSignupForm
-    success_url = reverse_lazy('teacher_quiz_change_list')
+    success_url = reverse_lazy('students:teacher_quiz_change_list')
 
     def get_context_data(self, **kwargs):
         kwargs['user_type'] = 'teacher'
@@ -77,7 +77,7 @@ class QuizCreateView(CreateView):
         quiz.owner = self.request.user
         quiz.save()
         messages.success(self.request, 'Quiz created with sucess! Next add some questions.')
-        return redirect('teacher_update_quiz', quiz.pk)
+        return redirect('students:teacher_update_quiz', quiz.pk)
 
 
 @method_decorator([login_required, teacher_required], name='dispatch')
@@ -96,14 +96,14 @@ class QuizUpdateView(UpdateView):
         return self.request.user.quizzes.all()
 
     def get_success_url(self):
-        return reverse('teacher_update_quiz', kwargs={'pk': self.object.pk})
+        return reverse('students:teacher_update_quiz', kwargs={'pk': self.object.pk})
 
 @method_decorator([login_required, teacher_required], name='dispatch')
 class QuizDeleteView(DeleteView):
     model = Quiz
     context_object_name = 'quiz'
     template_name = 'students/teacher/quiz_delete_confirm.html'
-    success_url = reverse_lazy('teacher_quiz_change_list')
+    success_url = reverse_lazy('students:teacher_quiz_change_list')
 
     def delete(self, request, *args, **kwargs):
         quiz = self.get_object()
@@ -149,7 +149,7 @@ def question_add(request, pk):
             question.quiz = quiz
             question.save()
             messages.success(request, 'You may now add answers/options to the question.')
-            return redirect('teacher_change_question', quiz.pk, question.pk)
+            return redirect('students:teacher_change_question', quiz.pk, question.pk)
     else:
         form = QuestionForm()
 
@@ -179,7 +179,7 @@ def question_change(request, quiz_pk, question_pk):
                 form.save()
                 formset.save()
             messages.success(request, 'Question and answers saved with success!')
-            return redirect('teacher_update_quiz', quiz.pk)
+            return redirect('students:teacher_update_quiz', quiz.pk)
     else:
         form = QuestionForm(instance=question)
         formset = AnswerFormSet(instance=question)
@@ -214,4 +214,4 @@ class QuestionDeleteView(DeleteView):
 
     def get_success_url(self):
         question = self.get_object()
-        return reverse('teacher_update_quiz', kwargs={'pk': question.quiz_id})
+        return reverse('students:teacher_update_quiz', kwargs={'pk': question.quiz_id})

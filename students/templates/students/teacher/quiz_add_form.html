@@ -10,7 +10,7 @@
     <div class="quiz">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="{% url 'teacher_quiz_change_list' %}">{% trans 'My quizzes' %}</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'students:teacher_quiz_change_list' %}">{% trans 'My quizzes' %}</a></li>
               <li class="breadcrumb-item active" aria-current="page">{% trans 'Add Quiz' %}</li>
             </ol>
         </nav>
@@ -21,7 +21,7 @@
             {% csrf_token %}
             {{ form|crispy }}
             <button class="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2  border rounded-full" type="submit">{% trans 'Save' %}</button>
-            <a href="{% url 'teacher_quiz_change_list' %}" class="btn btn-secondary" role="button">{% trans 'Go back' %}</a>
+            <a href="{% url 'students:teacher_quiz_change_list' %}" class="btn btn-secondary" role="button">{% trans 'Go back' %}</a>
         </form>
     </div>
 </div>

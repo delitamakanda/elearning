@@ -85,7 +85,7 @@ class CourseListView(TemplateResponseMixin, View):
         if not subjects:
             subjects = Subject.objects.annotate(total_courses=Count('courses'))
             cache.set('all_subjects', subjects)
-        all_courses = Course.objects.annotate(total_modules=Count('modules', distinct=True)).annotate(total_reviews=Count('reviews', distinct=True)).annotate(average_rating=Avg(F('reviews__rating'), distinct=True))
+        all_courses = Course.objects.annotate(total_modules=Count('modules', distinct=True)).annotate(total_reviews=Count('reviews', distinct=True)).annotate(average_rating=Avg(F('reviews__rating'), distinct=False))
         page = request.GET.get('page', 1)
 
         # subjects = Course.objects.annotate(total_modules=Count('courses'))
@@ -143,10 +143,10 @@ def add_review(request, subject):
         request.user.profile.get_award_points(15)
         possibly_award_badge("reviews_course", user=request.user)
         messages.success(request, 'Review added.')
-        return HttpResponseRedirect(reverse('course_detail', args=(subject.slug,)))
+        return HttpResponseRedirect(reverse('courses:course_detail', args=(subject.slug,)))
     else:
         messages.warning(request, 'Error Occured.')
-        return HttpResponseRedirect(reverse('course_detail', args=(subject.slug,)))
+        return HttpResponseRedirect(reverse('courses:course_detail', args=(subject.slug,)))
     return render(request, 'courses/course/detail.html', {'subject': subject, 'form': form})
 
 
@@ -203,7 +203,7 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
             obj.save()
             if not id:
                 Content.objects.create(module=self.module, item=obj)
-            return redirect('module_content_list', self.module.id)
+            return redirect('courses:module_content_list', self.module.id)
 
         return self.render_to_response({ 'form': form, 'object': self.obj })
 
@@ -215,7 +215,7 @@ class ContentDeleteView(View):
         module = content.module
         content.item.delete()
         content.delete()
-        return redirect('module_content_list', module.id)
+        return redirect('courses:module_content_list', module.id)
 
 
 class ModuleContentListView(TemplateResponseMixin, View):
@@ -247,7 +247,7 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
 
         if formset.is_valid():
             formset.save()
-            return redirect('manage_course_list')
+            return redirect('courses:manage_course_list')
         return self.render_to_response({ 'course': self.course, 'formset': formset })
 
 class OwnerMixin(object):
@@ -265,13 +265,13 @@ class OwnerEditMixin(object):
 class OwnerCourseMixin(OwnerMixin, LoginRequiredMixin):
     model = Course
     # fields = ['subject', 'title', 'overview',]
-    success_url = reverse_lazy('manage_course_list')
+    success_url = reverse_lazy('courses:manage_course_list')
 
 
 class OwnerCourseEditMixin(OwnerCourseMixin, OwnerEditMixin):
     # fields = ['subject', 'title', 'overview', ]
     form_class = CourseCreateForm
-    success_url = reverse_lazy('manage_course_list')
+    success_url = reverse_lazy('courses:manage_course_list')
     template_name = 'courses/manage/course/form.html'
 
 
@@ -299,7 +299,7 @@ class CourseUpdateView(OwnerCourseEditMixin, UpdateView):
 @method_decorator([login_required, teacher_required], name='dispatch')
 class CourseDeleteView(OwnerCourseMixin, DeleteView):
     template_name = 'courses/manage/course/delete.html'
-    success_url = reverse_lazy('manage_course_list')
+    success_url = reverse_lazy('courses:manage_course_list')
     permission_required = 'courses.delete_course'
 
 
