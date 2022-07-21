@@ -26,25 +26,25 @@ from django.views.generic import TemplateView
 urlpatterns = [
     url(r'^$', generic.RedirectView.as_view(url='/course/', permanent=True)),
 
-    url(r'^accounts/login/$', auth_views.login, name='login'),
-    url(r'^accounts/logout/$', auth_views.logout, name='logout'),
+    url(r'^accounts/login/$', auth_views.LoginView.as_view(), name='login'),
+    url(r'^accounts/logout/$', auth_views.LogoutView.as_view(), name='logout'),
     url(r'^accounts/signup/$', classroom.SignupView.as_view(), name='signup'),
-    url(r'^password-change/$', auth_views.password_change, name='password_change'),
-    url(r'^password-change/done/$', auth_views.password_change_done, name='password_change_done'),
-    url(r'^password-reset/$', auth_views.password_reset, name='password_reset'),
-    url(r'^password-reset/done/$', auth_views.password_reset_done, name='password_reset_done'),
-    url(r'^password-reset/confirm/(?P<uidb64>[-\w]+)/(?P<token>[-\w]+)/$', auth_views.password_reset_confirm, name='password_reset_confirm'),
-    url(r'^password-reset/complete/$', auth_views.password_reset_complete, name='password_reset_complete'),
+    url(r'^password-change/$', auth_views.PasswordChangeView.as_view(), name='password_change'),
+    url(r'^password-change/done/$', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),
+    url(r'^password-reset/$', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    url(r'^password-reset/done/$', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    url(r'^password-reset/confirm/(?P<uidb64>[-\w]+)/(?P<token>[-\w]+)/$', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    url(r'^password-reset/complete/$', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     
     url(r'^admin/', admin.site.urls),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     
-    url(r'^course/', include('courses.urls')),
-    url(r'^students/', include('students.urls')),
+    url(r'^course/', include(('courses.urls', 'courses'))),
+    url(r'^students/', include(('students.urls', 'students'))),
 
-    url(r'^terms/', include('termsandconditions.urls')),
+    url(r'^terms/', include(('termsandconditions.urls', 'termsandconditions'))),
 
-    url(r'^api/', include('courses.api.urls', namespace='api')),
+    url(r'^api/', include(('courses.api.urls', 'api'), namespace='api')),
 
     url(r'^sw.js', (TemplateView.as_view(template_name="service-worker.js", content_type='application/javascript', )), name='sw.js'),
     url(r'^offline.html', (TemplateView.as_view(template_name="offline.html")), name='offline.html'),

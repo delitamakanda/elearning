@@ -8,7 +8,7 @@ from django.db.models import Avg, Count
 from django.forms.models import modelform_factory
 from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect, get_object_or_404
-from django.core.urlresolvers import reverse_lazy, reverse
+from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import (
     CreateView,

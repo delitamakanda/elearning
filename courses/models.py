@@ -23,8 +23,8 @@ class Subject(models.Model):
         return self.title
 
 class Course(models.Model):
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='courses_created')
-    subject = models.ForeignKey(Subject, related_name='courses')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='courses_created', on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, related_name='courses', on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     # slug = models.SlugField(max_length=200, unique=True)
     slug = AutoSlugField(populate_from='title', unique_with='created__month')
@@ -49,7 +49,7 @@ class Course(models.Model):
         return self.title
 
 class Module(models.Model):
-    course = models.ForeignKey(Course, related_name='modules')
+    course = models.ForeignKey(Course, related_name='modules', on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     order = OrderField(blank=True, for_fields=['course'])
@@ -62,7 +62,7 @@ class Module(models.Model):
 
 
 class ItemBase(models.Model):
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='%(class)s_related')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='%(class)s_related', on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -90,8 +90,8 @@ class Video(ItemBase):
 
 
 class Content(models.Model):
-    module = models.ForeignKey(Module, related_name='contents')
-    content_type = models.ForeignKey(ContentType, limit_choices_to={'model__in':('text', 'video', 'image', 'file')})
+    module = models.ForeignKey(Module, related_name='contents', on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, limit_choices_to={'model__in':('text', 'video', 'image', 'file')}, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     item = GenericForeignKey('content_type', 'object_id')
     order = OrderField(blank=True, for_fields=['module'])
@@ -108,9 +108,9 @@ class Review(models.Model):
         (4, '4'),
         (5, '5')
     )
-    course = models.ForeignKey(Course, related_name='reviews')
+    course = models.ForeignKey(Course, related_name='reviews', on_delete=models.CASCADE)
     pub_date = models.DateTimeField(auto_now_add=True)
-    user_name = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='reviewers')
+    user_name = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='reviewers', on_delete=models.CASCADE)
     comment = models.CharField(max_length=200)
     rating = models.IntegerField(choices=RATING_CHOICES)
 

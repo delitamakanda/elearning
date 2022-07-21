@@ -16,7 +16,7 @@ from django.apps import apps
 from django.template import loader
 from django.template.loader import get_template
 from braces.views import LoginRequiredMixin, PermissionRequiredMixin, CsrfExemptMixin, JsonRequestResponseMixin
-from django.core.urlresolvers import reverse_lazy, reverse
+from django.urls import reverse_lazy, reverse
 from django.views.generic.list import ListView
 from .models import Course, Module, Content, Subject, Review
 from .forms import ModuleFormSet, ReviewForm, CourseCreateForm
