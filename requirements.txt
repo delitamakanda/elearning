@@ -6,7 +6,7 @@ django-embed-video
 djangorestframework==3.11.2
 idna
 olefile
-Pillow==8.3.2
+Pillow==9.0.1
 python3-memcached
 pytz
 whitenoise==3.3.1
@@ -19,7 +19,7 @@ django-storages
 boto3
 django-widget-tweaks==1.4.3
 google-api-python-client==1.7.4
-numpy==1.19.5
+numpy==1.22.0
 pandas==1.1.5
 scikit-learn==0.24.1
 scipy==1.5.4
@@ -31,7 +31,7 @@ django-taggit==1.1.0
 django-taggit-serializer==0.1.7
 mistune==0.8.4
 pygments==2.7.4
-celery==4.4.1
+celery==5.2.2
 redis==3.4.1
 django-autoslug==1.9.7
 django-termsandconditions==1.2.15
