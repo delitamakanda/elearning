@@ -9,6 +9,7 @@ from students.models import TakenQuiz
 from students.models import Profile
 from students.models import StudentAnswer
 from students.models import Tag
+from common.paginator import DumbPaginator
 
 class TagAdmin(admin.ModelAdmin):
     model = Tag
@@ -28,6 +29,7 @@ class ProfileInline(admin.StackedInline):
 
 
 class CustomUserAdmin(admin.ModelAdmin):
+    paginator = DumbPaginator
     inlines = (ProfileInline,)
     model = User
     list_display = ['username', 'email']

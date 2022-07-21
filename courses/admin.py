@@ -9,6 +9,7 @@ from courses.models import Module
 from courses.models import Review
 from courses.models import BadgeAward
 from django.utils.translation import gettext_lazy as _
+from common.paginator import TimeLimitedPaginator, DumbPaginator
 
 def export_to_csv(modeladmin, request, queryset):
     opts = modeladmin.model._meta
@@ -45,6 +46,7 @@ class ModuleInline(admin.StackedInline):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
+    paginator = TimeLimitedPaginator
     list_display = ['title', 'subject', 'created']
     list_filter = ['created', 'subject']
     search_fields = ['title', 'overview']
@@ -54,6 +56,7 @@ class CourseAdmin(admin.ModelAdmin):
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
+    paginator = DumbPaginator
     list_display = ['course', 'rating', 'user_name', 'comment', 'pub_date']
     list_filter = ['pub_date', 'user_name']
     search_fields = ['comment']
