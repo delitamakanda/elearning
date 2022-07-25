@@ -61,7 +61,7 @@ def list_videos(request):
     max_lengths = [10, 15, 20, 25, 30, 50]
     results = None
     if 'q' and 'results' in request.GET:
-        q = request.GET['q']
+        q = request.GET['q'] + ' programming' # mostly tech targeted
         results = request.GET['results']
         request.user.profile.get_award_points(5)
         possibly_award_badge("list_videos", user=request.user)
