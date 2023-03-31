@@ -32,7 +32,7 @@ django-taggit-serializer==0.1.7
 mistune==2.0.3
 pygments==2.7.4
 celery==5.1.0
-redis==3.4.1
+redis==4.4.4
 django-autoslug==1.9.7
 django-termsandconditions==2.0.11
 django-crispy-forms==1.9.2
