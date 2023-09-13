@@ -38,7 +38,7 @@ from datadog import api
 title = "Something Happened uh oh"
 text = "dummy text"
 tags = ["version:1", "application:web"]
-api.Event(title=title, text=text, tags=tags)
+api.Event.create(title=title, text=text, tags=tags)
 
 @login_required
 def edit(request):
