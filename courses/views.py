@@ -32,6 +32,7 @@ from courses.forms import UserEditForm, ProfileEditForm
 from courses.badges import possibly_award_badge
 
 from courses.search import youtube_search
+from datadog import api
 
 @login_required
 def edit(request):
@@ -60,6 +61,10 @@ def list_videos(request):
     q  = None
     max_lengths = [10, 15, 20, 25, 30, 50]
     results = None
+    title = "Something Happen"
+    text = "dummy text"
+    tags = ["version:1", "application:web"]
+    api.Event(title=title, text=text, tags=tags)
     if 'q' and 'results' in request.GET:
         q = request.GET['q'] + ' programming' # mostly tech targeted
         results = request.GET['results']
