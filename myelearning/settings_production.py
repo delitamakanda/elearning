@@ -1,5 +1,6 @@
 from myelearning.settings import *
 import dj_database_url
+from datadog import initialize
 
 DATABASES['default'] = dj_database_url.config()
 
@@ -58,6 +59,16 @@ AWS_S3_OBJECT_PARAMETERS = {
 }
 
 DEFAULT_FILE_STORAGE = 'myelearning.storage_backends.MediaStorage'
+
+# Datadog
+options = {
+    "api_key": config('DD_API_KEY'),
+    "app_key": config('DD_APP_KEY'),
+}
+
+initialize(**options)
+
+
 
 # Task async
 CELERY_BROKER_URL = config('HEROKU_REDIS_AQUA_URL')
