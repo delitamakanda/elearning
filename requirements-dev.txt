@@ -7,7 +7,7 @@ django-memcache-status==1.1
 djangorestframework==3.11.2
 idna==2.6
 olefile==0.44
-Pillow==9.3.0
+Pillow==10.0.1
 python3-memcached
 pytz==2017.2
 requests==2.31.0
