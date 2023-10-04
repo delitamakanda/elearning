@@ -25,11 +25,11 @@
   "author": "Délita Makanda",
   "license": "ISC",
   "devDependencies": {
-    "autoprefixer": "^9.5.1",
+    "autoprefixer": "^10.4.16",
     "browser-sync": "^2.27.11",
-    "cssnano": "^4.1.10",
+    "cssnano": "^6.0.1",
     "gulp": "^4.0.0",
-    "gulp-autoprefixer": "^6.0.0",
+    "gulp-autoprefixer": "^8.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-consolidate": "^0.2.0",
     "gulp-folders": "^1.1.0",
@@ -37,14 +37,14 @@
     "gulp-if": "^2.0.2",
     "gulp-imagemin": "^5.0.3",
     "gulp-plumber": "^1.2.0",
-    "gulp-postcss": "^8.0.0",
+    "gulp-postcss": "^9.0.1",
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.1",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.1",
     "lodash": "^4.17.21",
     "path": "^0.12.7",
-    "tailwindcss": "^1.2.0"
+    "tailwindcss": "^3.3.3"
   },
   "bugs": {
     "url": "https://github.com/delitamakanda/my-elearning/issues"
