@@ -6,7 +6,7 @@ django-embed-video
 djangorestframework==3.11.2
 idna
 olefile
-Pillow==10.0.1
+Pillow==10.2.0
 python3-memcached
 pytz
 whitenoise==3.3.1
