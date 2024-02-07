@@ -1,6 +1,6 @@
 certifi
 chardet
-Django==2.2.28
+Django==3.2.24
 django-braces==1.15.0
 django-embed-video
 djangorestframework==3.11.2
