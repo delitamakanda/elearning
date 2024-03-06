@@ -24,7 +24,7 @@ scipy==1.10.0
 sklearn==0.0
 django-storages==1.7.1
 django-webpack-loader==0.6.0
-django-cors-headers==3.0.2
+django-cors-headers==4.3.1
 Markdown==3.1.1
 django-taggit==1.1.0
 django-taggit-serializer==0.1.7
