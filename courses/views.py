@@ -1,5 +1,6 @@
 import requests
 import datetime
+import os
 
 from django import forms
 from django.http import HttpResponseRedirect, HttpResponse
@@ -33,7 +34,12 @@ from courses.badges import possibly_award_badge
 
 from courses.search import youtube_search
 
-from datadog import api
+from datadog import api, initialize
+
+options = {
+    "api_key": os.getenv('DATADOG_API_KEY') or ''
+}
+initialize(**options)
 
 title = "Something Happened uh oh"
 text = "dummy text"
