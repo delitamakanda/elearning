@@ -37,8 +37,8 @@ from courses.search import youtube_search
 from datadog import api, initialize
 
 options = {
-    "api_key": os.getenv('DATADOG_API_KEY') or '',
-    "app_key": os.getenv('DATADOG_APP_KEY') or ''
+    "api_key": os.getenv('DATADOG_API_KEY') or '<api_key>',
+    "app_key": os.getenv('DATADOG_APP_KEY') or '<app_key>'
 }
 initialize(**options)
 
