@@ -5,7 +5,7 @@ django-braces==1.15.0
 django-embed-video==1.0.0
 django-memcache-status==1.1
 djangorestframework==3.11.2
-idna==2.6
+idna==3.7
 olefile==0.44
 Pillow==10.3.0
 python3-memcached
