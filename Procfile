@@ -1,3 +1,3 @@
 web: gunicorn myelearning.wsgi:application --preload
-worker: celery worker --app=myelearning --loglevel=info -B
+worker: celery -A myelearning worker --loglevel=info -B
 release: python3 manage.py migrate
