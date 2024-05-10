@@ -13,7 +13,7 @@ pytz==2017.2
 requests==2.31.0
 six==1.11.0
 urllib3==1.26.18
-whitenoise==3.3.1
+whitenoise==5.0.1
 python-decouple==3.1
 django-widget-tweaks==1.4.3
 google-api-python-client==1.7.4
@@ -24,7 +24,7 @@ scipy==1.10.0
 sklearn==0.0
 django-storages==1.7.1
 django-webpack-loader==0.6.0
-django-cors-headers==4.3.1
+django-cors-headers==4.2.0
 Markdown==3.1.1
 django-taggit==1.1.0
 django-taggit-serializer==0.1.7
@@ -32,5 +32,4 @@ mistune==2.0.3
 pygments==2.15.0
 celery==5.1.0
 redis==4.4.4
-django-autoslug==1.9.9
-django-termsandconditions==2.0.11
+django-autoslug==1.9.8

@@ -42,8 +42,6 @@ urlpatterns = [
     url(r'^course/', include(('courses.urls', 'courses'))),
     url(r'^students/', include(('students.urls', 'students'))),
 
-    url(r'^terms/', include(('termsandconditions.urls', 'termsandconditions'))),
-
     url(r'^api/', include(('courses.api.urls', 'api'), namespace='api')),
 
     url(r'^sw.js', (TemplateView.as_view(template_name="service-worker.js", content_type='application/javascript', )), name='sw.js'),

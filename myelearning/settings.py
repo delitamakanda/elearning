@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'taggit',
     'taggit_serializer',
-    'termsandconditions',
 ]
 
 MIDDLEWARE = [
@@ -63,7 +62,6 @@ MIDDLEWARE = [
     # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.cache.FetchFromCacheMiddleware',
-    # 'termsandconditions.middleware.TermsAndConditionsRedirectMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -230,17 +228,5 @@ CORS_ALLOW_METHODS = (
 # Task async
 CELERY_BROKER_URL = config('REDIS_URL', 'redis://localhost:6379/0', cast=str)
 CELERY_RESULT_BACKEND = config('REDIS_URL', 'redis://localhost:6379/0', cast=str)
-
-# Terms & Conditions settings
-
-DEFAULT_TERMS_SLUG = "site-terms"
-ACCEPT_TERMS_PATH = "/terms/accept/"
-TERMS_EXCLUDE_URL_PREFIX_LIST = {"/admin", "/terms"}
-TERMS_EXCLUDE_URL_LIST = {"/", "/course/termsrequired/", "/accounts/login/", "/students/register/student/", "/students/register/teacher/"}
-TERMS_CACHE_SECONDS = 60 * 15
-TERMS_EXCLUDE_USERS_WITH_PERM = "auth.can_skip_t&c"
-TERMS_IP_HEADER_NAME = "REMOTE_ADDR"
-TERMS_STORE_IP_ADDRESS = True
-TERMS_BASE_TEMPLATE = 'base.html'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
