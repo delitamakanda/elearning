@@ -33,14 +33,20 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # SECURE_SSL_REDIRECT = True
 # CSRF_COOKIE_SECURE = True
 
+SESSION_EXPIRE_SECONDS = 18000  # 5 hours
+
 # Configure Redis for caching results
+CACHE_MIDDLEWARE_SECONDS = 60 * 10  # 10 minutes
+CACHE_MIDDLEWARE_KEY_PREFIX = 'myelearning'
+CACHE_MIDDLEWARE_ANONYMOUS_ONLY = True
 
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": config("HEROKU_REDIS_AQUA_URL"),
         "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "MAX_ENTRIES": 1000,
         },
         "KEY_PREFIX": "myelearning",
         "TIMEOUT": 300
