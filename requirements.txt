@@ -21,7 +21,7 @@ django-widget-tweaks==1.4.3
 google-api-python-client==1.7.4
 numpy==1.22.0
 pandas==1.1.5
-scikit-learn==1.0.1
+scikit-learn==1.5.0
 scipy==1.10.0
 sklearn==0.0
 django-webpack-loader==0.6.0
