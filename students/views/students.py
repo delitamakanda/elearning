@@ -168,15 +168,14 @@ def take_quiz(request, pk):
                 student_answer.save()
                 if student.get_unanswered_questions(quiz).exists():
                     return redirect('students:take_quiz', pk)
+                correct_answers = student.quiz_answers.filter(answer__question__quiz=quiz, answer__is_correct=True).count()
+                score = round((correct_answers / total_questions ) * 100.0, 2)
+                TakenQuiz.objects.create(student=student, quiz=quiz, score=score)
+                if score < 50.0:
+                    messages.warning(request, 'Good luck for next time! Your score for this quiz %s was %s.' % (quiz.name, score))
                 else:
-                    correct_answers = student.quiz_answers.filter(answer__question__quiz=quiz, answer__is_correct=True).count()
-                    score = round((correct_answers / total_questions ) * 100.0, 2)
-                    TakenQuiz.objects.create(student=student, quiz=quiz, score=score)
-                    if score < 50.0:
-                        messages.warning(request, 'Good luck for next time! Your score for this quiz %s was %s.' % (quiz.name, score))
-                    else:
-                        messages.success(request, 'Fantastic! You completed the quiz %s with success! Your scored %s points.' % (quiz.name, score))
-                    return redirect('students:student_quiz_list')
+                    messages.success(request, 'Fantastic! You completed the quiz %s with success! Your scored %s points.' % (quiz.name, score))
+                return redirect('students:student_quiz_list')
     else:
         form = TakeQuizForm(question=question)
 

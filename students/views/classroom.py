@@ -15,12 +15,10 @@ class SignupView(TemplateView):
 
 def index(request):
     if request.user.is_authenticated:
-         if request.user.is_teacher:
-             return redirect('students:teacher_quiz_change_list')
-         else:
-             return redirect('students:student_quiz_list')
-    else:
-        return redirect('courses:course_list')
+        if request.user.is_teacher:
+            return redirect('students:teacher_quiz_change_list')
+        return redirect('students:student_quiz_list')
+    return redirect('courses:course_list')
 
 
 def contact_us_view(request):
@@ -51,8 +49,6 @@ def contact_us_view(request):
             email.send()
             messages.success(request, _('Thank you ! We will check in as soon as possible ;-)'))
             return redirect('students:contact_us')
-        else:
-            messages.info(request, _('Oops ! Message not send...'))
     return render(request, 'students/contact/contact_form.html', { 'form': form_class })
 
 
