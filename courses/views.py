@@ -145,10 +145,8 @@ def add_review(request, subject):
         possibly_award_badge("reviews_course", user=request.user)
         messages.success(request, 'Review added.')
         return HttpResponseRedirect(reverse('courses:course_detail', args=(subject.slug,)))
-    else:
-        messages.warning(request, 'Error Occured.')
-        return HttpResponseRedirect(reverse('courses:course_detail', args=(subject.slug,)))
-    return render(request, 'courses/course/detail.html', {'subject': subject, 'form': form})
+    messages.warning(request, 'Error Occured.')
+    return HttpResponseRedirect(reverse('courses:course_detail', args=(subject.slug,)))
 
 
 class ModuleOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
