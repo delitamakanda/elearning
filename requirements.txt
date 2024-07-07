@@ -3,7 +3,7 @@ chardet
 Django==3.2.25
 django-braces==1.15.0
 django-embed-video
-djangorestframework==3.11.2
+djangorestframework==3.15.2
 idna
 olefile
 Pillow==10.3.0
