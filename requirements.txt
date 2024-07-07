@@ -31,7 +31,7 @@ django-taggit==1.1.0
 django-taggit-serializer==0.1.7
 mistune==2.0.3
 pygments==2.15.0
-celery==5.2.0
+celery==5.4.0
 redis==4.4.4
 django-autoslug==1.9.8
 django-crispy-forms==1.9.2
