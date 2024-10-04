@@ -47,6 +47,7 @@ CACHES = {
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "MAX_ENTRIES": 1000,
+          "CONNECTION_POOL_KWARGS": {"ssl_cert_reqs": None},
         },
         "KEY_PREFIX": "myelearning",
         "TIMEOUT": 300
