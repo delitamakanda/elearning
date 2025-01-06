@@ -35,3 +35,4 @@ celery==5.4.0
 redis==4.4.4
 django-autoslug==1.9.8
 django-crispy-forms==1.9.2
+pymemcache==4.0.0
