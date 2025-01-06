@@ -4,7 +4,7 @@ import os
 
 from django import forms
 from django.http import HttpResponseRedirect, HttpResponse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Count, F, Sum, FloatField, Avg
 from django.contrib import messages
