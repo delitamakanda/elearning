@@ -33,3 +33,4 @@ pygments==2.15.0
 celery==5.4.0
 redis==4.4.4
 django-autoslug==1.9.8
+pymemcache==4.0.0
