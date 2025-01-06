@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import re_path as url
 from django.views.generic import TemplateView
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
