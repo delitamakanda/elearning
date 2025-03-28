@@ -19,7 +19,7 @@ from django.views import generic
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from students.views import students, classroom, teachers
+from apps.students.views import classroom
 
 from django.views.generic import TemplateView
 
@@ -39,13 +39,15 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     
-    url(r'^course/', include(('courses.urls', 'courses'))),
-    url(r'^students/', include(('students.urls', 'students'))),
+    url(r'^course/', include(('apps.courses.urls', 'courses'))),
+    url(r'^students/', include(('apps.students.urls', 'students'))),
 
-    url(r'^api/', include(('courses.api.urls', 'api'), namespace='api')),
+    url(r'^api/', include(('apps.courses.api.urls', 'api'), namespace='api')),
 
     url(r'^sw.js', (TemplateView.as_view(template_name="service-worker.js", content_type='application/javascript', )), name='sw.js'),
     url(r'^offline.html', (TemplateView.as_view(template_name="offline.html")), name='offline.html'),
 ]
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -11,11 +11,16 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import sys
 from decouple import config
 from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Add the parent directory to sys.path
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, PROJECT_ROOT)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -32,7 +37,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'courses',
+    'apps.courses.apps.CoursesConfig',
     'django.contrib.sites',
     'django.contrib.flatpages',
     'django.contrib.admin',
@@ -44,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.admindocs',
     'crispy_forms',
-    'students',
+    'apps.students.apps.StudentsConfig',
     'embed_video',
     'rest_framework',
     'storages',
@@ -58,7 +63,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'students.middleware.SessionTimeoutMiddleware',
+    'apps.students.middleware.SessionTimeoutMiddleware',
     # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.cache.FetchFromCacheMiddleware',
@@ -80,7 +85,10 @@ ROOT_URLCONF = 'myelearning.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            # template at the root of the project
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -165,15 +173,14 @@ LOGOUT_REDIRECT_URL = reverse_lazy('courses:course_list')
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'students.authentication.EmailAuthBackend',
+    'apps.students.authentication.EmailAuthBackend',
 ]
 
 
 # Cache
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
-        'LOCATION': '127.0.0.1:11211',
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
 }
 

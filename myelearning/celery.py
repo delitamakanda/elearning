@@ -1,7 +1,6 @@
 import os
 
 from celery import Celery
-from django.conf import settings
 from celery.schedules import crontab
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myelearning.settings')
