@@ -8,7 +8,7 @@ djangorestframework>=3.15.2
 idna>=3.7
 olefile>=0.47
 Pillow>=10.4.0
-python3-memcached>=1.59
+python3-memcached==1.51
 requests>=2.32.3
 six>=1.16.0
 urllib3>=2.2.2
