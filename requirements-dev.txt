@@ -26,7 +26,6 @@ django-cors-headers>=4.4.0
 Markdown>=3.6
 django-crispy-forms>=2.1
 django-taggit>=6.1.0
-django-taggit-serializer>=0.1.12
 mistune>=3.0.2
 pygments>=2.18.0
 celery>=5.4.0

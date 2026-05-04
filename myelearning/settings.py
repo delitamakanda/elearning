@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'corsheaders',
     'taggit',
-    'taggit_serializer',
 ]
 
 MIDDLEWARE = [
