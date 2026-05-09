@@ -29,7 +29,7 @@ django-cors-headers==4.2.0
 Markdown==3.8.1
 django-taggit==1.1.0
 django-taggit-serializer==0.1.7
-mistune==2.0.3
+mistune==3.2.1
 pygments==2.20.0
 celery==5.4.0
 redis==4.4.4
