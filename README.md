@@ -1,6 +1,6 @@
 # my-elearning
 
-A Django-based e-learning platform built with Python 3.
+A Django 6-based e-learning platform built for Python 3.13.
 
 [![Django CI](https://github.com/delitamakanda/elearning/actions/workflows/django.yml/badge.svg?branch=master)](https://github.com/delitamakanda/elearning/actions/workflows/django.yml)
 
@@ -14,6 +14,7 @@ A Django-based e-learning platform built with Python 3.
 
 ### Installation
 ```bash
+pip install --upgrade pip
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py createsuperuser
