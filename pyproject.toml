@@ -1,0 +1,11 @@
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = ["F403", "F405", "E501", "B904", "E712"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "myelearning.settings"
+python_files = ["test_*.py", "*_test.py"]

@@ -2,6 +2,7 @@
 
 from pathlib import Path
 import sys
+import dj_database_url
 from decouple import config
 from django.urls import reverse_lazy
 
@@ -92,10 +93,9 @@ WSGI_APPLICATION = 'myelearning.wsgi.application'
 SITE_ID = 1
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse(
+        config('DATABASE_URL', default=f'sqlite:///{BASE_DIR / "db.sqlite3"}', cast=str)
+    )
 }
 
 
@@ -152,11 +152,24 @@ AUTHENTICATION_BACKENDS = [
 
 
 # Cache
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+REDIS_URL = config('REDIS_URL', default='', cast=str)
+
+if REDIS_URL:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_redis.cache.RedisCache',
+            'LOCATION': REDIS_URL,
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            },
+        }
     }
-}
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        }
+    }
 
 CACHE_MIDDLEWARE_ANONYMOUS_ONLY = True
 CACHE_MIDDLEWARE_SECONDS = 60 * 15  # 15 minutes
@@ -210,8 +223,8 @@ CORS_ALLOW_METHODS = (
 )
 
 # Task async
-CELERY_BROKER_URL = config('REDIS_URL', 'redis://localhost:6379/0', cast=str)
-CELERY_RESULT_BACKEND = config('REDIS_URL', 'redis://localhost:6379/0', cast=str)
+CELERY_BROKER_URL = config('CELERY_BROKER_URL', default='redis://localhost:6379/0', cast=str)
+CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND', default='redis://localhost:6379/0', cast=str)
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
