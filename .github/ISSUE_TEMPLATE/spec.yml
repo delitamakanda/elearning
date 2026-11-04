@@ -1,0 +1,38 @@
+name: Ticket (spec)
+description: Une fonctionnalité ou une correction, décrite pour pouvoir être implémentée par l’agent.
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Un titre seul suffit : ajoute ensuite le label `agent:refine` et l’agent rédigera la spec.
+        Si tu remplis les sections ci-dessous toi-même, tu peux directement poser `agent:ready`.
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexte
+      description: Pourquoi ce ticket existe.
+  - type: textarea
+    id: behaviour
+    attributes:
+      label: Comportement attendu
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Critères d'acceptation
+      description: Un critère observable et testable par ligne.
+      value: |
+        - [ ]
+  - type: textarea
+    id: technical
+    attributes:
+      label: Impact technique
+      description: Apps, modèles et migrations, vues, templates, API DRF, tâches Celery concernés (facultatif).
+  - type: textarea
+    id: tests
+    attributes:
+      label: Plan de test
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: Hors périmètre

@@ -31,6 +31,14 @@ celery -A myelearning worker -l info -B
 python manage.py test
 ```
 
+## Demo data
+```bash
+python manage.py seed_demo   # DEBUG only — demo-teacher / demo-student, password demo-password-123
+```
+
+## Agentic workflow
+Issues are specs: a Claude agent refines them, implements one ticket at a time and opens a PR for human review. See [docs/agentic-workflow.md](docs/agentic-workflow.md).
+
 ## TODO
 - [ ] Nice layout
 - [ ] Login via Google

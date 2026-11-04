@@ -1,0 +1,98 @@
+# Boucle de revue : dans une pull request, commente `@claude …` (commentaire
+# général, commentaire de ligne ou revue) pour que l'agent applique tes retours
+# sur la branche de la PR. Seules les personnes ayant accès en écriture au
+# dépôt peuvent déclencher l'agent.
+name: Agent – retours de revue
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  contents: read
+
+env:
+  PYTHON_VERSION: '3.13'
+  RUFF_VERSION: '0.17.3'
+  PLAYWRIGHT_MCP_VERSION: '0.0.84'
+
+jobs:
+  respond:
+    if: |
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude'))
+    runs-on: ubuntu-latest
+    environment: claude
+    timeout-minutes: 60
+    concurrency:
+      group: agent-review-${{ github.event.issue.number || github.event.pull_request.number }}
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      actions: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Se placer sur la branche de la PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          R: ${{ github.repository }}
+          PR: ${{ github.event.issue.number || github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          read -r head_repo head_ref < <(gh api "repos/$R/pulls/$PR" --jq '"\(.head.repo.full_name) \(.head.ref)"')
+          # Le code de la PR va être installé et exécuté avec les secrets de l'environnement `claude` :
+          # on refuse les PR venant d'un fork.
+          if [ "$head_repo" != "$R" ]; then
+            echo "::error::PR #$PR issue d'un fork ($head_repo) : agent non lancé."
+            exit 1
+          fi
+          git fetch --depth=50 origin "+refs/heads/$head_ref:refs/remotes/origin/$head_ref"
+          git checkout -B "$head_ref" "origin/$head_ref"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Installer les dépendances
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt "ruff==$RUFF_VERSION"
+
+      - name: Installer le navigateur (MCP Playwright)
+        run: |
+          npm install -g "@playwright/mcp@$PLAYWRIGHT_MCP_VERSION"
+          playwright-mcp install-browser --with-deps chromium
+
+      - name: Démarrer l'app (SQLite jetable + données de démo + runserver)
+        run: bash scripts/agent/start-app.sh
+
+      - uses: anthropics/claude-code-action@v1
+        env:
+          BASE_REF: origin/${{ github.event.repository.default_branch || 'master' }}
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          additional_permissions: |
+            actions: read
+          claude_args: |
+            --model ${{ vars.AGENT_MODEL || 'sonnet' }}
+            --max-turns 80
+            --mcp-config .github/agent/mcp.json
+            --append-system-prompt "Respecte CLAUDE.md et AGENTS.md. L'app Django tourne déjà sur http://localhost:8000/course/ (SQLite jetable, données de démo, runserver se recharge à chaque modification ; comptes demo-teacher / demo-student, mot de passe demo-password-123) : vérifie toute modification de page dans le navigateur avec les outils mcp__playwright, en ne naviguant que vers l'app locale. Si tu modifies un modèle, crée la migration de l'app concernée. Avant de pousser, fais passer python manage.py check, python manage.py test et bash scripts/agent/lint-changed.sh --check (Ruff uniquement sur les fichiers modifiés). Ne modifie jamais .github/ ni les migrations existantes. Réponds en français."
+            --allowedTools "Skill,Bash(python manage.py check:*),Bash(python manage.py test:*),Bash(python manage.py makemigrations:*),Bash(python manage.py migrate:*),Bash(python manage.py showmigrations:*),Bash(bash scripts/agent/lint-changed.sh:*),Bash(ruff check:*),Bash(ruff format:*),mcp__playwright"
+            --disallowedTools "mcp__playwright__browser_run_code_unsafe,mcp__playwright__browser_evaluate,mcp__playwright__browser_file_upload"

@@ -1,0 +1,356 @@
+# Agent d'implémentation : prend un ticket dont la spec est validée,
+# l'implémente sur une branche, vérifie (check, tests, ruff) et ouvre
+# une pull request assignée en revue à la propriétaire du dépôt.
+#
+# Déclencheurs :
+#   - label `agent:ready` posé sur une issue
+#   - lancement manuel avec un numéro d'issue
+#   - toutes les 3 h : prend le plus ancien ticket `agent:ready` en attente
+#
+# Un seul ticket est traité à la fois (concurrence `agent-implement`).
+# L'agent ne merge jamais : la validation finale reste humaine.
+name: Agent – implémentation
+
+on:
+  issues:
+    types: [labeled]
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: 'Numéro de l’issue à implémenter (vide = prochain ticket agent:ready)'
+        required: false
+  schedule:
+    - cron: '17 */3 * * *'
+
+permissions:
+  contents: read
+
+env:
+  PYTHON_VERSION: '3.13'
+  RUFF_VERSION: '0.17.3'
+  PLAYWRIGHT_MCP_VERSION: '0.0.84'
+
+jobs:
+  pick:
+    if: github.event_name != 'issues' || github.event.label.name == 'agent:ready'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read
+    outputs:
+      issue: ${{ steps.pick.outputs.issue }}
+    steps:
+      - id: pick
+        env:
+          GH_TOKEN: ${{ github.token }}
+          R: ${{ github.repository }}
+          EVENT_ISSUE: ${{ github.event.issue.number }}
+          INPUT_ISSUE: ${{ inputs.issue }}
+        run: |
+          set -euo pipefail
+          n="${EVENT_ISSUE:-${INPUT_ISSUE:-}}"
+          if [ -z "$n" ]; then
+            busy=$(gh api "repos/$R/issues?labels=agent%3Aworking&state=open" --jq 'length')
+            if [ "$busy" != "0" ]; then
+              echo "Un ticket est déjà en cours : rien à faire."
+            else
+              n=$(gh api "repos/$R/issues?labels=agent%3Aready&state=open&per_page=100&sort=created&direction=asc" \
+                --jq '[.[] | select(.pull_request | not)
+                       | select([.labels[].name] | (index("agent:working") or index("agent:review") or index("agent:blocked")) | not)
+                      ][0].number // empty')
+            fi
+          fi
+          echo "Ticket retenu : ${n:-aucun}"
+          echo "issue=${n}" >> "$GITHUB_OUTPUT"
+
+  implement:
+    needs: pick
+    if: needs.pick.outputs.issue != ''
+    runs-on: ubuntu-latest
+    environment: claude
+    timeout-minutes: 60
+    concurrency:
+      group: agent-implement
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      actions: write
+      id-token: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      ISSUE: ${{ needs.pick.outputs.issue }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      BASE: ${{ github.event.repository.default_branch || 'master' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Préparer le contexte du ticket
+        id: prep
+        run: node scripts/agent/prepare-issue.mjs "$ISSUE"
+
+      - name: Vérifier que le ticket est implémentable
+        id: guard
+        env:
+          STATE: ${{ steps.prep.outputs.state }}
+          IS_EPIC: ${{ steps.prep.outputs.is_epic }}
+          HAS_SPEC: ${{ steps.prep.outputs.has_spec }}
+        run: |
+          set -euo pipefail
+          reason=""
+          if [ "$STATE" != "open" ]; then
+            reason="le ticket est fermé"
+          elif [ "$IS_EPIC" = "true" ]; then
+            reason="c’est une épic : pose \`agent:ready\` sur ses sous-tickets plutôt que sur l’épic"
+          elif [ "$HAS_SPEC" != "true" ]; then
+            gh issue edit "$ISSUE" --remove-label agent:ready --add-label agent:refine
+            gh workflow run agent-refine.yml -f issues="$ISSUE"
+            gh issue comment "$ISSUE" --body "<!-- agent-status -->
+          ℹ️ Pas de section « Critères d’acceptation » dans l’issue : je rédige d’abord une spec (label \`spec:review\`). Valide-la puis repose \`agent:ready\`."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ -n "$reason" ]; then
+            gh issue edit "$ISSUE" --remove-label agent:ready || true
+            gh issue comment "$ISSUE" --body "<!-- agent-status -->
+          ℹ️ Implémentation ignorée : $reason."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Prendre le ticket
+        if: steps.guard.outputs.skip == 'false'
+        env:
+          BRANCH: ${{ steps.prep.outputs.branch }}
+        run: |
+          set -euo pipefail
+          gh issue edit "$ISSUE" --remove-label agent:ready --remove-label agent:blocked --add-label agent:working
+          gh issue comment "$ISSUE" --body "<!-- agent-status -->
+          🤖 Implémentation en cours sur \`$BRANCH\`. Suivi : $RUN_URL"
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null; then
+            git fetch origin "$BRANCH"
+            git checkout -B "$BRANCH" "origin/$BRANCH"
+          else
+            git checkout -b "$BRANCH"
+          fi
+
+      - name: Synchroniser le board (en cours)
+        if: steps.guard.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.AGENT_PROJECT_TOKEN }}
+          REPO: ${{ github.repository }}
+          PROJECT_OWNER: ${{ vars.AGENT_PROJECT_OWNER }}
+          PROJECT_NUMBER: ${{ vars.AGENT_PROJECT_NUMBER }}
+          ISSUE_NUMBER: ${{ env.ISSUE }}
+        run: node scripts/agent/board-sync.mjs || echo "::warning::synchro du board échouée"
+
+      - uses: actions/setup-python@v5
+        if: steps.guard.outputs.skip == 'false'
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Installer les dépendances
+        if: steps.guard.outputs.skip == 'false'
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt "ruff==$RUFF_VERSION"
+
+      - name: Installer le navigateur (MCP Playwright)
+        if: steps.guard.outputs.skip == 'false'
+        run: |
+          npm install -g "@playwright/mcp@$PLAYWRIGHT_MCP_VERSION"
+          playwright-mcp install-browser --with-deps chromium
+
+      - name: Démarrer l'app (SQLite jetable + données de démo + runserver)
+        if: steps.guard.outputs.skip == 'false'
+        run: bash scripts/agent/start-app.sh
+
+      - name: Implémenter
+        if: steps.guard.outputs.skip == 'false'
+        uses: anthropics/claude-code-action@v1
+        env:
+          BASE_REF: origin/${{ env.BASE }}
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            Suis exactement les instructions de `.github/agent/prompts/implement.md`.
+            Ticket à implémenter : #${{ env.ISSUE }} (contexte et spec dans `.agent-out/issue.md`).
+            Tu es déjà sur la bonne branche ; ne fais ni commit ni push.
+          claude_args: |
+            --model ${{ vars.AGENT_MODEL || 'sonnet' }}
+            --max-turns 130
+            --mcp-config .github/agent/mcp.json
+            --allowedTools "Read,Glob,Grep,Write,Edit,Skill,Bash(python manage.py check:*),Bash(python manage.py test:*),Bash(python manage.py makemigrations:*),Bash(python manage.py migrate:*),Bash(python manage.py showmigrations:*),Bash(python manage.py sqlmigrate:*),Bash(bash scripts/agent/lint-changed.sh:*),Bash(ruff check:*),Bash(ruff format:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(ls:*),mcp__playwright"
+            --disallowedTools "WebFetch,WebSearch,mcp__playwright__browser_run_code_unsafe,mcp__playwright__browser_evaluate,mcp__playwright__browser_file_upload"
+
+      - name: Vérifications (check, migrations, tests, ruff)
+        id: checks
+        if: steps.guard.outputs.skip == 'false'
+        env:
+          BASE_REF: origin/${{ env.BASE }}
+        run: |
+          set -uo pipefail
+          ok=true
+          : > .agent-out/checks.md
+          run_check() {
+            local name="$1"; shift
+            if "$@" > ".agent-out/$name.log" 2>&1; then
+              echo "- ✅ \`$*\`" >> .agent-out/checks.md
+            else
+              ok=false
+              echo "- ❌ \`$*\` (voir les logs du run)" >> .agent-out/checks.md
+              tail -n 40 ".agent-out/$name.log"
+            fi
+          }
+          run_check check python manage.py check
+          run_check test python manage.py test
+          run_check lint bash scripts/agent/lint-changed.sh --check
+          # Non bloquant tant que la dérive de migrations préexistante n'est pas corrigée (voir CLAUDE.md).
+          if python manage.py makemigrations --check --dry-run > .agent-out/migrations.log 2>&1; then
+            echo "- ✅ \`python manage.py makemigrations --check\`" >> .agent-out/checks.md
+          else
+            echo "- ⚠️ \`python manage.py makemigrations --check\` : des changements de modèles n’ont pas de migration (non bloquant, à relire)" >> .agent-out/checks.md
+          fi
+          cat .agent-out/checks.md
+          echo "ok=$ok" >> "$GITHUB_OUTPUT"
+
+      - name: Commit et push
+        id: push
+        if: steps.guard.outputs.skip == 'false'
+        env:
+          BRANCH: ${{ steps.prep.outputs.branch }}
+        run: |
+          set -euo pipefail
+          # Garde-fou : l'agent ne doit jamais modifier la CI ni ses propres prompts.
+          git checkout -- .github 2>/dev/null || true
+          git clean -fdq -- .github
+          git add -A
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          msg=.agent-out/commit-message.txt
+          [ -s "$msg" ] || echo "feat: implement #$ISSUE" > "$msg"
+          printf '\nRefs #%s\n' "$ISSUE" >> "$msg"
+          git commit -q -F "$msg"
+          # claude-code-action laisse derrière lui un jeton révoqué : on repart du GITHUB_TOKEN du job.
+          git config --unset-all http.https://github.com/.extraheader || true
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GH_REPO}.git"
+          git push -u origin "$BRANCH"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      # Le zip doit avoir `captures/` à la racine : sous
+      # `.agent-out/` (dossier caché), Finder et l'Explorateur masquent les images.
+      - name: Rassembler les captures
+        if: always() && steps.guard.outputs.skip == 'false'
+        run: |
+          set -uo pipefail
+          dest=.agent-out/artifact
+          rm -rf "$dest" && mkdir -p "$dest/captures"
+          find .agent-out/playwright -maxdepth 1 -type f \( -name '*.png' -o -name '*.jpeg' -o -name '*.jpg' \) \
+            -exec cp {} "$dest/captures/" \; 2>/dev/null || true
+          ls -R "$dest"
+
+      - name: Publier les captures
+        id: artifact
+        if: always() && steps.guard.outputs.skip == 'false'
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-ui-issue-${{ env.ISSUE }}
+          path: .agent-out/artifact/
+          include-hidden-files: true # le chemin passe par .agent-out, dossier caché
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Ouvrir ou mettre à jour la pull request
+        id: pr
+        if: steps.push.outputs.changed == 'true'
+        env:
+          BRANCH: ${{ steps.prep.outputs.branch }}
+          TITLE: ${{ steps.prep.outputs.title }}
+          CHECKS_OK: ${{ steps.checks.outputs.ok }}
+          ARTIFACT_URL: ${{ steps.artifact.outputs.artifact-url }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          set -euo pipefail
+          {
+            if [ -s .agent-out/pr-body.md ]; then cat .agent-out/pr-body.md; else echo "Implémentation de #$ISSUE."; fi
+            echo
+            echo "Closes #$ISSUE"
+            echo
+            echo "## Vérifications automatiques"
+            echo
+            cat .agent-out/checks.md
+            if [ -n "${ARTIFACT_URL:-}" ]; then
+              echo "- 📸 Captures : $ARTIFACT_URL"
+            fi
+            echo
+            echo "---"
+            echo "🤖 PR ouverte par l’agent ([run]($RUN_URL)). Commente \`@claude …\` pour demander des corrections. **Ne pas merger sans revue humaine.**"
+          } > .agent-out/pr-full.md
+          draft=false
+          [ "$CHECKS_OK" = "true" ] || draft=true
+          pr=$(gh api "repos/$GH_REPO/pulls?head=$OWNER:$BRANCH&state=open" --jq '.[0].number // empty')
+          if [ -z "$pr" ]; then
+            pr=$(gh api "repos/$GH_REPO/pulls" -X POST \
+              -f title="[agent] #$ISSUE $TITLE" -f head="$BRANCH" -f base="$BASE" \
+              -F draft="$draft" -F body=@.agent-out/pr-full.md --jq '.number')
+            gh api "repos/$GH_REPO/pulls/$pr/requested_reviewers" -X POST \
+              -f "reviewers[]=$OWNER" >/dev/null || echo "::warning::impossible de demander la revue à $OWNER"
+          else
+            gh api "repos/$GH_REPO/pulls/$pr" -X PATCH -F body=@.agent-out/pr-full.md >/dev/null
+          fi
+          gh api "repos/$GH_REPO/issues/$pr/labels" -X POST -f "labels[]=agent:review" >/dev/null || true
+          # Une PR créée avec GITHUB_TOKEN ne déclenche pas la CI : on la lance explicitement.
+          gh workflow run django.yml --ref "$BRANCH" || echo "::warning::CI non déclenchée"
+          echo "number=$pr" >> "$GITHUB_OUTPUT"
+
+      - name: Mettre le ticket en revue
+        if: steps.guard.outputs.skip == 'false'
+        env:
+          PR: ${{ steps.pr.outputs.number }}
+          CHECKS_OK: ${{ steps.checks.outputs.ok }}
+          CHANGED: ${{ steps.push.outputs.changed }}
+        run: |
+          set -euo pipefail
+          if [ "$CHANGED" != "true" ]; then
+            gh issue edit "$ISSUE" --remove-label agent:working --add-label agent:blocked
+            gh issue comment "$ISSUE" --body "<!-- agent-status -->
+          ⚠️ L’agent n’a produit aucune modification. Précise la spec puis repose \`agent:ready\`. Détails : $RUN_URL"
+          elif [ "$CHECKS_OK" = "true" ]; then
+            gh issue edit "$ISSUE" --remove-label agent:working --add-label agent:review
+            gh issue comment "$ISSUE" --body "<!-- agent-status -->
+          ✅ Implémentation prête pour revue : #$PR"
+          else
+            gh issue edit "$ISSUE" --remove-label agent:working --add-label agent:review --add-label agent:blocked
+            gh issue comment "$ISSUE" --body "<!-- agent-status -->
+          🟠 PR brouillon #$PR : certaines vérifications échouent (détail dans la PR). Commente \`@claude\` dans la PR pour qu’il corrige, ou reprends la main."
+          fi
+
+      - name: Signaler l’échec
+        if: failure()
+        run: |
+          gh issue edit "$ISSUE" --remove-label agent:working --add-label agent:blocked || true
+          gh issue comment "$ISSUE" --body "<!-- agent-status -->
+          ⚠️ L’agent a rencontré une erreur. Détails : $RUN_URL" || true
+
+      - name: Synchroniser le board
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.AGENT_PROJECT_TOKEN }}
+          REPO: ${{ github.repository }}
+          PROJECT_OWNER: ${{ vars.AGENT_PROJECT_OWNER }}
+          PROJECT_NUMBER: ${{ vars.AGENT_PROJECT_NUMBER }}
+          ISSUE_NUMBER: ${{ env.ISSUE }}
+        run: node scripts/agent/board-sync.mjs || echo "::warning::synchro du board échouée"
