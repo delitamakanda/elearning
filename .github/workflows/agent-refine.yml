@@ -1,0 +1,142 @@
+# Agent de raffinement : transforme un ticket (souvent un simple titre) en spec.
+#
+# Déclencheurs :
+#   - label `agent:refine` posé sur une issue
+#   - lancement manuel : liste d'issues (« 92,93 ») ou numéro d'épic
+#     (raffine tous ses sous-tickets ouverts)
+#
+# Résultat : le corps de l'issue est remplacé par la spec (l'original est
+# conservé dans un bloc repliable), le label passe à `spec:review`.
+# Un humain relit, corrige si besoin, puis pose `agent:ready`.
+name: Agent – raffinement
+
+on:
+  issues:
+    types: [labeled]
+  workflow_dispatch:
+    inputs:
+      issues:
+        description: 'Numéros d’issues séparés par des virgules (ex. 92,93)'
+        required: false
+      epic:
+        description: 'Numéro d’une épic : raffine tous ses sous-tickets ouverts'
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  pick:
+    if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'agent:refine'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read
+    outputs:
+      issues: ${{ steps.pick.outputs.issues }}
+    steps:
+      - id: pick
+        env:
+          GH_TOKEN: ${{ github.token }}
+          R: ${{ github.repository }}
+          EVENT_ISSUE: ${{ github.event.issue.number }}
+          INPUT_ISSUES: ${{ inputs.issues }}
+          INPUT_EPIC: ${{ inputs.epic }}
+        run: |
+          set -euo pipefail
+          if [ -n "${EVENT_ISSUE:-}" ]; then
+            list="[$EVENT_ISSUE]"
+          elif [ -n "${INPUT_EPIC:-}" ]; then
+            list=$(gh api "repos/$R/issues/$INPUT_EPIC/sub_issues?per_page=100" \
+              --jq '[.[] | select(.state == "open") | .number]')
+          else
+            list=$(jq -cn --arg s "${INPUT_ISSUES:-}" \
+              '$s | split(",") | map(gsub("[^0-9]"; "")) | map(select(length > 0) | tonumber)')
+          fi
+          echo "Issues à raffiner : $list"
+          echo "issues=$list" >> "$GITHUB_OUTPUT"
+
+  refine:
+    needs: pick
+    if: needs.pick.outputs.issues != '[]'
+    runs-on: ubuntu-latest
+    environment: claude
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      issues: write
+      id-token: write
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        issue: ${{ fromJSON(needs.pick.outputs.issues) }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      ISSUE: ${{ matrix.issue }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Préparer le contexte du ticket
+        id: prep
+        run: node scripts/agent/prepare-issue.mjs "$ISSUE"
+
+      - name: Rédiger la spec
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            Suis exactement les instructions de `.github/agent/prompts/refine.md`.
+            Ticket à spécifier : #${{ matrix.issue }} (contexte dans `.agent-out/issue.md`).
+          claude_args: |
+            --model ${{ vars.AGENT_MODEL || 'sonnet' }}
+            --max-turns 40
+            --allowedTools "Read,Glob,Grep,Write,Skill"
+            --disallowedTools "Bash,Edit,WebFetch,WebSearch"
+
+      - name: Publier la spec sur l’issue
+        run: |
+          set -euo pipefail
+          test -s .agent-out/spec.md || { echo "::error::spec.md absente"; exit 1; }
+          {
+            cat .agent-out/spec.md
+            echo
+            echo '<!-- agent-spec -->'
+            if [ -s .agent-out/original-body.md ]; then
+              echo
+              echo "<details><summary>Description d'origine</summary>"
+              echo
+              cat .agent-out/original-body.md
+              echo
+              echo '</details>'
+            fi
+          } > .agent-out/new-body.md
+          gh issue edit "$ISSUE" --body-file .agent-out/new-body.md \
+            --remove-label agent:refine --add-label spec:review
+          gh issue comment "$ISSUE" --body "<!-- agent-status -->
+          📝 Spec proposée par l’agent. Relis et corrige le corps de l’issue si besoin (notamment **Questions ouvertes**), puis ajoute le label \`agent:ready\` pour lancer l’implémentation."
+
+      - name: Signaler l’échec
+        if: failure()
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh issue edit "$ISSUE" --remove-label agent:refine --add-label agent:blocked || true
+          gh issue comment "$ISSUE" --body "<!-- agent-status -->
+          ⚠️ L’agent n’a pas pu rédiger la spec. Détails : $RUN_URL" || true
+
+      - name: Mettre à jour le board
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.AGENT_PROJECT_TOKEN }}
+          REPO: ${{ github.repository }}
+          PROJECT_OWNER: ${{ vars.AGENT_PROJECT_OWNER }}
+          PROJECT_NUMBER: ${{ vars.AGENT_PROJECT_NUMBER }}
+          ISSUE_NUMBER: ${{ matrix.issue }}
+        run: node scripts/agent/board-sync.mjs || echo "::warning::synchro du board échouée"

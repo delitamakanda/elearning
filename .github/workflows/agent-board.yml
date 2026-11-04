@@ -1,0 +1,52 @@
+# Synchronise les issues avec le GitHub Project (board) à partir des labels.
+#   - à chaque changement d'une issue : met à jour sa carte
+#   - toutes les 6 h et en manuel : passe sur toutes les issues (rattrapage,
+#     et import initial du backlog dans le board)
+#
+# Nécessite le secret AGENT_PROJECT_TOKEN (PAT classique, scopes `repo` +
+# `project`) et la variable AGENT_PROJECT_NUMBER. Sans eux, le job ne fait rien.
+name: Agent – board
+
+on:
+  issues:
+    types: [opened, reopened, closed, labeled, unlabeled]
+  schedule:
+    - cron: '23 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Afficher les changements sans les appliquer'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-board-${{ github.event.issue.number || 'all' }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    environment: claude
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          sparse-checkout: scripts/agent
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Synchroniser
+        env:
+          GH_TOKEN: ${{ secrets.AGENT_PROJECT_TOKEN }}
+          REPO: ${{ github.repository }}
+          PROJECT_OWNER: ${{ vars.AGENT_PROJECT_OWNER }}
+          PROJECT_NUMBER: ${{ vars.AGENT_PROJECT_NUMBER }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
+        run: node scripts/agent/board-sync.mjs

@@ -171,3 +171,5 @@ frontend/images/
 frontend/icons/
 .vscode/
 .idea
+# Agents (workflow agentique)
+.agent-out/
